@@ -2,28 +2,33 @@ package com.mygdxt.trabalho;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
-
+import com.mygdxt.trabalho.physics.PhysicsWorld;
+import com.mygdxt.trabalho.physics.PlayerPhysics;
 import com.badlogic.gdx.Input;
 
-public class Player{
-	private ShapeRenderer shapeRenderer;
-	private Texture playerSprite;
+public class Player {
+	private Texture playerTexture;
 	private SpriteBatch batch;
-	private World world; //for the physics
+	private Sprite playerSprite;
 
-	private float positionX = 100, positionY = 100; //gets the current position of the sprite
-	private float xSpeed = 400, ySpeed = 400; //speed for the sprite to move around
-	private int sizeWidth = 50, sizeHeight = 50;
-	
-	public void createPlayer () { //method to get player visual stuff
-		world = new World(new Vector2(0, -10), true);
-		shapeRenderer = new ShapeRenderer(); //Creates a shape renderer object
+	private PlayerPhysics physics;
+	private final float PIXELS_PER_METER = 920f;	
+
+	public void createPlayer (PhysicsWorld world) { //method to get player visual stuff
 		batch = new SpriteBatch(); //Creates a batch
-		playerSprite = new Texture(Gdx.files.internal("placeholder.png")); //Creates and gets player sprite png
+		playerTexture = new Texture(Gdx.files.internal("placeholder.png")); //Creates and gets player sprite png
+		physics = new PlayerPhysics(world, 0, 0); // creates the physics object that handles all of the player's physics
+
+		// create and set the player sprite, so its equal the physics object
+		playerSprite = new Sprite(playerTexture);
+		// makes the sprite the same size as the physic entity
+		playerSprite.setSize(physics.getWidth() * PIXELS_PER_METER, physics.getHeight() * PIXELS_PER_METER);
+		// (hopefully) makes the sprite have the same origin as the physic entity
+		playerSprite.setOrigin(playerSprite.getWidth() / 2, playerSprite.getHeight() / 2);
+		// makes the sprite have the same position as the physic entity converting units to pixels
+		playerSprite.setPosition(physics.getPosition().x * PIXELS_PER_METER, physics.getPosition().y * PIXELS_PER_METER);
 	}
 
 	public void renderPlayer () { //players action
@@ -33,47 +38,52 @@ public class Player{
 	
 	public void disposePlayer () { //is called to discard player assets
 		batch.dispose();
-		playerSprite.dispose();
-		shapeRenderer.dispose();
+		playerTexture.dispose();
 	}
 
 	private void move(){
 		float deltaTime = Gdx.graphics.getDeltaTime(); // casting of the deltaTime
 
-		world.step(deltaTime, 6,2); //updating world physics
+		// positionY += ySpeed * verticalMovement() * deltaTime; //increments the speed
 
-		positionY -= 1; //gravity simulation
-
-		positionX += xSpeed * horizontalMovement() * deltaTime; //increments the speed
-		positionY += ySpeed * verticalMovement() * deltaTime; //increments the speed
+		horizontalMovement();
+		// (hopefully) updates the player sprite position
+		playerSprite.setPosition(physics.getPosition().x * PIXELS_PER_METER, physics.getPosition().y * PIXELS_PER_METER);
 		
 		batch.begin(); //Rendering of the sprite
-		batch.draw(playerSprite, positionX, positionY, sizeWidth, sizeHeight);
+		playerSprite.draw(batch);
 		batch.end();
 	}
 
-	private int verticalMovement(){ //check the vertical movement input
-		
-		if(Gdx.input.isKeyPressed(Input.Keys.W)){ //goes up
-			return 1;
-		}
-		
-		if(Gdx.input.isKeyPressed(Input.Keys.S)){ //goes down
-			return -1;
-		}
-		return 0; //stand still
-	}
+	// private int verticalMovement(){ //check the vertical movement input
+	// 	//saves the key press in a variable
+	// 	boolean up = Gdx.input.isKeyPressed(Input.Keys.W);
+	// 	boolean down = Gdx.input.isKeyPressed(Input.Keys.S);
 
-	private int horizontalMovement(){ //same as verticalMovement
+
+	// 	if(up && !down){ //goes up
+	// 		return 1;
+	// 	}
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			return 1;
+	// 	if(down && !up){ //goes down
+	// 		return -1;
+	// 	}
+	// 	return 0; //stand still
+	// }
+
+	private void horizontalMovement(){ //same as verticalMovement
+		//saves the key press in a variable
+		boolean left = Gdx.input.isKeyPressed(Input.Keys.A);
+		boolean right = Gdx.input.isKeyPressed(Input.Keys.D);
+
+		if(right && !left){
+			physics.applyForceX(2f);
 		}
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			return -1;
+		if(left && !right){
+			physics.applyForceX(-2f);
 		}
-		return 0;
 	}
 }
+
 
