@@ -1,11 +1,19 @@
+
+
+
+
 package com.mygdxt.trabalho;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Input;
 
 public class Player {
@@ -16,16 +24,22 @@ public class Player {
 	private SpriteBatch batch;
 
 	private Rectangle collider;
-
-	private float positionX = 200, positionY = 300; // gets the current position of the sprite
-	private float lastPositionX, lastPositionY; // gets the current position of the sprite
-	private float xSpeed = 400, ySpeed = 10000; // speed for the sprite to move around
+	private Vector2 position;
+	private float positionX = 200f, positionY = 300f; // gets the current position of the sprite
+	private float lastPositionInX, lastPositionInY; // gets the current position of the sprite
+	private float xSpeed = 400f, ySpeed = 1000000f; // speed for the sprite to move around
 	private int sizeWidth = 50, sizeHeight = 50;
+
+	private float jumpDuration = 0.5f;
+
+
+	private float gravity = 2;
 
 	public void createPlayer() { // method to get player visual stuff
 		shapeRenderer = new ShapeRenderer(); // Creates a shape renderer object
 		batch = new SpriteBatch(); // Creates a batch
 		playerSprite = new Texture(Gdx.files.internal("placeholder.png")); // Creates and gets player sprite png
+		position = new Vector2(positionX, positionY);
 	}
 
 	public void renderPlayer() { // players action
@@ -41,31 +55,38 @@ public class Player {
 
 	private void move(){
 		float deltaTime = Gdx.graphics.getDeltaTime(); // casting of the deltaTime
-
-		if(!isOnGround){
-			positionY -= 1; //gravity simulation
-		}
-
-		lastPositionX = positionX;
-		lastPositionY = positionY;
+		float desiredPositionX = position.x += xSpeed * horizontalMovement() * deltaTime;
 		
-		positionX += xSpeed * horizontalMovement() * deltaTime; //increments the speed
-
+		
+		if(!isOnGround){
+			position.y -= gravity; //gravity simulation
+		}
+		
+		lastPositionInX = position.x;
+		lastPositionInY = position.y;
+	
+		
 		if(isOnGround){
-			positionY += ySpeed * verticalMovement() * deltaTime; //increments the speed
+			float desiredPositionY = position.y += ySpeed * verticalMovement() * deltaTime;
+			float alpha = Math.min(deltaTime/jumpDuration, 1);
+			position.y = Interpolation.linear.apply(lastPositionInY, desiredPositionY, alpha);
+			//position.interpolate(position, desiredPositionY, Interpolation.linear);
 			isOnGround = false;
 		}
 
 		batch.begin(); //Rendering of the sprite
-		batch.draw(playerSprite, positionX, positionY, sizeWidth, sizeHeight);
+		//position.interpolate(position, desiredPositionX, Interpolation.linear);
+		batch.draw(playerSprite, position.x, position.y, sizeWidth, sizeHeight);
 		batch.end();
+		collider = new Rectangle(position.x, position.y, sizeWidth, sizeHeight);
 
-		collider = new Rectangle(positionX, positionY, sizeWidth, sizeHeight);
+
 	}
 
 	private int verticalMovement() { // check the vertical movement input
 
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) { // goes up
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) { // goes up
+			isOnGround = false;
 			return 1;
 		}
 
@@ -76,40 +97,41 @@ public class Player {
 	}
 
 	private int horizontalMovement() { // same as verticalMovement
-
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+		boolean pressedD = Gdx.input.isKeyPressed(Input.Keys.D);
+		boolean pressedA = Gdx.input.isKeyPressed(Input.Keys.A);
+		if (pressedD && !pressedA) {
 			return 1;
 		}
 
-		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+		if (pressedA && !pressedD) {
 			return -1;
 		}
 		return 0;
 	}
 
-	public float getLastPositionX() {
-		return lastPositionX;
+	public float getlastPositionInX() {
+		return lastPositionInX;
 	}
 
-	public float getLastPositionY() {
-		return lastPositionY;
+	public float getlastPositionInY() {
+		return lastPositionInY;
 	}
 
 	public void touchGround() {
 		isOnGround = true;
-		positionY = lastPositionY;
+		position.y = lastPositionInY;
 	}
 	public void touchWall() {
 		isOnGround = true;
-		positionX = lastPositionX;
+		position.x = lastPositionInX;
 	}
 	public void touchCeiling() {
 		isOnGround = false;
-		positionY = lastPositionY;
+		position.y = lastPositionInY;
 	}
 
 	public void playerCantRun(){
-		positionX = lastPositionX;
+		position.x = lastPositionInX;
 	}
 
 	public Rectangle getCollider() {
