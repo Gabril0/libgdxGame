@@ -6,11 +6,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class MyGdxGame extends ApplicationAdapter {
 	Player player = new Player();
 	BulletPool bulletPool = new BulletPool(50);
-	Bullet bullet = new SimpleBullet(-2,-2); //just for the example, change later
+
 	
 	@Override
 	public void create () {
-		bulletPool.createBulletPool(bullet,"PlayerBullet.png");
+		bulletPool.createBulletPool("PlayerBullet.png");
 		player.createPlayer();
 	}
 

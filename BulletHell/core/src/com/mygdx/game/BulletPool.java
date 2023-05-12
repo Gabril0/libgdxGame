@@ -16,10 +16,10 @@ public class BulletPool {
         this.poolSize = poolSize;
     }
 
-    public void createBulletPool(Bullet bulletType, String imgPath) { //usar bullet type depois TODO!!!!
+    public void createBulletPool(String imgPath) { //usar bullet type depois TODO!!!!
         pool = new Bullet[poolSize];
         for (int i = 0; i < poolSize; i++) { 
-            pool[i] = new SimpleBullet(-1, -1);
+            pool[i] = new SimpleBullet(-1, -1, 32, 32);
             pool[i].createBullet(imgPath);
         }
 
