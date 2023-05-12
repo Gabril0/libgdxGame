@@ -10,7 +10,7 @@ public class SimpleBullet implements Bullet {
     private SpriteBatch spriteBatch;
     private float positionX, positionY; //for the position manipulation of the bullet
     private float sizeX, sizeY; //for the size 
-    private float bulletSpeed = 20;
+    private float bulletSpeed = 1;
 
     SimpleBullet(float positionX, float positionY){ //Constructor to get players position
         this.positionX = positionX;
