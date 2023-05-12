@@ -28,13 +28,14 @@ public class BulletPool {
     public void renderBulletPool(float playerPositionX, float playerPositionY){
         elapsedTime += Gdx.graphics.getDeltaTime();
         boolean isShooting = Gdx.input.isKeyPressed(Input.Keys.G);
-        //System.out.println("ET: " +elapsedTime + "   LC: " + (lastTimeShot + CoolDown));
-        //System.out.println(elapsedTime >= lastTimeShot + CoolDown);
-        if(isShooting && elapsedTime >= lastTimeShot + CoolDown){
-            //check if there are active slots
-            //activate the bullet if there is one
+        for (int i = 0; i < poolSize; i++) {
+            if (pool[i].getIsActive()) {
+                pool[i].renderBullet(playerPositionX, playerPositionY);
+                pool[i].move();
+            }
+        }
 
-            //Todas balas estao sendo ativadas no mesmo frame
+        if(isShooting && elapsedTime >= lastTimeShot + CoolDown){
 
             for (int i = 0; i < poolSize; i++) {
                 //System.out.println(i);
@@ -45,7 +46,7 @@ public class BulletPool {
                     lastTimeShot = elapsedTime;
                     break;
                 }
-                //System.out.println("Bullet" + i + "is " + pool[i].getIsActive());
+
                 if(i == poolSize - 1 && pool[i].getIsActive() == true){
                     System.out.println("Pool is full!");
                     break;

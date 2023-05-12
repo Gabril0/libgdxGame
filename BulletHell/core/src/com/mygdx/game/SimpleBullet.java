@@ -9,8 +9,10 @@ public class SimpleBullet implements Bullet {
     private Texture texture;
     private SpriteBatch spriteBatch;
     private float positionX, positionY; //for the position manipulation of the bullet
-    private float sizeX, sizeY; //for the size 
-    private float bulletSpeed = 1;
+    private float sizeX = 32, sizeY = 32; //for the size 
+    private float bulletSpeed = 200;
+
+    private int guarantee = 1;
 
     SimpleBullet(float positionX, float positionY){ //Constructor to get players position
         this.positionX = positionX;
@@ -23,11 +25,14 @@ public class SimpleBullet implements Bullet {
     }
 
     public void renderBullet(float positionX, float positionY){ //rendering and moving
-        this.positionX = positionX;
-        this.positionY = positionY;
+        if(guarantee == 1){ //guaranteed to run once to get the player position
+            this.positionX = positionX;
+            this.positionY = positionY;
+        }
+        guarantee = 0;
         move();
         spriteBatch.begin();
-        spriteBatch.draw(texture, positionX, positionY, sizeX, sizeY);
+        spriteBatch.draw(texture, this.positionX, this.positionY, sizeX, sizeY);
         spriteBatch.end();
     }
 
@@ -38,7 +43,7 @@ public class SimpleBullet implements Bullet {
 
 
     public void move() {
-        positionX = positionX * bulletSpeed *  Gdx.graphics.getDeltaTime();
+        positionX += bulletSpeed *  Gdx.graphics.getDeltaTime();
     }
 
 
@@ -49,6 +54,7 @@ public class SimpleBullet implements Bullet {
 
     public void deactivate() { //deactivation method for the list
         isActive = false;
+        guarantee = 1; //resets the guarantee to get the player position once is activated again
     }
 
     public boolean getIsActive(){ //to check whatever if a bullet is active or not

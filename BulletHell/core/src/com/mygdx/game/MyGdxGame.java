@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MyGdxGame extends ApplicationAdapter {
 	Player player = new Player();
-	BulletPool bulletPool = new BulletPool(49);
+	BulletPool bulletPool = new BulletPool(50);
 	Bullet bullet = new SimpleBullet(-2,-2); //just for the example, change later
 	
 	@Override
