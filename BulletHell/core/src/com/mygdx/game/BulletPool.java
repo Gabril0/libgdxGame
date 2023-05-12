@@ -1,24 +1,47 @@
 package com.mygdx.game;
 
-import java.util.ArrayList;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 
 public class BulletPool {
-    private Bullet bullet;
-    private ArrayList <Bullet> pool  = new ArrayList<Bullet>();
-    BulletPool(Bullet bullet){
-        this.bullet = bullet;
+    private int poolSize;
+    private Bullet[] pool; // pool of bullets already prealocated in memory
+
+    BulletPool(int poolSize) {
+        this.poolSize = poolSize;
     }
 
-    public void createBulletPool(){
-        bullet.createBullet();
+    public void createBulletPool(Bullet bulletType, String imgPath) {
+        pool = new Bullet[poolSize];
+        for (int i = 0; i < poolSize; i++) {
+            pool[i] = bulletType;
+            pool[i].createBullet(imgPath);
+        }
+
     }
-    public void renderBulletPool(){
-        for (Bullet bullet : pool) {
-            bullet.activate();
-            bullet.renderBullet();
+
+    public void renderBulletPool(float playerPositionX, float playerPositionY){
+        if(Gdx.input.isKeyPressed(Input.Keys.G)){
+            //check if there are active slots
+            //activate the bullet if there is one
+            for (int i = 0; i < poolSize; i++) {
+                if(pool[i].getIsActive() == false){
+                    pool[i].renderBullet(playerPositionX, playerPositionY);
+                    pool[i].activate();
+                    return;
+                }
+                if(i == poolSize - 1 && pool[i].getIsActive() == true){
+                    System.out.println("Pool is full!");
+                    return;
+                }   
+            }
         }
     }
-    public void disposeBulletPool(){
-        bullet.disposeBullet();
+
+    public void disposeBulletPool() {
+        for (int i = 0; i < poolSize; i++) {
+            pool[i].disposeBullet();
+        }
     }
 }

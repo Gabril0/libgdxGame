@@ -67,4 +67,11 @@ public class Player {
 
     }
 
+    public float getSpritePositionX() {
+        return spritePositionX;
+    }
+    public float getSpritePositionY() {
+        return spritePositionY;
+    }
+
 }

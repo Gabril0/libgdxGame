@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SimpleBullet implements Bullet {
-    private boolean isActive; //checks if the bullet is active in the bullet pool
+    private boolean isActive = false; //checks if the bullet is active in the bullet pool, initialize as inactive
     private Texture texture;
     private SpriteBatch spriteBatch;
     private float positionX, positionY; //for the position manipulation of the bullet
@@ -17,12 +17,14 @@ public class SimpleBullet implements Bullet {
         this.positionY = positionY;
     }
 
-    public void createBullet(){ //creating the bullet
+    public void createBullet(String imgPath){ //creating the bullet
         spriteBatch = new SpriteBatch();
-        texture = new Texture("PlayerBullet.png");
+        texture = new Texture(imgPath);
     }
 
-    public void renderBullet(){ //rendering and moving
+    public void renderBullet(float positionX, float positionY){ //rendering and moving
+        this.positionX = positionX;
+        this.positionY = positionY;
         move();
         spriteBatch.begin();
         spriteBatch.draw(texture, positionX, positionY, sizeX, sizeY);
