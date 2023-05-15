@@ -81,7 +81,7 @@ public class Player {
         float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); //gets mouse position Y
         //The getHeight is because libgdx uses bottomLeft starting position, so this is a conversion to their system
 
-        float angleRad = (float) Math.atan2(mouseY - spritePositionY, mouseX - spritePositionX); //gets the rad angles
+        float angleRad = (float) Math.atan2(mouseY - (spritePositionY+(spriteSizeY/2)), mouseX - (spritePositionX + (spriteSizeX/2))); //gets the rad angles
         float angleDeg = (float) Math.toDegrees(angleRad); //converts it to degrees
         return angleDeg + 90;
     }
