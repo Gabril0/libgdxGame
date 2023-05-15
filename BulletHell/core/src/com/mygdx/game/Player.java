@@ -35,7 +35,9 @@ public class Player {
 
     private void drawPlayer(){ //Draws the player sprite each frame
         batch.begin();
-		batch.draw(img, spritePositionX, spritePositionY, spriteSizeX, spriteSizeY);
+		batch.draw(img, spritePositionX, spritePositionY, spriteSizeX / 2, spriteSizeY / 2, spriteSizeX, 
+        spriteSizeY, 1f, 1f, rotateToCursor(), 0, 0, img.getWidth(), 
+        img.getHeight(), false, false); //Giant constructor because the framework doesn`t accept it any shorter
 		batch.end();
     }
 
@@ -72,6 +74,16 @@ public class Player {
     }
     public float getSpritePositionY() {
         return spritePositionY;
+    }
+
+    public float rotateToCursor(){ //Rotates player sprite to the cursor position
+        float mouseX = Gdx.input.getX(); //gets mouse position X
+        float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY(); //gets mouse position Y
+        //The getHeight is because libgdx uses bottomLeft starting position, so this is a conversion to their system
+
+        float angleRad = (float) Math.atan2(mouseY - spritePositionY, mouseX - spritePositionX); //gets the rad angles
+        float angleDeg = (float) Math.toDegrees(angleRad); //converts it to degrees
+        return angleDeg + 90;
     }
 
 }

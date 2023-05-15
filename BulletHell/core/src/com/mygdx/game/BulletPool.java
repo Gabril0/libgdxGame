@@ -3,6 +3,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class BulletPool {
@@ -25,12 +26,12 @@ public class BulletPool {
 
     }
 
-    public void renderBulletPool(float playerPositionX, float playerPositionY){
+    public void renderBulletPool(float playerPositionX, float playerPositionY, float playerRotation){
         elapsedTime += Gdx.graphics.getDeltaTime();
-        boolean isShooting = Gdx.input.isKeyPressed(Input.Keys.G);
+        boolean isShooting = Gdx.input.isButtonPressed(Buttons.LEFT);
         for (int i = 0; i < poolSize; i++) {
             if (pool[i].getIsActive()) {
-                pool[i].renderBullet(playerPositionX, playerPositionY);
+                pool[i].renderBullet(playerPositionX, playerPositionY, playerRotation);
                 pool[i].move();
             }
         }
@@ -40,7 +41,7 @@ public class BulletPool {
             for (int i = 0; i < poolSize; i++) {
                 //System.out.println(i);
                 if(!pool[i].getIsActive()){
-                    pool[i].renderBullet(playerPositionX, playerPositionY);
+                    pool[i].renderBullet(playerPositionX, playerPositionY, playerRotation);
                     pool[i].activate();
                     System.out.println("shooted");
                     lastTimeShot = elapsedTime;

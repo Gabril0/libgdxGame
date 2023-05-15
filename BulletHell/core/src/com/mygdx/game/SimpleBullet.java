@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 public class SimpleBullet implements Bullet {
@@ -11,14 +12,16 @@ public class SimpleBullet implements Bullet {
     private Texture texture;
     private SpriteBatch spriteBatch;
     private float positionX, positionY; //for the position manipulation of the bullet
-    private float sizeX, sizeY; //for the size 
+    private int sizeX, sizeY; //for the size 
     private float bulletSpeed = 200;
+    private float velocityX = 200, velocityY = 200; //for the velocity manipulation of the bullet
+    private float playerRotation = 0f;
 
     private ShapeRenderer collision;
 
     private int guarantee = 1;
 
-    SimpleBullet(float positionX, float positionY, float sizeX, float sizeY){ //Constructor to get players position
+    SimpleBullet(float positionX, float positionY, int sizeX, int sizeY){ //Constructor to get players position
         this.positionX = positionX;
         this.positionY = positionY;
         this.sizeX = sizeX;
@@ -32,24 +35,32 @@ public class SimpleBullet implements Bullet {
         collision = new ShapeRenderer();
     }
 
-    public void renderBullet(float positionX, float positionY){ //rendering and moving
+    public void renderBullet(float positionX, float positionY, float playerRotation){ //rendering and moving
         if(guarantee == 1){ //guaranteed to run once to get the player position
             this.positionX = positionX;
             this.positionY = positionY;
+            this.playerRotation = playerRotation;
+            
+            // Calculate initial velocity based on player rotation
+            float angleRad = playerRotation * MathUtils.degreesToRadians;
+            velocityX = MathUtils.cos(angleRad) * bulletSpeed;
+            velocityY = MathUtils.sin(angleRad) * bulletSpeed;
         }
         guarantee = 0;
-
+        
         checkBounds();
         move();
 
-        collision.setAutoShapeType(true); //enable autoShapeType
-        collision.begin(ShapeRenderer.ShapeType.Line); //for debbuging hitboxes
-        //collision.begin();
-        collision.rect(this.positionX, this.positionY, sizeX, sizeY);
-        collision.end();
         spriteBatch.begin();
-        spriteBatch.draw(texture, this.positionX, this.positionY, sizeX, sizeY);
+        spriteBatch.draw(texture, this.positionX, this.positionY, sizeX / 2, sizeY / 2, sizeX, sizeY, 1f, 1f, playerRotation, 0, 0, sizeX, sizeY, false, false);
         spriteBatch.end();
+
+        collision.begin(ShapeRenderer.ShapeType.Line);
+        collision.identity(); // Reset the transformation matrix
+        collision.translate(this.positionX + sizeX / 2, this.positionY + sizeY / 2, 0); // Translate to the bullet's center
+        collision.rotate(0, 0, 1, playerRotation); // Rotate around the bullet's center
+        collision.rect(-sizeX / 2, -sizeY / 2, sizeX, sizeY); // Draw the rotated rectangle
+        collision.end();
     }
 
     public void disposeBullet(){ //freeing memory
@@ -60,7 +71,8 @@ public class SimpleBullet implements Bullet {
 
 
     public void move() {
-        positionX += bulletSpeed *  Gdx.graphics.getDeltaTime();
+        positionX += velocityX * Gdx.graphics.getDeltaTime();
+        positionY += velocityY * Gdx.graphics.getDeltaTime();
     }
 
 
