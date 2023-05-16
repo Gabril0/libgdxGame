@@ -20,7 +20,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
-		player.renderPlayer();
+		player.renderPlayer(bulletPool.getIsShooting());
 		bulletPool.renderBulletPool(player.getSpritePositionX(), player.getSpritePositionY(), 
 		player.getSpriteSizeX(), player.getSpriteSizeY(), player.rotateToCursor() - 90); //-op because bullets are in a diferent orientation
 	}

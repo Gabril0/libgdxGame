@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.utils.Array;
 
 public class Player {
     private SpriteBatch batch; 
@@ -13,11 +14,24 @@ public class Player {
     private float spritePositionX = 0f, spritePositionY = 0f; //float for the position
     private float speedX = 450f, speedY = 450f; //float for the speed
 
+    private Array<Texture> shootAnimation;
+    private int currentFrameIndex;
+    private float frameDuration = 0.1f; //duration of animation speed
+    private float frameTimer = 0f;
+    private boolean isShooting;
     public void createPlayer() { //do these actions once the game starts
         batch = new SpriteBatch();
 		img = new Texture("PlayerBaseSprite.png");
+
+        //loading animation "shoot"
+        shootAnimation = new Array<Texture>();
+        shootAnimation.add(new Texture("animationShoot2outOf3.png"));
+        shootAnimation.add(new Texture("animationShoot3outOf3.png"));
+        shootAnimation.add(new Texture("PlayerBaseSprite.png"));
+
     }
-    public void renderPlayer() { //do these actions every frame
+    public void renderPlayer(boolean isShooting) { //do these actions every frame
+        this.isShooting = isShooting;
         movePlayer();
         checkBounds();
         drawPlayer();
@@ -35,10 +49,26 @@ public class Player {
 
     private void drawPlayer(){ //Draws the player sprite each frame
         batch.begin();
-		batch.draw(img, spritePositionX, spritePositionY, spriteSizeX / 2, spriteSizeY / 2, spriteSizeX, 
-        spriteSizeY, 1f, 1f, rotateToCursor(), 0, 0, img.getWidth(), 
-        img.getHeight(), false, false); //Giant constructor because the framework doesn`t accept it any shorter
-		batch.end();
+
+        if(isShooting){ //shooting animation
+
+            frameTimer += Gdx.graphics.getDeltaTime(); //getting the time from the beginning of animation
+            if (frameTimer >= frameDuration) {
+                frameTimer = 0f;
+                currentFrameIndex = (currentFrameIndex + 1) % shootAnimation.size; //calls next frame
+            }
+
+            Texture currentFrame = shootAnimation.get(currentFrameIndex);//draw the current frame
+            batch.draw(currentFrame, spritePositionX, spritePositionY, spriteSizeX / 2, spriteSizeY / 2, spriteSizeX,
+                    spriteSizeY, 1f, 1f, rotateToCursor(), 0, 0, img.getWidth(),
+                    img.getHeight(), false, false);
+        }
+        else{ //idle
+		    batch.draw(img, spritePositionX, spritePositionY, spriteSizeX / 2, spriteSizeY / 2, spriteSizeX,
+            spriteSizeY, 1f, 1f, rotateToCursor(), 0, 0, img.getWidth(),
+            img.getHeight(), false, false); //Giant constructor because the framework doesn`t accept it any shorter
+        }
+        batch.end();
     }
 
     private void checkBounds(){ //checks if the player still on bounds

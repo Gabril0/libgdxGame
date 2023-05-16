@@ -13,6 +13,8 @@ public class BulletPool {
     private Bullet[] pool; // pool of bullets already prealocated in memory
     private float elapsedTime = 0;
 
+    private boolean isShooting;
+
     BulletPool(int poolSize) {
         this.poolSize = poolSize;
     }
@@ -28,7 +30,7 @@ public class BulletPool {
 
     public void renderBulletPool(float playerPositionX, float playerPositionY,float playerSizeX, float playersizeY, float playerRotation){
         elapsedTime += Gdx.graphics.getDeltaTime();
-        boolean isShooting = Gdx.input.isButtonPressed(Buttons.LEFT);
+        isShooting = Gdx.input.isButtonPressed(Buttons.LEFT);
         for (int i = 0; i < poolSize; i++) {
             if (pool[i].getIsActive()) {
                 pool[i].renderBullet(playerPositionX, playerPositionY,  playerSizeX, playersizeY, playerRotation);
@@ -61,4 +63,6 @@ public class BulletPool {
             pool[i].disposeBullet();
         }
     }
+
+    public boolean getIsShooting(){ return isShooting;}
 }
