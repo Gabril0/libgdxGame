@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 
 public class SimpleBullet implements Bullet {
     private boolean isActive = false; //checks if the bullet is active in the bullet pool, initialize as inactive
@@ -13,7 +12,7 @@ public class SimpleBullet implements Bullet {
     private SpriteBatch spriteBatch;
     private float positionX, positionY; //for the position manipulation of the bullet
     private int sizeX, sizeY; //for the size 
-    private float bulletSpeed = 200;
+    private float bulletSpeed = 500;
     private float velocityX = 200, velocityY = 200; //for the velocity manipulation of the bullet
     private float playerRotation = 0f;
 
@@ -35,10 +34,10 @@ public class SimpleBullet implements Bullet {
         collision = new ShapeRenderer();
     }
 
-    public void renderBullet(float positionX, float positionY, float playerRotation){ //rendering and moving
+    public void renderBullet(float positionX, float positionY, float playerSizeX, float playersizeY, float playerRotation){ //rendering and moving
         if(guarantee == 1){ //guaranteed to run once to get the player position
-            this.positionX = positionX;
-            this.positionY = positionY;
+            this.positionX = positionX + (playerSizeX/2 - sizeX/2); //making the bullet spawn from the center
+            this.positionY = positionY + (playersizeY/2 - sizeY/2);
             this.playerRotation = playerRotation;
             
             // Calculate initial velocity based on player rotation
@@ -47,10 +46,11 @@ public class SimpleBullet implements Bullet {
             velocityY = MathUtils.sin(angleRad) * bulletSpeed;
         }
         guarantee = 0;
-        
+
         checkBounds();
         move();
 
+        
         spriteBatch.begin();
         spriteBatch.draw(texture, this.positionX, this.positionY, sizeX / 2, sizeY / 2, sizeX, sizeY, 1f, 1f, this.playerRotation, 0, 0, sizeX, sizeY, false, false);
         spriteBatch.end();
@@ -93,7 +93,7 @@ public class SimpleBullet implements Bullet {
     private void checkBounds(){
         if (positionX < 0) deactivate();
         if (positionY < 0) deactivate();
-        if (positionX > 1300) deactivate();
-        if (positionY > 702) deactivate();
+        if (positionX > 1330) deactivate();
+        if (positionY > 732) deactivate();
     } 
 }

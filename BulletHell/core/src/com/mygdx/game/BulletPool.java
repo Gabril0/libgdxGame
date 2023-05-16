@@ -26,12 +26,12 @@ public class BulletPool {
 
     }
 
-    public void renderBulletPool(float playerPositionX, float playerPositionY, float playerRotation){
+    public void renderBulletPool(float playerPositionX, float playerPositionY,float playerSizeX, float playersizeY, float playerRotation){
         elapsedTime += Gdx.graphics.getDeltaTime();
         boolean isShooting = Gdx.input.isButtonPressed(Buttons.LEFT);
         for (int i = 0; i < poolSize; i++) {
             if (pool[i].getIsActive()) {
-                pool[i].renderBullet(playerPositionX, playerPositionY, playerRotation);
+                pool[i].renderBullet(playerPositionX, playerPositionY,  playerSizeX, playersizeY, playerRotation);
                 pool[i].move();
             }
         }
@@ -41,7 +41,7 @@ public class BulletPool {
             for (int i = 0; i < poolSize; i++) {
                 //System.out.println(i);
                 if(!pool[i].getIsActive()){
-                    pool[i].renderBullet(playerPositionX, playerPositionY, playerRotation);
+                    pool[i].renderBullet(playerPositionX, playerPositionY, playerSizeX, playersizeY, playerRotation);
                     pool[i].activate();
                     System.out.println("shooted");
                     lastTimeShot = elapsedTime;

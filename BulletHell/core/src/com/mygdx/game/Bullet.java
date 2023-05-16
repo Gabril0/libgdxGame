@@ -2,7 +2,7 @@ package com.mygdx.game;
 
 public interface Bullet {
     public void createBullet(String imgPath);
-    public void renderBullet(float positionX, float positionY, float rotation);
+    public void renderBullet(float positionX, float positionY, float playerSizeX, float playersizeY, float playerRotation);
     public void disposeBullet();
     public void move();
     public void activate();

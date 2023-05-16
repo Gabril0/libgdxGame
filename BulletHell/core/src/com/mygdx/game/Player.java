@@ -11,7 +11,7 @@ public class Player {
 
     private float spriteSizeX = 64, spriteSizeY = 64; //float for the size
     private float spritePositionX = 0f, spritePositionY = 0f; //float for the position
-    private float speedX = 300f, speedY = 300f; //float for the speed
+    private float speedX = 450f, speedY = 450f; //float for the speed
 
     public void createPlayer() { //do these actions once the game starts
         batch = new SpriteBatch();
@@ -75,6 +75,12 @@ public class Player {
     public float getSpritePositionY() {
         return spritePositionY;
     }
+    public float getSpriteSizeX() {
+        return spriteSizeX;
+    }
+    public float getSpriteSizeY() {
+        return spriteSizeY;
+    }
 
     public float rotateToCursor(){ //Rotates player sprite to the cursor position
         float mouseX = Gdx.input.getX(); //gets mouse position X
@@ -84,6 +90,10 @@ public class Player {
         float angleRad = (float) Math.atan2(mouseY - (spritePositionY+(spriteSizeY/2)), mouseX - (spritePositionX + (spriteSizeX/2))); //gets the rad angles
         float angleDeg = (float) Math.toDegrees(angleRad); //converts it to degrees
         return angleDeg + 90;
+    }
+
+    public void attackAnimation(){
+
     }
 
 }

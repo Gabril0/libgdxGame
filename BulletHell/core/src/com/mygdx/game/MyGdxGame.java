@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MyGdxGame extends ApplicationAdapter {
@@ -20,7 +21,8 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void render () {
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 		player.renderPlayer();
-		bulletPool.renderBulletPool(player.getSpritePositionX(), player.getSpritePositionY(), player.rotateToCursor() - 90); //-op because bullets are in a diferent orientation
+		bulletPool.renderBulletPool(player.getSpritePositionX(), player.getSpritePositionY(), 
+		player.getSpriteSizeX(), player.getSpriteSizeY(), player.rotateToCursor() - 90); //-op because bullets are in a diferent orientation
 	}
 	
 	@Override
