@@ -7,28 +7,30 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.Array;
 
 public class Player {
+
+    //Base sprite variables
     private SpriteBatch batch; 
 	private Texture img;
 
+    //Movement and sizing
     private float spriteSizeX = 64, spriteSizeY = 64; //float for the size
     private float spritePositionX = 0f, spritePositionY = 0f; //float for the position
     private float speedX = 450f, speedY = 450f; //float for the speed
 
-    private Array<Texture> shootAnimation;
-    private int currentFrameIndex;
-    private float frameDuration = 0.1f; //duration of animation speed
-    private float frameTimer = 0f;
+    //Animations
+    private Animation shootingAnimation;
+
+    //Booleans
     private boolean isShooting;
     public void createPlayer() { //do these actions once the game starts
+
+        //base player
         batch = new SpriteBatch();
 		img = new Texture("PlayerBaseSprite.png");
 
-        //loading animation "shoot"
-        shootAnimation = new Array<Texture>();
-        shootAnimation.add(new Texture("animationShoot2outOf3.png"));
-        shootAnimation.add(new Texture("animationShoot3outOf3.png"));
-        shootAnimation.add(new Texture("PlayerBaseSprite.png"));
-
+        //shooting animation
+        shootingAnimation = new ShootingAnimation();
+        shootingAnimation.create();
     }
     public void renderPlayer(boolean isShooting) { //do these actions every frame
         this.isShooting = isShooting;
@@ -39,6 +41,7 @@ public class Player {
     public void disposePlayer() { //dispose of the player resources onde the game is closed
         batch.dispose();
 		img.dispose();
+        shootingAnimation.dispose();
     }
 
     private void movePlayer(){
@@ -51,17 +54,9 @@ public class Player {
         batch.begin();
 
         if(isShooting){ //shooting animation
+            shootingAnimation.render( spritePositionX, spritePositionY, spriteSizeX,
+                    spriteSizeY, rotateToCursor(), batch);
 
-            frameTimer += Gdx.graphics.getDeltaTime(); //getting the time from the beginning of animation
-            if (frameTimer >= frameDuration) {
-                frameTimer = 0f;
-                currentFrameIndex = (currentFrameIndex + 1) % shootAnimation.size; //calls next frame
-            }
-
-            Texture currentFrame = shootAnimation.get(currentFrameIndex);//draw the current frame
-            batch.draw(currentFrame, spritePositionX, spritePositionY, spriteSizeX / 2, spriteSizeY / 2, spriteSizeX,
-                    spriteSizeY, 1f, 1f, rotateToCursor(), 0, 0, img.getWidth(),
-                    img.getHeight(), false, false);
         }
         else{ //idle
 		    batch.draw(img, spritePositionX, spritePositionY, spriteSizeX / 2, spriteSizeY / 2, spriteSizeX,
@@ -121,9 +116,4 @@ public class Player {
         float angleDeg = (float) Math.toDegrees(angleRad); //converts it to degrees
         return angleDeg + 90;
     }
-
-    public void attackAnimation(){
-
-    }
-
 }

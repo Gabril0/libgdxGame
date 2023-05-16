@@ -45,7 +45,6 @@ public class BulletPool {
                 if(!pool[i].getIsActive()){
                     pool[i].renderBullet(playerPositionX, playerPositionY, playerSizeX, playersizeY, playerRotation);
                     pool[i].activate();
-                    System.out.println("shooted");
                     lastTimeShot = elapsedTime;
                     break;
                 }
