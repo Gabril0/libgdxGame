@@ -4,13 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 public class Player {
 
+    //Player atributes
+    private float health = 1000;
+    private float damage = 100;
+
     //Base sprite variables
     private SpriteBatch batch; 
 	private Texture img;
+
+    private ShapeRenderer collision;
 
     //Movement and sizing
     private float spriteSizeX = 64, spriteSizeY = 64; //float for the size
@@ -27,6 +34,7 @@ public class Player {
         //base player
         batch = new SpriteBatch();
 		img = new Texture("PlayerBaseSprite.png");
+        collision = new ShapeRenderer();
 
         //shooting animation
         shootingAnimation = new ShootingAnimation();
@@ -64,6 +72,13 @@ public class Player {
             img.getHeight(), false, false); //Giant constructor because the framework doesn`t accept it any shorter
         }
         batch.end();
+
+        collision.begin(ShapeRenderer.ShapeType.Line);
+        collision.identity(); // Reset the transformation matrix
+        collision.translate(spritePositionX + spriteSizeX / 2, spritePositionY + spriteSizeY / 2, 0); // Translate to the player's center
+        collision.rotate(0, 0, 1, rotateToCursor()); // Rotate around the player's center
+        collision.rect(-spriteSizeX / 4, -spriteSizeY / 4, spriteSizeX/2, spriteSizeY/2);
+        collision.end();
     }
 
     private void checkBounds(){ //checks if the player still on bounds
