@@ -93,7 +93,7 @@ public class SimpleBullet implements Bullet {
     private void checkBounds(){
         if (positionX < 0) deactivate();
         if (positionY < 0) deactivate();
-        if (positionX > 1330) deactivate();
-        if (positionY > 732) deactivate();
+        if (positionX > Gdx.graphics.getWidth()) deactivate();
+        if (positionY > Gdx.graphics.getHeight()) deactivate();
     } 
 }

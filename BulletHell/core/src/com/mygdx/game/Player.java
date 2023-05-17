@@ -84,8 +84,8 @@ public class Player {
     private void checkBounds(){ //checks if the player still on bounds
         if (spritePositionX < 0) spritePositionX = 0;
         if (spritePositionY < 0) spritePositionY = 0;
-        if (spritePositionX > 1300) spritePositionX = 1300;
-        if (spritePositionY > 702) spritePositionY = 702;
+        if (spritePositionX > Gdx.graphics.getWidth() - spriteSizeX) spritePositionX = Gdx.graphics.getWidth() - spriteSizeX;
+        if (spritePositionY > Gdx.graphics.getHeight() - spriteSizeY) spritePositionY = Gdx.graphics.getHeight() - spriteSizeY;
 
     }
 
