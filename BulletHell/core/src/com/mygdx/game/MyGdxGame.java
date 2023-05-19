@@ -9,11 +9,12 @@ public class MyGdxGame extends ApplicationAdapter {
 	Player player = new Player();
 	BulletPool bulletPool = new BulletPool(50);
 	SpriteBatch batch;
-	Enemy e = new Enemy();
+	Enemy e;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		e = new Enemy();
 		bulletPool.createBulletPool("PlayerBullet.png");
 		player.createPlayer();
 	}
@@ -23,7 +24,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 		player.renderPlayer();
 		batch.begin();
-		//batch.draw(e.getSprite(), e.getPositionX(), e.getPositionY());
+		batch.draw(e.getSprite(), e.getPositionX(), e.getPositionY());
 		batch.end();
 		bulletPool.renderBulletPool(player.getSpritePositionX(), player.getSpritePositionY());
 	}
