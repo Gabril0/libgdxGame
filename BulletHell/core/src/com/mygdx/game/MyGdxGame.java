@@ -23,9 +23,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void render () {
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 		player.renderPlayer();
-		batch.begin();
-		batch.draw(e.getSprite(), e.getPositionX(), e.getPositionY());
-		batch.end();
+		e.renderEnemy();
 		bulletPool.renderBulletPool(player.getSpritePositionX(), player.getSpritePositionY());
 	}
 	
@@ -33,5 +31,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void dispose () {
 		player.disposePlayer();
 		bulletPool.disposeBulletPool();
+		e.disposeEnemy();
 	}
 }

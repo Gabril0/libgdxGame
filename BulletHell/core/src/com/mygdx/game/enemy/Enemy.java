@@ -1,32 +1,64 @@
 package com.mygdx.game.enemy;
 
+import java.util.Random;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Enemy {
-    private Sprite sprite;
+    private SpriteBatch batch;
     private Texture img;
 
     private int width, height;
-    private int positionX, positionY;
+    private float positionX, positionY;
+    private float speedX, speedY;
 
     public Enemy() {
         width = 64;
         height = 64;
         positionX = 0;
         positionY = 0;
+        speedX = 300f;
+        speedY = 300f;
 
-        img = new Texture("badlogic.jpg");
-        sprite = new Sprite(img, positionX, positionY, width, height);
+        img = new Texture("PlayerTransformation.png");
+        batch = new SpriteBatch();
     }
 
-    public Sprite getSprite() {
-        return sprite;
+    public void renderEnemy() {
+        randomMove();
+        checkBounds();
+        batch.begin();
+        batch.draw(img, positionX, positionY, width, height);
+        batch.end();
     }
-    public int getPositionX() {
+
+    private void checkBounds() { //checks if the enemy still on bounds
+        if (positionX < 0) positionX = 0;
+        if (positionY < 0) positionX = 0;
+        if (positionX > 1300) positionX = 1300;
+        if (positionY > 702) positionY = 702;
+
+    }
+
+    private void randomMove() {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+
+        positionX += deltaTime * speedX * 1;
+        positionY += deltaTime * speedY * 1;
+    }
+
+    public void disposeEnemy() {
+        img.dispose();
+        batch.dispose();
+    }
+
+    public float getPositionX() {
         return positionX;
     }
-    public int getPositionY() {
+    public float getPositionY() {
         return positionY;
     }
 
