@@ -1,8 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.enemy.Enemy;
 
 public class MyGdxGame extends ApplicationAdapter {
 	Player player = new Player();
@@ -10,9 +10,13 @@ public class MyGdxGame extends ApplicationAdapter {
 	CustomCursor cursor = new CustomCursor();
 
 	
+	
+	Enemy e;
+	
 	@Override
 	public void create () {
 		cursor.create();
+		e = new Enemy();
 		bulletPool.createBulletPool("PlayerBullet.png");
 		player.createPlayer();
 	}
@@ -23,6 +27,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		player.renderPlayer(bulletPool.getIsShooting());
 		bulletPool.renderBulletPool(player.getSpritePositionX(), player.getSpritePositionY(), 
 		player.getSpriteSizeX(), player.getSpriteSizeY(), player.rotateToCursor() - 90); //-op because bullets are in a diferent orientation
+		e.renderEnemy();
 	}
 	
 	@Override
@@ -30,5 +35,6 @@ public class MyGdxGame extends ApplicationAdapter {
 		cursor.dispose();
 		player.disposePlayer();
 		bulletPool.disposeBulletPool();
+		e.disposeEnemy();
 	}
 }
