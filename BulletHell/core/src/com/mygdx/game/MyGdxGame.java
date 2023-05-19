@@ -8,9 +8,6 @@ public class MyGdxGame extends ApplicationAdapter {
 	Player player = new Player();
 	BulletPool bulletPool = new BulletPool(50);
 	CustomCursor cursor = new CustomCursor();
-
-	
-	
 	Enemy e;
 	
 	@Override

@@ -1,10 +1,7 @@
 package com.mygdx.game.enemy;
 
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Enemy {
@@ -35,13 +32,14 @@ public class Enemy {
         batch.end();
     }
 
-    private void checkBounds() { //checks if the enemy still on bounds
+    private void checkBounds(){ //checks if the player still on bounds
         if (positionX < 0) positionX = 0;
-        if (positionY < 0) positionX = 0;
-        if (positionX > 1300) positionX = 1300;
-        if (positionY > 702) positionY = 702;
+        if (positionY < 0) positionY = 0;
+        if (positionX > Gdx.graphics.getWidth() - width) positionX = Gdx.graphics.getWidth() - width;
+        if (positionY > Gdx.graphics.getHeight() - height) positionY = Gdx.graphics.getHeight() - height;
 
     }
+
 
     private void randomMove() {
         float deltaTime = Gdx.graphics.getDeltaTime();
