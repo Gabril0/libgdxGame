@@ -3,7 +3,12 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.backgroundAndCursor.Background;
+import com.mygdx.game.backgroundAndCursor.CustomCursor;
+import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.enemy.Enemy;
+import com.mygdx.game.listeners.EventManager;
+import com.mygdx.game.player.Player;
 
 public class MyGdxGame extends ApplicationAdapter {
 	Player player = new Player();
@@ -11,6 +16,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	CustomCursor cursor = new CustomCursor();
 	Enemy e;
 	Background bg = new Background();
+	EventManager em = new EventManager();
 
 	
 	@Override
@@ -20,6 +26,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		e = new Enemy();
 		bulletPool.createBulletPool("PlayerBullet.png");
 		player.createPlayer();
+		em.addShotListener(player);
 		
 	}
 
@@ -27,9 +34,9 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void render () {
 		ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 		bg.renderBackground();
-		player.renderPlayer(bulletPool.getIsShooting());
+		player.renderPlayer();
 		bulletPool.renderBulletPool(player.getSpritePositionX(), player.getSpritePositionY(), 
-		player.getSpriteSizeX(), player.getSpriteSizeY(), player.rotateToCursor() - 90); //-op because bullets are in a diferent orientation
+		player.getSpriteSizeX(), player.getSpriteSizeY(), player.rotateToCursor() - 90, em); //-op because bullets are in a diferent orientation
 		e.renderEnemy();
 	}
 	
