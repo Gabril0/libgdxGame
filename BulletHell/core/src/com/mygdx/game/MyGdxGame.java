@@ -45,7 +45,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 		bg.renderBackground();
 		player.renderPlayer();
-		bulletPool.renderBulletPool(player.getSpritePositionX(), player.getSpritePositionY(), 
+		bulletPool.renderBulletPoolPlayer(player.getSpritePositionX(), player.getSpritePositionY(), 
 		player.getSpriteSizeX(), player.getSpriteSizeY(), player.rotateToCursor() - 90, em); //-op because bullets are in a diferent orientation
 		e.renderEnemy();
 		miniBoss.renderBoss(player.getSpritePositionX(), player.getSpritePositionY());

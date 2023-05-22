@@ -56,12 +56,14 @@ public class SimpleBullet implements Bullet {
         spriteBatch.draw(texture, this.positionX, this.positionY, sizeX / 2, sizeY / 2, sizeX, sizeY, 1f, 1f, this.playerRotation, 0, 0, sizeX, sizeY, false, false);
         spriteBatch.end();
 
-        collision.begin(ShapeRenderer.ShapeType.Line);
-        collision.identity(); // Reset the transformation matrix
-        collision.translate(this.positionX + sizeX / 2, this.positionY + sizeY / 2, 0); // Translate to the bullet's center
-        collision.rotate(0, 0, 1, this.playerRotation); // Rotate around the bullet's center
-        collision.rect(-sizeX / 2, -sizeY / 2, sizeX, sizeY); // Draw the rotated rectangle
-        collision.end();
+        drawCollider();
+
+        // collision.begin(ShapeRenderer.ShapeType.Line);
+        // collision.identity(); // Reset the transformation matrix
+        // collision.translate(this.positionX + sizeX / 2, this.positionY + sizeY / 2, 0); // Translate to the bullet's center
+        // collision.rotate(0, 0, 1, this.playerRotation); // Rotate around the bullet's center
+        // collision.rect(-sizeX / 2, -sizeY / 2, sizeX, sizeY); // Draw the rotated rectangle
+        // collision.end();
     }
 
     public void disposeBullet(){ //freeing memory
@@ -97,6 +99,15 @@ public class SimpleBullet implements Bullet {
         if (positionX > Gdx.graphics.getWidth()) deactivate();
         if (positionY > Gdx.graphics.getHeight()) deactivate();
     } 
+
+    private void drawCollider() {
+        Polygon collider = getCollider();
+        float[] vertices = collider.getTransformedVertices();
+    
+        collision.begin(ShapeRenderer.ShapeType.Line);
+        collision.polygon(vertices);
+        collision.end();
+    }
 
     public Polygon getCollider(){
         Polygon polygon = new Polygon();

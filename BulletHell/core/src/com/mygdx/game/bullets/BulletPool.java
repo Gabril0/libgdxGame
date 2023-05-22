@@ -32,7 +32,7 @@ public class BulletPool {
 
     }
 
-    public void renderBulletPool(float playerPositionX, float playerPositionY,float playerSizeX, float playersizeY, float playerRotation, EventManager em){
+    public void renderBulletPoolPlayer(float playerPositionX, float playerPositionY,float playerSizeX, float playersizeY, float playerRotation, EventManager em){
         elapsedTime += Gdx.graphics.getDeltaTime();
         isShooting = Gdx.input.isButtonPressed(Buttons.LEFT);
         em.eventCall(isShooting);
@@ -68,12 +68,43 @@ public class BulletPool {
         }
     }
 
+    
+
     public void checkBossCollision(BossFundamentals boss) {
         if(!boss.getDestroyed())
         for (int i = 0; i < poolSize; i++) {
             if (pool[i].getIsActive() && Intersector.overlapConvexPolygons(pool[i].getCollider(), boss.getCollider())) {
                 boss.setHealth(100);
                 pool[i].deactivate();
+            }
+        }
+    }
+
+    //Another implementation but without the EventManager class
+    public void renderBulletPoolEnemy(float playerPositionX, float playerPositionY,float playerSizeX, float playersizeY, float playerRotation){
+        elapsedTime += Gdx.graphics.getDeltaTime();
+        for (int i = 0; i < poolSize; i++) {
+            if (pool[i].getIsActive()) {
+                pool[i].renderBullet(playerPositionX, playerPositionY,  playerSizeX, playersizeY, playerRotation);
+                pool[i].move();
+            }
+        }
+
+        if(elapsedTime >= lastTimeShot + coolDown){
+
+            for (int i = 0; i < poolSize; i++) {
+                //System.out.println(i);
+                if(!pool[i].getIsActive()){
+                    pool[i].renderBullet(playerPositionX, playerPositionY, playerSizeX, playersizeY, playerRotation);
+                    pool[i].activate();
+                    lastTimeShot = elapsedTime;
+                    break;
+                }
+
+                if(i == poolSize - 1 && pool[i].getIsActive() == true){
+                    System.out.println("Pool is full!");
+                    break;
+                }  
             }
         }
     }
