@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 
 public class SimpleBullet implements Bullet {
     private boolean isActive = false; //checks if the bullet is active in the bullet pool, initialize as inactive
@@ -96,4 +97,20 @@ public class SimpleBullet implements Bullet {
         if (positionX > Gdx.graphics.getWidth()) deactivate();
         if (positionY > Gdx.graphics.getHeight()) deactivate();
     } 
+
+    public Polygon getCollider(){
+        Polygon polygon = new Polygon();
+        float centerX = positionX + sizeX / 2;
+        float centerY = positionY + sizeY / 2;
+        float[] vertices = new float[] {
+            positionX, positionY,                           // bottom-left
+            positionX + sizeX, positionY,                   // bottom-right
+            positionX + sizeX, positionY + sizeY,           // top-right
+            positionX, positionY + sizeY                    // top-left
+        };
+        polygon.setVertices(vertices);
+        polygon.setOrigin(centerX, centerY);
+        polygon.setRotation(playerRotation);
+        return polygon;
+    }
 }
