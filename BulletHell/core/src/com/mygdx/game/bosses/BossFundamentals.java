@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.mygdx.game.bullets.BulletPool;
+import com.mygdx.game.player.Player;
 
 import java.util.Random;
 
@@ -26,15 +27,11 @@ public class BossFundamentals {
     private float lastMoved = 0;
     private float moveCooldown = 1;
     private float elapsedTime;
-    public float signalDesiredX;
-    public float signalDesiredY;
 
     private int lock = 1;
     private float timeMoving = 0;
     private float startingMovingTime = 0;
-
-    private float playerPositionX;
-    private float playerPositionY;
+    private float playerCenterX, playerCenterY;
 
     //atributtes
     private float health = 10000;
@@ -56,22 +53,23 @@ public class BossFundamentals {
         batch = new SpriteBatch();
         texture = new Texture(path);
         collider = new ShapeRenderer();
-        bulletPool.createBulletPool("EnemyBullet.png");
+        bulletPool.createBulletPool("EnemyBullet.png", "EnemyBullet");
     }
-    public void renderBoss(float playerPositionX, float playerPositionY){
+    public void renderBoss(float playerCenterX, float playerCenterY){
         if(!destroyed){
-        this.playerPositionX = playerPositionX;
-        this.playerPositionY = playerPositionY;
+
+        this.playerCenterX = playerCenterX;
+        this.playerCenterY = playerCenterY;
         move();
         checkBounds();
         checkHealth();
 
         bulletPool.renderBulletPoolEnemy(positionX, positionY, 
-		sizeX, sizeY, rotateToPlayer(this.playerPositionX, this.playerPositionY) - 90);
+		sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90);
 
         batch.begin();
         batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
-        sizeY, 1f, 1f, rotateToPlayer(this.playerPositionX, this.playerPositionY), 0, 0, texture.getWidth(),
+        sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
         texture.getHeight(), false, false);
         batch.end();
 
@@ -139,15 +137,14 @@ public class BossFundamentals {
 
     }
 
-    public float rotateToPlayer(float playerPositionX, float playerPositionY){
-        float angleRad = (float) Math.atan2(playerPositionY - (positionY+(sizeY/2)), playerPositionX - (positionX + (sizeX/2))); //gets the rad angles
+    public float rotateToPlayer(float playerCenterX, float playerCenterY){
+        float angleRad = (float) Math.atan2(playerCenterY- (positionY+(sizeY/2)), playerCenterX- (positionX + (sizeX/2))); //gets the rad angles
         float angleDeg = (float) Math.toDegrees(angleRad); //converts it to degrees
         return angleDeg + 90;
     }
 
     public void setHealth(float damage){
         health -= damage;
-        System.out.println(health);
     }
 
     public void checkHealth() {
@@ -168,7 +165,7 @@ public class BossFundamentals {
         collider.end();
     }
 
-    public Polygon getCollider() { //i found the solution in a forum, i don`t really understand this one
+    public Polygon getCollider() { //I found the solution in a forum, I don`t really understand this one
         Polygon polygon = new Polygon();
         float[] vertices = new float[] { 
             0, 0,                           // bottom-left
@@ -179,9 +176,12 @@ public class BossFundamentals {
         polygon.setVertices(vertices);
         polygon.setOrigin(sizeX / 2, sizeY / 2); // Set the origin to the center of the polygon
         polygon.setPosition(positionX, positionY); // Set the position of the polygon
-        polygon.setRotation(rotateToPlayer(playerPositionX, playerPositionY));
+        polygon.setRotation(rotateToPlayer(playerCenterX, playerCenterY));
        
         return polygon;
     }
 
+    public void checkPlayerCollision(Player player){
+        bulletPool.checkPlayerCollision(player);
+    }
 }

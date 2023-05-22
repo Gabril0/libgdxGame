@@ -8,18 +8,18 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 
 public class SimpleBullet implements Bullet {
-    private boolean isActive = false; //checks if the bullet is active in the bullet pool, initialize as inactive
-    private Texture texture;
-    private SpriteBatch spriteBatch;
-    private float positionX, positionY; //for the position manipulation of the bullet
-    private int sizeX, sizeY; //for the size 
-    private float bulletSpeed = 500;
-    private float velocityX = 200, velocityY = 200; //for the velocity manipulation of the bullet
-    private float playerRotation = 0f;
+    protected boolean isActive = false; //checks if the bullet is active in the bullet pool, initialize as inactive
+    protected Texture texture;
+    protected SpriteBatch spriteBatch;
+    protected float positionX, positionY; //for the position manipulation of the bullet
+    protected int sizeX, sizeY; //for the size
+    protected float bulletSpeed = 500;
+    protected float velocityX = 200, velocityY = 200; //for the velocity manipulation of the bullet
+    protected float playerRotation = 0f;
 
-    private ShapeRenderer collision;
+    protected ShapeRenderer collision;
 
-    private int guarantee = 1;
+    protected int guarantee = 1;
 
     SimpleBullet(float positionX, float positionY, int sizeX, int sizeY){ //Constructor to get players position
         this.positionX = positionX;

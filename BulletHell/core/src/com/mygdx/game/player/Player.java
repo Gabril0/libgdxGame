@@ -13,7 +13,7 @@ import com.mygdx.game.listeners.ShotListener;
 public class Player implements ShotListener {
 
     // Player atributes
-    private float health = 1000;
+    private float health = 640;
     private float damage = 100;
 
     // Base sprite rendering variables
@@ -26,11 +26,16 @@ public class Player implements ShotListener {
     private float spritePositionX = 0f, spritePositionY = 0f; // float for the position
     private float speedX = 450f, speedY = 450f; // float for the speed
 
+    private float centerX, centerY;
+
     // Animations
     private Animation shootingAnimation;
 
     // Booleans
     private boolean isShooting;
+    private boolean isAlive = true;
+
+    private boolean gotHit = false;
 
     public void createPlayer() { // do these actions once the game starts
 
@@ -45,10 +50,13 @@ public class Player implements ShotListener {
     }
 
     public void renderPlayer() { // do these actions every frame
-        movePlayer();
-        checkBounds();
-        drawPlayer();
-        drawCollider();
+        if(isAlive) {
+            checkHealth();
+            movePlayer();
+            checkBounds();
+            drawPlayer();
+            drawCollider();
+        }
     }
 
     public void disposePlayer() { // dispose of the player resources onde the game is closed
@@ -183,5 +191,41 @@ public class Player implements ShotListener {
         polygon.setOrigin(centerX, centerY);
         polygon.setRotation(rotateToCursor());
         return polygon;
+    }
+
+    public boolean isAlive(){
+        return isAlive;
+    }
+
+    public void setHealth(float damage){
+        health = health - damage;
+        gotHit = true;
+    }
+
+    public void checkHealth(){
+        if(health <= 0){
+            isAlive = false;
+        }
+    }
+
+    public float getCenterX() {
+        centerX = spritePositionX + (spriteSizeX / 2);
+        return centerX;
+    }
+
+    public float getCenterY() {
+        centerY = spritePositionY + (spriteSizeY / 2);
+        return centerY;
+    }
+    public boolean gotHit(){
+        return gotHit;
+    }
+
+    public void setGotHit(){ //DELETE LATER WHEN THE LISTENER IS READY PLEASSEEEE
+        gotHit = false;
+    }
+
+    public float getHealth(){
+        return health;
     }
 }

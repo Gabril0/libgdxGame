@@ -11,6 +11,7 @@ import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.enemy.Enemy;
 import com.mygdx.game.listeners.EventManager;
 import com.mygdx.game.player.Player;
+import com.mygdx.game.uirelated.HealthBar;
 
 public class MyGdxGame extends ApplicationAdapter {
 	Player player = new Player();
@@ -21,16 +22,19 @@ public class MyGdxGame extends ApplicationAdapter {
 	EventManager em = new EventManager();
 	BossFundamentals miniBoss = new BossFundamentals();
 
+	HealthBar healthBar = new HealthBar();
+
 	
 	@Override
 	public void create () {
 		bg.createBackground(Gdx.graphics.getWidth()*1.96f, Gdx.graphics.getHeight(), "map1Slow.png", "map1Fast.png");
 		cursor.create();
 		e = new Enemy();
-		bulletPool.createBulletPool("PlayerBullet.png");
+		bulletPool.createBulletPool("PlayerBullet.png", "SimpleBullet");
 		player.createPlayer();
 		em.addShotListener(player);
 		miniBoss.createBoss("Satellite.png");
+		healthBar.createHealthBar();
 	}
 
 	@Override
@@ -44,11 +48,12 @@ public class MyGdxGame extends ApplicationAdapter {
 		//rendering
 
 		bg.renderBackground();
-		player.renderPlayer();
-		bulletPool.renderBulletPoolPlayer(player.getSpritePositionX(), player.getSpritePositionY(), 
-		player.getSpriteSizeX(), player.getSpriteSizeY(), player.rotateToCursor() - 90, em); //-op because bullets are in a diferent orientation
+		miniBoss.renderBoss(player.getCenterX(), player.getCenterY());
 		e.renderEnemy();
-		miniBoss.renderBoss(player.getSpritePositionX(), player.getSpritePositionY());
+		player.renderPlayer();
+		bulletPool.renderBulletPoolPlayer(player.getSpritePositionX(), player.getSpritePositionY(),
+		player.getSpriteSizeX(), player.getSpriteSizeY(), player.rotateToCursor() - 90, em); //-op because bullets are in a diferent orientation
+		healthBar.renderHealthBar(player);
 	}
 	
 	@Override
@@ -61,9 +66,13 @@ public class MyGdxGame extends ApplicationAdapter {
 		bulletPool.disposeBulletPool();
 		e.disposeEnemy();
 		miniBoss.disposeBoss();
+		healthBar.disposeHealthBar();
 	}
 
 	public void collisionTest(){
+
 		bulletPool.checkBossCollision(miniBoss);
+		miniBoss.checkPlayerCollision(player);
+
 	}
 }
