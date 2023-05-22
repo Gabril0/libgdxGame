@@ -81,7 +81,7 @@ public class BulletPool {
     
 
     public void checkBossCollision(BossFundamentals boss) {
-        if(!boss.getDestroyed())
+        if(boss.isAlive())
         for (int i = 0; i < poolSize; i++) {
             if (pool[i].getIsActive() && Intersector.overlapConvexPolygons(pool[i].getCollider(), boss.getCollider())) {
                 boss.setHealth(100);
