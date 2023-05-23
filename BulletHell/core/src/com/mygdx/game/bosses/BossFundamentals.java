@@ -13,42 +13,39 @@ import com.mygdx.game.player.Player;
 import java.util.Random;
 
 public class BossFundamentals extends Enemy {
-    //Rendering
-    private Texture texture;
-    private SpriteBatch batch;
-    private ShapeRenderer collider;
-
-    //Location
-    private int sizeX = 256, sizeY = 256;
-    private float positionX = 500, positionY = 500;
-    private float speedX = 200, speedY = 200;
-    private float randomX, randomY;
-    private float stationaryTime = 1;
-
-    private float lastMoved = 0;
-    private float moveDuration = 1;
-    private float elapsedTime;
-
-    private int lock = 1;
-    private float timeMoving = 0;
-    private float startingMovingTime = 0;
-    private float playerCenterX, playerCenterY;
-
-    //atributtes
-    private float health = 10000;
-
-    //bullets
-    BulletPool bulletPool = new BulletPool(50);
-
-    //booleans
-    private boolean isAlive = true;
-
-    private Random random = new Random();
 
     public BossFundamentals(float positionX, float positionY, float speedX, float speedY, float health,
             String bulletImg, String bulletType, String sprite) {
         super(positionX, positionY, speedX, speedY, health, bulletImg, bulletType, sprite);
-        
+        sizeX = 256;
+        sizeY = 256;
+
+    }
+
+    @Override
+    public void render(float playerCenterX, float playerCenterY){
+        if(isAlive){
+
+            this.playerCenterX = playerCenterX;
+            this.playerCenterY = playerCenterY;
+            move();
+            checkBounds();
+            checkHealth();
+
+            bulletPool.renderBulletPoolEnemy(positionX, positionY,
+                    sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90);
+
+            batch.begin();
+            batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
+                    sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
+                    texture.getHeight(), false, false);
+            batch.end();
+
+            // Update the collider's position and rotation
+            drawCollider(getCollider());
+
+        }
+
     }
 
     public void move() {

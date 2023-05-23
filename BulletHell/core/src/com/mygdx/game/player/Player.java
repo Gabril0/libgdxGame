@@ -5,12 +5,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.mygdx.game.animation.Animation;
 import com.mygdx.game.animation.ShootingAnimation;
+import com.mygdx.game.bullets.BulletPool;
+import com.mygdx.game.bullets.Shootable;
+import com.mygdx.game.listeners.EventManager;
 import com.mygdx.game.listeners.ShotListener;
 
-public class Player implements ShotListener {
+public class Player implements ShotListener, Shootable {
 
     // Player atributes
     private float health = 640;
@@ -28,7 +32,11 @@ public class Player implements ShotListener {
 
     private float centerX, centerY;
 
+    private BulletPool bulletPool = new BulletPool(50);
+
     // Animations
+    private EventManager em = new EventManager();
+
     private Animation shootingAnimation;
 
     // Booleans
@@ -37,6 +45,12 @@ public class Player implements ShotListener {
 
     private boolean gotHit = false;
 
+    // Timing
+    private float timeHit = 0; //initializing to not lock
+    private float damageCooldown = 0.5f; //prevents the player to get hit after just getting hit
+    private float currentTime;
+
+
     public void createPlayer() { // do these actions once the game starts
 
         // player rendering
@@ -44,15 +58,19 @@ public class Player implements ShotListener {
         img = new Texture("PlayerBaseSprite.png");
         collision = new ShapeRenderer();
 
-        // shooting animation
+        // shooting AND shooting animation
+        bulletPool.createBulletPool("PlayerBullet.png", "SimpleBullet");
+        em.addShotListener(this);
         shootingAnimation = new ShootingAnimation();
         shootingAnimation.create();
     }
 
     public void renderPlayer() { // do these actions every frame
         if(isAlive) {
+            currentTime += Gdx.graphics.getDeltaTime();
             checkHealth();
             movePlayer();
+            shoot();
             checkBounds();
             drawPlayer();
             drawCollider();
@@ -63,6 +81,12 @@ public class Player implements ShotListener {
         batch.dispose();
         img.dispose();
         shootingAnimation.dispose();
+        bulletPool.disposeBulletPool();
+    }
+
+    private void shoot(){
+        bulletPool.renderBulletPoolPlayer(getSpritePositionX(), getSpritePositionY(),
+                getSpriteSizeX(), getSpriteSizeY(), rotateToCursor() - 90, em); //-op because bullets are in a diferent orientation
     }
 
     private void movePlayer() {
@@ -86,15 +110,6 @@ public class Player implements ShotListener {
         }
         batch.end();
 
-        // collision.begin(ShapeRenderer.ShapeType.Line);
-        // collision.identity(); // Reset the transformation matrix
-        // collision.translate(spritePositionX + spriteSizeX / 2, spritePositionY +
-        // spriteSizeY / 2, 0); // Translate to the player's center
-        // collision.rotate(0, 0, 1, rotateToCursor()); // Rotate around the player's
-        // center
-        // collision.rect(-spriteSizeX / 4, -spriteSizeY / 4, spriteSizeX/2,
-        // spriteSizeY/2);
-        // collision.end();
     }
 
     private void checkBounds() { // checks if the player still on bounds
@@ -193,13 +208,25 @@ public class Player implements ShotListener {
         return polygon;
     }
 
+    public void checkCollision(Shootable shootable) {
+        if(shootable.isAlive() && isAlive) { //don't move this please, I feel that with a very bad luck the player could die if I don't check the health
+            bulletPool.checkCollision(shootable, this.damage);
+            if (Intersector.overlapConvexPolygons(getCollider(), shootable.getCollider())) {
+                shootable.setHealth(100);
+            }
+        }
+    }
+
     public boolean isAlive(){
         return isAlive;
     }
 
     public void setHealth(float damage){
-        health = health - damage;
-        gotHit = true;
+        if(timeHit < currentTime - damageCooldown){
+            health = health - damage;
+            gotHit = true;
+            timeHit = currentTime;
+        }
     }
 
     public void checkHealth(){

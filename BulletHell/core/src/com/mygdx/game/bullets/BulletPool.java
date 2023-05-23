@@ -80,21 +80,22 @@ public class BulletPool {
 
     
 
-    public void checkBossCollision(BossFundamentals boss) {
-        if(boss.isAlive())
-        for (int i = 0; i < poolSize; i++) {
-            if (pool[i].getIsActive() && Intersector.overlapConvexPolygons(pool[i].getCollider(), boss.getCollider())) {
-                boss.setHealth(100);
-                pool[i].deactivate();
-            }
-        }
-    }
+//    public void checkBossCollision(BossFundamentals boss) {
+//        if(boss.isAlive())
+//        for (int i = 0; i < poolSize; i++) {
+//            if (pool[i].getIsActive() && Intersector.overlapConvexPolygons(pool[i].getCollider(), boss.getCollider())) {
+//                boss.setHealth(100);
+//                pool[i].deactivate();
+//            }
+//        }
+//    }
 
-    public void checkPlayerCollision(Player player) {
-        if(player.isAlive()) {
+    public void checkCollision(Shootable damaged, float damage) {
+        //THIS ONE DOESN'T USE BECAUSE OF HOW BULLETS WORK
+        if(damaged.isAlive()) {
             for (int i = 0; i < poolSize; i++) {
-                if (pool[i].getIsActive() && Intersector.overlapConvexPolygons(pool[i].getCollider(), player.getCollider())) {
-                    player.setHealth(100);
+                if (pool[i].getIsActive() && Intersector.overlapConvexPolygons(pool[i].getCollider(), damaged.getCollider())) {
+                    damaged.setHealth(100);
                     pool[i].deactivate();
                 }
             }

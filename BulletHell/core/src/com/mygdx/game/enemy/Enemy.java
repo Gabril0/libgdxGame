@@ -4,41 +4,50 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.mygdx.game.bullets.BulletPool;
+import com.mygdx.game.bullets.Shootable;
 import com.mygdx.game.player.Player;
 
-public class Enemy {
-    private SpriteBatch batch;
-    private Texture texture;
-    private ShapeRenderer collider;
+import java.util.Random;
+
+public class Enemy implements Shootable {
+    protected SpriteBatch batch;
+    protected Texture texture;
+    protected ShapeRenderer collider;
 
     // attributes
     protected int sizeX, sizeY;
-    private float positionX, positionY;
-    private float speedX, speedY;
-    private float health;
-    private boolean isAlive;
+    protected float positionX, positionY;
+    protected float speedX, speedY;
+    protected float health;
+    protected boolean isAlive;
 
-    private float randomX, randomY;
-    private float stationaryTime = 1;
+    protected float damage;
 
-    private float lastMoved = 0;
-    private float moveDuration = 1;
-    private float elapsedTime;
+    protected float randomX, randomY;
+    protected float stationaryTime = 1;
 
-    private int lock = 1;
-    private float timeMoving = 0;
-    private float startingMovingTime = 0;
-    private float playerCenterX, playerCenterY;
+    protected float lastMoved = 0;
+    protected float moveDuration = 1;
+    protected float elapsedTime;
 
-    BulletPool bulletPool = new BulletPool(50);
+    protected int lock = 1;
+    protected float timeMoving = 0;
+    protected float startingMovingTime = 0;
+    protected float playerCenterX, playerCenterY;
+
+    protected BulletPool bulletPool = new BulletPool(50);
+
+    protected Random random = new Random();
 
 
     public Enemy(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, 
     String bulletType, String sprite) {
         sizeX = 64;
         sizeY = 64;
+        damage = 100;
         this.positionX = positionX;
         this.positionY = positionY;
         this.speedX = speedX;
@@ -79,7 +88,7 @@ public class Enemy {
     }
 
 
-    private void checkBounds(){ //checks if the player still on bounds
+    protected void checkBounds(){ //checks if the player still on bounds
         if (positionX < 0) positionX = 0;
         if (positionY < 0) positionY = 0;
         if (positionX > Gdx.graphics.getWidth() - sizeX) positionX = Gdx.graphics.getWidth() - sizeX;
@@ -88,7 +97,7 @@ public class Enemy {
     }
 
 
-    private void randomMove() {
+    protected void randomMove() {
         float deltaTime = Gdx.graphics.getDeltaTime();
 
         positionX += deltaTime * speedX * 1;
@@ -111,7 +120,7 @@ public class Enemy {
         return polygon;
     }
 
-    private void drawCollider(Polygon polygon) {
+    protected void drawCollider(Polygon polygon) {
         float[] vertices = polygon.getTransformedVertices();
       
         collider.begin(ShapeRenderer.ShapeType.Line);
@@ -139,9 +148,15 @@ public class Enemy {
         return isAlive;
     }
 
-    public void checkPlayerCollision(Player player){
-        bulletPool.checkPlayerCollision(player);
+    public void checkCollision(Shootable shootable){
+        if(shootable.isAlive() && isAlive) { //don't move this please, I feel that with a very bad luck the player could die if I don't check the health
+            bulletPool.checkCollision(shootable, this.damage);
+            if (Intersector.overlapConvexPolygons(getCollider(), shootable.getCollider())) {
+                shootable.setHealth(100);
+            }
+        }
     }
+
 
     public void dispose() {
         texture.dispose();
@@ -156,5 +171,7 @@ public class Enemy {
     public float getPositionY() {
         return positionY;
     }
+
+
 
 }
