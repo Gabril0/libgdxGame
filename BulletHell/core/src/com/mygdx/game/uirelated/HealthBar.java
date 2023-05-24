@@ -7,8 +7,10 @@ import com.mygdx.game.player.Player;
 
 public class HealthBar {
     private Texture lifeBar;
+    private Texture lifeBarBg;
     private SpriteBatch batch;
 
+    private float bgSizeX = 64; //the Y is the same as the life bar
     private float currentSizeX = 64, sizeY = 8;
     private float playerPositionX, playerPositionY;
 
@@ -19,6 +21,7 @@ public class HealthBar {
 
     public void createHealthBar(){
         lifeBar = new Texture("HealthBar.png");
+        lifeBarBg = new Texture("HealthBarBg.png");
         batch = new SpriteBatch();
         currentSizeX = 64;
     }
@@ -27,12 +30,16 @@ public class HealthBar {
         currentTime += Gdx.graphics.getDeltaTime();
         if(player.gotHit() && player.isAlive()){
             batch.begin();
-            currentSizeX = - player.getHealth()/10;
+            currentSizeX = ((player.getHealth())/10);
             if(lock == 1){
                 timeHit = currentTime;
                 lock = 0;}
             if(currentTime < timeHit + animationTime) {
-                batch.draw(lifeBar, player.getSpritePositionX() + (player.getSpriteSizeX()/2), player.getSpritePositionY() - ((player.getSpriteSizeY()/2) - 16), currentSizeX ,  sizeY);
+                float offsetY = ((player.getSpriteSizeY()/2) - 16);
+                float xPos = player.getSpritePositionX();
+                float yPos = player.getSpritePositionY() - offsetY;
+                batch.draw(lifeBarBg, xPos, yPos, bgSizeX ,  sizeY);
+                batch.draw(lifeBar, xPos, yPos, currentSizeX ,  sizeY);
             }
             else{
                 lock = 1;
