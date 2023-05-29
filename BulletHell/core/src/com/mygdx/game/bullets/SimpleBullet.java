@@ -56,7 +56,7 @@ public class SimpleBullet implements Bullet {
         spriteBatch.draw(texture, this.positionX, this.positionY, sizeX / 2, sizeY / 2, sizeX, sizeY, 1f, 1f, this.playerRotation, 0, 0, sizeX, sizeY, false, false);
         spriteBatch.end();
 
-        drawCollider();
+        //drawCollider();
 
         // collision.begin(ShapeRenderer.ShapeType.Line);
         // collision.identity(); // Reset the transformation matrix

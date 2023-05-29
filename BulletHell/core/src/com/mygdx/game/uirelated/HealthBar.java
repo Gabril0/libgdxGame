@@ -6,17 +6,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.player.Player;
 
 public class HealthBar {
-    private Texture lifeBar;
-    private Texture lifeBarBg;
-    private SpriteBatch batch;
+    protected Texture lifeBar;
+    protected Texture lifeBarBg;
+    protected SpriteBatch batch;
 
-    private float bgSizeX = 64; //the Y is the same as the life bar
-    private float currentSizeX = 64, sizeY = 8;
-    private float playerPositionX, playerPositionY;
+    protected float bgSizeX; //the Y is the same as the life bar
+    protected float currentSizeX = 64, sizeY = 8;
 
-    private float currentTime = 0, animationTime = 1, timeHit;
+    protected float currentTime = 0, animationTime = 1, timeHit;
 
-    private int lock = 1;
+    protected int lock = 1;
 
 
     public void createHealthBar(){
@@ -24,9 +23,10 @@ public class HealthBar {
         lifeBarBg = new Texture("HealthBarBg.png");
         batch = new SpriteBatch();
         currentSizeX = 64;
+        bgSizeX = currentSizeX;
     }
 
-    public void renderHealthBar(Player player){ //do listener later instead of instantiating the player again
+    public void renderHealthBar(Player player){
         currentTime += Gdx.graphics.getDeltaTime();
         if(player.gotHit() && player.isAlive()){
             batch.begin();
@@ -36,6 +36,7 @@ public class HealthBar {
                 lock = 0;}
             if(currentTime < timeHit + animationTime) {
                 float offsetY = ((player.getSpriteSizeY()/2) - 16);
+                if( player.getSpritePositionY() < Gdx.graphics.getWidth()/20) offsetY = -((player.getSpriteSizeY()) + 16); //checks if player is close to screen's lower edge
                 float xPos = player.getSpritePositionX();
                 float yPos = player.getSpritePositionY() - offsetY;
                 batch.draw(lifeBarBg, xPos, yPos, bgSizeX ,  sizeY);

@@ -1,6 +1,7 @@
 package com.mygdx.game.enemy;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.bullets.Shootable;
 import com.mygdx.game.player.Player;
+import com.mygdx.game.uirelated.EnemyHealthBar;
 
 import java.util.Random;
 
@@ -16,6 +18,7 @@ public class Enemy implements Shootable {
     protected SpriteBatch batch;
     protected Texture texture;
     protected ShapeRenderer collider;
+    protected EnemyHealthBar healthBar = new EnemyHealthBar();
 
     // attributes
     protected int sizeX, sizeY;
@@ -42,6 +45,11 @@ public class Enemy implements Shootable {
 
     protected Random random = new Random();
 
+    protected float hitAnimationDuration = 0.05f;
+    protected float hitCurrentTime = 0f;
+
+    protected boolean isHit = false;
+
 
     public Enemy(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, 
     String bulletType, String sprite) {
@@ -57,31 +65,35 @@ public class Enemy implements Shootable {
 
         texture = new Texture(sprite);
         batch = new SpriteBatch();
+        healthBar.createHealthBar();
 
         collider = new ShapeRenderer();
         bulletPool.createBulletPool(bulletImg, bulletType);
     }
 
     public void render(float playerCenterX, float playerCenterY){
+        float deltaTime = Gdx.graphics.getDeltaTime();
         if(isAlive){
 
         this.playerCenterX = playerCenterX;
         this.playerCenterY = playerCenterY;
-        randomMove();
+        randomMove(deltaTime);
         checkBounds();
         checkHealth();
-
+        
         bulletPool.renderBulletPoolEnemy(positionX, positionY, 
 		sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90);
-
+        
         batch.begin();
         batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
         sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
         texture.getHeight(), false, false);
+        if(isHit){gotHitAnimation(deltaTime);}
         batch.end();
+        healthBar.renderHealthBar(this);
 
         // Update the collider's position and rotation
-        drawCollider(getCollider());
+       // drawCollider(getCollider());
 
         }
 
@@ -97,8 +109,7 @@ public class Enemy implements Shootable {
     }
 
 
-    protected void randomMove() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
+    protected void randomMove(float deltaTime) {
 
         positionX += deltaTime * speedX * 1;
         positionY += deltaTime * speedY * 1;
@@ -135,6 +146,7 @@ public class Enemy implements Shootable {
     }
 
     public void setHealth(float damage){
+        isHit = true;
         health -= damage;
     }
 
@@ -157,12 +169,25 @@ public class Enemy implements Shootable {
         }
     }
 
+    public void gotHitAnimation(float deltaTime) {        
+        hitCurrentTime += deltaTime;
+    
+        // Flash the sprite red if the enemy is hit
+        if (hitCurrentTime <= hitAnimationDuration) {
+            batch.setColor(Color.RED);
+        } else {
+            batch.setColor(Color.WHITE);
+            hitCurrentTime = 0;
+            isHit = false;
+        }
+    }
 
     public void dispose() {
         texture.dispose();
         batch.dispose();
         collider.dispose();
         bulletPool.disposeBulletPool();
+        healthBar.disposeHealthBar();
     }
 
     public float getPositionX() {
@@ -171,6 +196,16 @@ public class Enemy implements Shootable {
     public float getPositionY() {
         return positionY;
     }
+    public float getHealth() {
+        return health;
+    }
+    public int getSizeY() {
+        return sizeY;
+    }
+    public int getSizeX() {
+        return sizeX;
+    }
+
 
 
 

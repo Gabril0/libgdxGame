@@ -22,7 +22,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	Background bg = new Background();
 	BossFundamentals miniBoss;
 
-	HealthBar healthBar = new HealthBar();
+
 
 	ArrayList <Enemy> enemiesList = new <Enemy>ArrayList();
 
@@ -31,11 +31,11 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void create () {
 		bg.createBackground(Gdx.graphics.getWidth()*1.96f, Gdx.graphics.getHeight(), "map1Slow.png", "map1Fast.png");
 		cursor.create();
-		e = new Enemy(400,400,300,300,100,
+		e = new Enemy(400,400,300,300,1000,
 		"EnemyBullet.png", "EnemyBullet", "PlayerTransformation.png");
 		player.createPlayer();
 		miniBoss = new BossFundamentals(500, 500, 200,200,10000,"EnemyBullet.png", "EnemyBullet", "Satellite.png");
-		healthBar.createHealthBar();
+
 		enemiesList.add(e);
 		enemiesList.add(miniBoss);
 	}
@@ -54,7 +54,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		miniBoss.render(player.getCenterX(), player.getCenterY());
 		e.render(player.getCenterX(), player.getCenterY());
 		player.renderPlayer();
-		healthBar.renderHealthBar(player);
+
 	}
 	
 	@Override
@@ -66,7 +66,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		player.disposePlayer();
 		e.dispose();
 		miniBoss.dispose();
-		healthBar.disposeHealthBar();
+
 	}
 
 	public void collisionTest(){

@@ -2,15 +2,10 @@ package com.mygdx.game.bosses;
 
 import com.badlogic.gdx.Gdx;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Polygon;
-import com.mygdx.game.bullets.BulletPool;
-import com.mygdx.game.enemy.Enemy;
-import com.mygdx.game.player.Player;
 
-import java.util.Random;
+import com.mygdx.game.enemy.Enemy;
+import com.mygdx.game.uirelated.HealthBar;
+
 
 public class BossFundamentals extends Enemy {
 
@@ -24,6 +19,7 @@ public class BossFundamentals extends Enemy {
 
     @Override
     public void render(float playerCenterX, float playerCenterY){
+        float deltaTime = Gdx.graphics.getDeltaTime();
         if(isAlive){
 
             this.playerCenterX = playerCenterX;
@@ -31,6 +27,7 @@ public class BossFundamentals extends Enemy {
             move();
             checkBounds();
             checkHealth();
+            
 
             bulletPool.renderBulletPoolEnemy(positionX, positionY,
                     sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90);
@@ -39,10 +36,12 @@ public class BossFundamentals extends Enemy {
             batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
                     sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
                     texture.getHeight(), false, false);
+            if(isHit){gotHitAnimation(deltaTime);}
             batch.end();
 
             // Update the collider's position and rotation
-            drawCollider(getCollider());
+            //drawCollider(getCollider());
+            healthBar.renderHealthBar(this);
 
         }
 

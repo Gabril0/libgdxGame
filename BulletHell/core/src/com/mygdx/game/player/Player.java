@@ -13,6 +13,7 @@ import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.bullets.Shootable;
 import com.mygdx.game.listeners.EventManager;
 import com.mygdx.game.listeners.ShotListener;
+import com.mygdx.game.uirelated.HealthBar;
 
 public class Player implements ShotListener, Shootable {
 
@@ -24,6 +25,7 @@ public class Player implements ShotListener, Shootable {
     private SpriteBatch batch;
     private Texture img;
     private ShapeRenderer collision;
+    private HealthBar healthBar = new HealthBar();
 
     // Movement and sizing
     private float spriteSizeX = 64, spriteSizeY = 64; // float for the size
@@ -57,6 +59,7 @@ public class Player implements ShotListener, Shootable {
         batch = new SpriteBatch();
         img = new Texture("PlayerBaseSprite.png");
         collision = new ShapeRenderer();
+        healthBar.createHealthBar();
 
         // shooting AND shooting animation
         bulletPool.createBulletPool("PlayerBullet.png", "SimpleBullet");
@@ -73,7 +76,8 @@ public class Player implements ShotListener, Shootable {
             shoot();
             checkBounds();
             drawPlayer();
-            drawCollider();
+            //drawCollider();
+            healthBar.renderHealthBar(this);
         }
     }
 
@@ -82,6 +86,7 @@ public class Player implements ShotListener, Shootable {
         img.dispose();
         shootingAnimation.dispose();
         bulletPool.disposeBulletPool();
+        healthBar.disposeHealthBar();
     }
 
     private void shoot(){
