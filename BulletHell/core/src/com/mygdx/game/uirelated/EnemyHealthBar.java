@@ -9,7 +9,7 @@ public class EnemyHealthBar extends HealthBar{
     private int lock = 1;
     @Override
     public void createHealthBar(){
-        lifeBar = new Texture("HealthBar.png");
+        lifeBar = new Texture("EnemyHealthBar.png");
         lifeBarBg = new Texture("HealthBarBg.png");
         batch = new SpriteBatch();
         currentSizeX = 128;
@@ -25,7 +25,7 @@ public class EnemyHealthBar extends HealthBar{
                 bgSizeX = currentSizeX;
                 lock = 0;
             }
-            float offsetY = ((enemy.getSizeY()/2) - 16);
+            float offsetY = ((enemy.getSizeY()/2) - enemy.getSizeY()/4);
             float offsetX = ((enemy.getSizeX()/2) - bgSizeX/2);
             if( enemy.getPositionY() < Gdx.graphics.getWidth()/20) offsetY = -((enemy.getSizeY()) + 16); //checks if enemy is close to screen's lower edge
             float xPos = enemy.getPositionX() + offsetX;

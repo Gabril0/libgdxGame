@@ -35,9 +35,10 @@ public class HealthBar {
                 timeHit = currentTime;
                 lock = 0;}
             if(currentTime < timeHit + animationTime) {
-                float offsetY = ((player.getSpriteSizeY()/2) - 16);
+                float offsetY = ((player.getSpriteSizeY()/2) - player.getSpriteSizeY()/4);
+                float offsetX = ((player.getSpriteSizeX()/2) - bgSizeX/2);
                 if( player.getSpritePositionY() < Gdx.graphics.getWidth()/20) offsetY = -((player.getSpriteSizeY()) + 16); //checks if player is close to screen's lower edge
-                float xPos = player.getSpritePositionX();
+                float xPos = player.getSpritePositionX() + offsetX;
                 float yPos = player.getSpritePositionY() - offsetY;
                 batch.draw(lifeBarBg, xPos, yPos, bgSizeX ,  sizeY);
                 batch.draw(lifeBar, xPos, yPos, currentSizeX ,  sizeY);
