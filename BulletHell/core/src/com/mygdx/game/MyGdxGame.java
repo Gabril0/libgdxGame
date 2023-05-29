@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.backgroundAndCursor.Background;
 import com.mygdx.game.backgroundAndCursor.CustomCursor;
 import com.mygdx.game.bosses.BossFundamentals;
+import com.mygdx.game.bosses.Satellite;
 import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.enemy.Enemy;
 import com.mygdx.game.listeners.EventManager;
@@ -34,7 +35,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		e = new Enemy(400,400,300,300,1000,
 		"EnemyBullet.png", "EnemyBullet", "PlayerTransformation.png");
 		player.createPlayer();
-		miniBoss = new BossFundamentals(500, 500, 200,200,10000,"EnemyBullet.png", "EnemyBullet", "Satellite.png");
+		miniBoss = new Satellite(500, 500, 200,200,10000,"EnemyBullet.png", "EnemyBullet", "Satellite.png");
 
 		enemiesList.add(e);
 		enemiesList.add(miniBoss);

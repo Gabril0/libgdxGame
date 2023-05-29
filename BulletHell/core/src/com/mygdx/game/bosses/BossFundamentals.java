@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 
 import com.mygdx.game.enemy.Enemy;
-import com.mygdx.game.uirelated.HealthBar;
+
 
 
 public class BossFundamentals extends Enemy {
