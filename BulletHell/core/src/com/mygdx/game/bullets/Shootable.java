@@ -7,5 +7,6 @@ public interface Shootable {
     public Polygon getCollider();
     public void checkCollision(Shootable shootable);
     public void setHealth(float damage);
+    public String getTag();
 
 }

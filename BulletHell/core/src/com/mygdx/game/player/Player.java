@@ -20,6 +20,7 @@ public class Player implements ShotListener, Shootable {
     // Player atributes
     private float health = 640;
     private float damage = 100;
+    private String tag = "player";
 
     // Base sprite rendering variables
     private SpriteBatch batch;
@@ -48,10 +49,9 @@ public class Player implements ShotListener, Shootable {
     private boolean gotHit = false;
 
     // Timing
-    private float timeHit = 0; //initializing to not lock
-    private float damageCooldown = 0.5f; //prevents the player to get hit after just getting hit
+    private float timeHit = 0; // initializing to not lock
+    private float damageCooldown = 0.5f; // prevents the player to get hit after just getting hit
     private float currentTime;
-
 
     public void createPlayer() { // do these actions once the game starts
 
@@ -60,6 +60,7 @@ public class Player implements ShotListener, Shootable {
         img = new Texture("PlayerBaseSprite.png");
         collision = new ShapeRenderer();
         healthBar.createHealthBar();
+        tag = "player";
 
         // shooting AND shooting animation
         bulletPool.createBulletPool("PlayerBullet.png", "SimpleBullet");
@@ -69,14 +70,14 @@ public class Player implements ShotListener, Shootable {
     }
 
     public void renderPlayer() { // do these actions every frame
-        if(isAlive) {
+        if (isAlive) {
             currentTime += Gdx.graphics.getDeltaTime();
             checkHealth();
             movePlayer();
             shoot();
             checkBounds();
             drawPlayer();
-            //drawCollider();
+            // drawCollider();
             healthBar.renderHealthBar(this);
         }
     }
@@ -89,9 +90,10 @@ public class Player implements ShotListener, Shootable {
         healthBar.disposeHealthBar();
     }
 
-    private void shoot(){
+    private void shoot() {
         bulletPool.renderBulletPoolPlayer(getSpritePositionX(), getSpritePositionY(),
-                getSpriteSizeX(), getSpriteSizeY(), rotateToCursor() - 90, em); //-op because bullets are in a diferent orientation
+                getSpriteSizeX(), getSpriteSizeY(), rotateToCursor() - 90, em); // -op because bullets are in a diferent
+                                                                                // orientation
     }
 
     private void movePlayer() {
@@ -214,28 +216,32 @@ public class Player implements ShotListener, Shootable {
     }
 
     public void checkCollision(Shootable shootable) {
-        if(shootable.isAlive() && isAlive) { //don't move this please, I feel that with a very bad luck the player could die if I don't check the health
+        if (shootable.isAlive() && isAlive) { // don't move this please, I feel that with a very bad luck the player
+                                              // could die if I don't check the health
             bulletPool.checkCollision(shootable, this.damage);
             if (Intersector.overlapConvexPolygons(getCollider(), shootable.getCollider())) {
-                shootable.setHealth(100);
+                if (shootable.getTag().compareTo("enemy") == 0) {
+                    setHealth(damage * 2);
+                } 
+                else shootable.setHealth(100);
             }
         }
     }
 
-    public boolean isAlive(){
+    public boolean isAlive() {
         return isAlive;
     }
 
-    public void setHealth(float damage){
-        if(timeHit < currentTime - damageCooldown){
+    public void setHealth(float damage) {
+        if (timeHit < currentTime - damageCooldown) {
             health = health - damage;
             gotHit = true;
             timeHit = currentTime;
         }
     }
 
-    public void checkHealth(){
-        if(health <= 0){
+    public void checkHealth() {
+        if (health <= 0) {
             isAlive = false;
         }
     }
@@ -249,15 +255,21 @@ public class Player implements ShotListener, Shootable {
         centerY = spritePositionY + (spriteSizeY / 2);
         return centerY;
     }
-    public boolean gotHit(){
+
+    public boolean gotHit() {
         return gotHit;
     }
 
-    public void setGotHit(){ //DELETE LATER WHEN THE LISTENER IS READY PLEASSEEEE
+    public void setGotHit() {
         gotHit = false;
     }
 
-    public float getHealth(){
+    public float getHealth() {
         return health;
+    }
+
+    @Override
+    public String getTag() {
+        return tag;
     }
 }

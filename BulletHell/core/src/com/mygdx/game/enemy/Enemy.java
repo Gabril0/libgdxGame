@@ -19,6 +19,7 @@ public class Enemy implements Shootable {
     protected Texture texture;
     protected ShapeRenderer collider;
     protected EnemyHealthBar healthBar = new EnemyHealthBar();
+    protected String tag;
 
     // attributes
     protected int sizeX, sizeY;
@@ -62,6 +63,7 @@ public class Enemy implements Shootable {
         this.speedY = speedY;
         this.health = health;
         isAlive = true;
+        tag = "enemy";
 
         texture = new Texture(sprite);
         batch = new SpriteBatch();
@@ -204,6 +206,11 @@ public class Enemy implements Shootable {
     }
     public int getSizeX() {
         return sizeX;
+    }
+
+    @Override
+    public String getTag() {
+        return tag;
     }
 
 
