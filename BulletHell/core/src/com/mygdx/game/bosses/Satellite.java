@@ -34,7 +34,7 @@ public class Satellite extends BossFundamentals {
 
             
             bulletPool.renderBulletPoolEnemy(positionX, positionY,
-                    sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90);
+                    sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
 
             if (elapsedTime > lastBlink + blinkCooldown) {
                 lastBlink = elapsedTime;

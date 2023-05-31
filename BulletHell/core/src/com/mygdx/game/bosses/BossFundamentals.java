@@ -13,7 +13,7 @@ public class BossFundamentals extends Enemy {
             String bulletImg, String bulletType, String sprite) {
         super(positionX, positionY, speedX, speedY, health, bulletImg, bulletType, sprite);
         float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
+		//float height = Gdx.graphics.getHeight();
 
         //atributes
         sizeX = width/6;
@@ -34,7 +34,7 @@ public class BossFundamentals extends Enemy {
             
 
             bulletPool.renderBulletPoolEnemy(positionX, positionY,
-                    sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90);
+                    sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
 
             batch.begin();
             batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,

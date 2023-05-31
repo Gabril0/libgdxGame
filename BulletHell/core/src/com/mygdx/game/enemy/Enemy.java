@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.bullets.Shootable;
-import com.mygdx.game.player.Player;
 import com.mygdx.game.uirelated.EnemyHealthBar;
 
 import java.util.Random;
@@ -18,7 +17,7 @@ public class Enemy implements Shootable {
 
     //For conversion between different screen sizes
     private float width;
-    private float height;
+    //private float height;
 
     protected SpriteBatch batch;
     protected Texture texture;
@@ -59,8 +58,8 @@ public class Enemy implements Shootable {
 
     public Enemy(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, 
     String bulletType, String sprite) {
-        float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
+        width = Gdx.graphics.getWidth();
+		//float height = Gdx.graphics.getHeight();
 
         //atributes
         sizeX = width/25;
@@ -79,7 +78,7 @@ public class Enemy implements Shootable {
         healthBar.createHealthBar();
 
         collider = new ShapeRenderer();
-        bulletPool.createBulletPool(bulletImg, bulletType);
+        bulletPool.createBulletPool(bulletImg, bulletType, damage);
     }
 
     public void render(float playerCenterX, float playerCenterY){
@@ -93,7 +92,7 @@ public class Enemy implements Shootable {
         checkHealth();
         
         bulletPool.renderBulletPoolEnemy(positionX, positionY, 
-		sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90);
+		sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
         
         batch.begin();
         batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,

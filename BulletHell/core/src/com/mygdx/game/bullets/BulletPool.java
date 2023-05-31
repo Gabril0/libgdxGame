@@ -4,10 +4,7 @@ package com.mygdx.game.bullets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Polygon;
-import com.mygdx.game.bosses.BossFundamentals;
 import com.mygdx.game.listeners.EventManager;
-import com.mygdx.game.player.Player;
 
 
 public class BulletPool {
@@ -17,41 +14,38 @@ public class BulletPool {
     private Bullet[] pool; // pool of bullets already prealocated in memory
     private float elapsedTime = 0;
 
+    private float originalDamage = 0;
+
     private float sizeX, sizeY;
 
     private boolean isShooting = false;
+    private String bulletType, imgPath;
 
     public BulletPool(int poolSize) {
         this.poolSize = poolSize;
     }
 
-    public void createBulletPool(String imgPath, String bulletType) {
+    public void createBulletPool(String imgPath, String bulletType, float originalDamage) {
         float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
-
+		//float height = Gdx.graphics.getHeight();
+        this.originalDamage = originalDamage;
+        this.bulletType = bulletType;
+        this.imgPath = imgPath;
         //atributes
         sizeX = width/40;
         sizeY = width/40;
 
+        
+
         pool = new Bullet[poolSize];
-        if(bulletType.compareTo("EnemyBullet") == 0) {
-            for (int i = 0; i < poolSize; i++) {
-                pool[i] = new EnemyBullet(-1, -1, sizeX, sizeY);
-                pool[i].createBullet(imgPath);
-            }
-        }
-        if(bulletType.compareTo("SimpleBullet") == 0) {
-            for (int i = 0; i < poolSize; i++) {
-                pool[i] = new SimpleBullet(-1, -1, sizeX, sizeY);
-                pool[i].createBullet(imgPath);
-            }
-        }
+        setBulletType(bulletType, imgPath);
+        
 
     }
 
-    public void renderBulletPoolPlayer(float playerPositionX, float playerPositionY,float playerSizeX, float playersizeY, float playerRotation, EventManager em){
-
+    public void renderBulletPoolPlayer(float playerPositionX, float playerPositionY,float playerSizeX, float playersizeY, float playerRotation, float damage,EventManager em){
             elapsedTime += Gdx.graphics.getDeltaTime();
+            changeSize(damage);
             isShooting = Gdx.input.isButtonPressed(Buttons.LEFT);
             em.eventCall(isShooting);
             for (int i = 0; i < poolSize; i++) {
@@ -103,7 +97,7 @@ public class BulletPool {
         if(damaged.isAlive()) {
             for (int i = 0; i < poolSize; i++) {
                 if (pool[i].getIsActive() && Intersector.overlapConvexPolygons(pool[i].getCollider(), damaged.getCollider())) {
-                    damaged.setHealth(100);
+                    damaged.setHealth(damage);
                     pool[i].deactivate();
                 }
             }
@@ -111,8 +105,9 @@ public class BulletPool {
     }
 
     //Another implementation but without the EventManager class
-    public void renderBulletPoolEnemy(float playerPositionX, float playerPositionY,float playerSizeX, float playersizeY, float playerRotation){
+    public void renderBulletPoolEnemy(float playerPositionX, float playerPositionY,float playerSizeX, float playersizeY, float playerRotation, float damage){
         elapsedTime += Gdx.graphics.getDeltaTime();
+        changeSize(damage);
         for (int i = 0; i < poolSize; i++) {
             if (pool[i].getIsActive()) {
                 pool[i].renderBullet(playerPositionX, playerPositionY,  playerSizeX, playersizeY, playerRotation);
@@ -137,5 +132,45 @@ public class BulletPool {
                 }  
             }
         }
+    }
+    public void setCoolDown(float coolDown) {
+        this.coolDown = coolDown;
+    }
+    public float getCoolDown() {
+        return coolDown;
+    }
+
+    public void setBulletType(String bulletType, String imgPath) { 
+        if(bulletType.compareTo("EnemyBullet") == 0) {
+            for (int i = 0; i < poolSize; i++) {
+                pool[i] = new EnemyBullet(-1, -1, sizeX, sizeY);
+                pool[i].createBullet(imgPath);
+            }
+        }
+        if(bulletType.compareTo("SimpleBullet") == 0) {
+            for (int i = 0; i < poolSize; i++) {
+                pool[i] = new SimpleBullet(-1, -1, sizeX, sizeY);
+                pool[i].createBullet(imgPath);
+            }
+        }
+        if(bulletType.compareTo("StoredEnergyBullet") == 0) {
+            for (int i = 0; i < poolSize; i++) {
+                pool[i] = new StoredEnergyBullet(-1, -1, sizeX, sizeY);
+                pool[i].createBullet(imgPath);
+            }
+        }
+    }
+
+    private void changeSize(float damage){
+        if(originalDamage != damage){
+            sizeX = sizeX * damage/100;
+            sizeY = sizeY * damage/100;
+            setBulletType(bulletType, imgPath);
+            originalDamage = damage;
+        }
+    }
+
+    public Bullet getBullet(){
+        return pool[1].getBullet();
     }
 }

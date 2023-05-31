@@ -4,23 +4,28 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+//import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.mygdx.game.animation.Animation;
 import com.mygdx.game.animation.ShootingAnimation;
+import com.mygdx.game.bullets.Bullet;
 import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.bullets.Shootable;
+import com.mygdx.game.evolution.Evolution;
+import com.mygdx.game.evolution.StoredEnergy;
 import com.mygdx.game.listeners.EventManager;
 import com.mygdx.game.listeners.ShotListener;
 import com.mygdx.game.uirelated.HealthBar;
 
 public class Player implements ShotListener, Shootable {
 
+    private Evolution evolution;
+
     //For conversion between different screen sizes
     private float width;
 	private float height;
-
+    
     // Player atributes
     private float health = 640;
     private float damage = 100;
@@ -29,7 +34,7 @@ public class Player implements ShotListener, Shootable {
     // Base sprite rendering variables
     private SpriteBatch batch;
     private Texture img;
-    private ShapeRenderer collision;
+    //private ShapeRenderer collision;
     private HealthBar healthBar = new HealthBar();
 
     // Movement and sizing
@@ -39,7 +44,7 @@ public class Player implements ShotListener, Shootable {
 
     private float centerX, centerY;
 
-    private BulletPool bulletPool = new BulletPool(50);
+    private BulletPool bulletPool = new BulletPool(200);
 
     // Animations
     private EventManager em = new EventManager();
@@ -58,8 +63,10 @@ public class Player implements ShotListener, Shootable {
     private float currentTime;
 
     public void createPlayer() { // do these actions once the game starts
-        float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
+        width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+
+
 
         //atributes
         spriteSizeX = width/25;
@@ -71,15 +78,20 @@ public class Player implements ShotListener, Shootable {
         // player rendering
         batch = new SpriteBatch();
         img = new Texture("PlayerBaseSprite.png");
-        collision = new ShapeRenderer();
+        //collision = new ShapeRenderer();
         healthBar.createHealthBar();
         tag = "player";
 
         // shooting AND shooting animation
-        bulletPool.createBulletPool("PlayerBullet.png", "SimpleBullet");
+        bulletPool.createBulletPool("PlayerBullet.png", "SimpleBullet", damage);
         em.addShotListener(this);
         shootingAnimation = new ShootingAnimation();
         shootingAnimation.create();
+
+
+        //evolution = new StoredEnergy(this);
+        //evolution.makeChanges(this);
+
     }
 
     public void renderPlayer() { // do these actions every frame
@@ -105,7 +117,7 @@ public class Player implements ShotListener, Shootable {
 
     private void shoot() {
         bulletPool.renderBulletPoolPlayer(getSpritePositionX(), getSpritePositionY(),
-                getSpriteSizeX(), getSpriteSizeY(), rotateToCursor() - 90, em); // -op because bullets are in a diferent
+                getSpriteSizeX(), getSpriteSizeY(), rotateToCursor() - 90,damage, em); // -op because bullets are in a diferent
                                                                                 // orientation
     }
 
@@ -201,14 +213,14 @@ public class Player implements ShotListener, Shootable {
         this.isShooting = isShooting;
     }
 
-    private void drawCollider() {
-        Polygon collider = getCollider();
-        float[] vertices = collider.getTransformedVertices();
+    // private void drawCollider() {
+    //     Polygon collider = getCollider();
+    //     float[] vertices = collider.getTransformedVertices();
 
-        collision.begin(ShapeRenderer.ShapeType.Line);
-        collision.polygon(vertices);
-        collision.end();
-    }
+    //     collision.begin(ShapeRenderer.ShapeType.Line);
+    //     collision.polygon(vertices);
+    //     collision.end();
+    // }
 
     public Polygon getCollider() {
         Polygon polygon = new Polygon();
@@ -289,5 +301,19 @@ public class Player implements ShotListener, Shootable {
     @Override
     public float getDamage() {
         return damage;
+    }
+
+    public void setDamage(float damage) {
+        this.damage = this.damage * damage;
+    }
+
+    public void setShootingRate(float fireRate){
+        bulletPool.setCoolDown(bulletPool.getCoolDown() * fireRate);
+    }
+    public void setBulletType(String bulletType, String imgPath){
+        bulletPool.setBulletType(bulletType, imgPath);
+    }
+    public Bullet getBullet(){
+        return bulletPool.getBullet();
     }
 }

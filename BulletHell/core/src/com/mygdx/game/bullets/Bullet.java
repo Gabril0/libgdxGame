@@ -11,4 +11,5 @@ public interface Bullet {
     public void deactivate();
     public boolean getIsActive();
     public Polygon getCollider();
+    public Bullet getBullet();
 }

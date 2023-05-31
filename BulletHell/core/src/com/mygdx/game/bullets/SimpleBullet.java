@@ -50,6 +50,7 @@ public class SimpleBullet implements Bullet {
 
         checkBounds();
         move();
+        specialAction();
 
         
         spriteBatch.begin();
@@ -95,20 +96,20 @@ public class SimpleBullet implements Bullet {
     }
 
     private void checkBounds(){
-        if (positionX < 0) deactivate();
-        if (positionY < 0) deactivate();
-        if (positionX > Gdx.graphics.getWidth()) deactivate();
-        if (positionY > Gdx.graphics.getHeight()) deactivate();
+        if (positionX < -50) deactivate();
+        if (positionY < -50) deactivate();
+        if (positionX > Gdx.graphics.getWidth() + 50) deactivate();
+        if (positionY > Gdx.graphics.getHeight() + 50) deactivate();
     } 
 
-    private void drawCollider() {
-        Polygon collider = getCollider();
-        float[] vertices = collider.getTransformedVertices();
+    // private void drawCollider() {
+    //     Polygon collider = getCollider();
+    //     float[] vertices = collider.getTransformedVertices();
     
-        collision.begin(ShapeRenderer.ShapeType.Line);
-        collision.polygon(vertices);
-        collision.end();
-    }
+    //     collision.begin(ShapeRenderer.ShapeType.Line);
+    //     collision.polygon(vertices);
+    //     collision.end();
+    // }
 
     public Polygon getCollider(){
         Polygon polygon = new Polygon();
@@ -124,5 +125,12 @@ public class SimpleBullet implements Bullet {
         polygon.setOrigin(centerX, centerY);
         polygon.setRotation(playerRotation);
         return polygon;
+    }
+
+    protected void specialAction(){} // this is a class for bullet upgrade special actions
+
+    @Override
+    public Bullet getBullet() {
+        return this;
     }
 }

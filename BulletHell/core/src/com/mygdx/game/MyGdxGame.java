@@ -2,17 +2,14 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.backgroundAndCursor.Background;
 import com.mygdx.game.backgroundAndCursor.CustomCursor;
 import com.mygdx.game.bosses.BossFundamentals;
 import com.mygdx.game.bosses.Satellite;
-import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.enemy.Enemy;
-import com.mygdx.game.listeners.EventManager;
 import com.mygdx.game.player.Player;
-import com.mygdx.game.uirelated.HealthBar;
+
 
 import java.util.ArrayList;
 
@@ -25,7 +22,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
 
-	ArrayList<Enemy> enemiesList = new <Enemy>ArrayList();
+	ArrayList<Enemy> enemiesList = new ArrayList<>();
 
 	
 	@Override
