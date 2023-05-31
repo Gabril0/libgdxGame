@@ -32,7 +32,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		bg.createBackground(width*1.96f, height, "map1Slow.png", "map1Fast.png");
 		cursor.create();
 		e = new Enemy(width/10,height/10,300,300,1000,
-		"EnemyBullet.png", "EnemyBullet", "PlayerTransformation.png");
+		"EnemyBullet.png", "EnemyBullet", "star.png");
 		player.createPlayer();
 		miniBoss = new Satellite(width/8, height/8, 200,200,10000,"EnemyBullet.png", "EnemyBullet", "Satellite.png");
 
