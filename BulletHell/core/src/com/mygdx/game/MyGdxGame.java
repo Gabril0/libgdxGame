@@ -25,17 +25,19 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
 
-	ArrayList <Enemy> enemiesList = new <Enemy>ArrayList();
+	ArrayList<Enemy> enemiesList = new <Enemy>ArrayList();
 
 	
 	@Override
 	public void create () {
-		bg.createBackground(Gdx.graphics.getWidth()*1.96f, Gdx.graphics.getHeight(), "map1Slow.png", "map1Fast.png");
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+		bg.createBackground(width*1.96f, height, "map1Slow.png", "map1Fast.png");
 		cursor.create();
-		e = new Enemy(400,400,300,300,1000,
+		e = new Enemy(width/10,height/10,300,300,1000,
 		"EnemyBullet.png", "EnemyBullet", "PlayerTransformation.png");
 		player.createPlayer();
-		miniBoss = new Satellite(500, 500, 200,200,10000,"EnemyBullet.png", "EnemyBullet", "Satellite.png");
+		miniBoss = new Satellite(width/8, height/8, 200,200,10000,"EnemyBullet.png", "EnemyBullet", "Satellite.png");
 
 		enemiesList.add(e);
 		enemiesList.add(miniBoss);

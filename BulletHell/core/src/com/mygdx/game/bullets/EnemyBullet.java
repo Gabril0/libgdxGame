@@ -3,7 +3,7 @@ package com.mygdx.game.bullets;
 import com.badlogic.gdx.math.Polygon;
 
 public class EnemyBullet extends SimpleBullet{
-    EnemyBullet(float positionX, float positionY, int sizeX, int sizeY) {
+    EnemyBullet(float positionX, float positionY, Float sizeX, Float sizeY) {
         super(positionX, positionY, sizeX, sizeY);
     }
 

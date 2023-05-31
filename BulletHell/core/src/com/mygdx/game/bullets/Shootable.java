@@ -8,5 +8,6 @@ public interface Shootable {
     public void checkCollision(Shootable shootable);
     public void setHealth(float damage);
     public String getTag();
+    public float getDamage();
 
 }

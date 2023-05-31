@@ -15,6 +15,11 @@ import com.mygdx.game.uirelated.EnemyHealthBar;
 import java.util.Random;
 
 public class Enemy implements Shootable {
+
+    //For conversion between different screen sizes
+    private float width;
+    private float height;
+
     protected SpriteBatch batch;
     protected Texture texture;
     protected ShapeRenderer collider;
@@ -22,7 +27,7 @@ public class Enemy implements Shootable {
     protected String tag;
 
     // attributes
-    protected int sizeX, sizeY;
+    protected float sizeX, sizeY;
     protected float positionX, positionY;
     protected float speedX, speedY;
     protected float health;
@@ -54,8 +59,12 @@ public class Enemy implements Shootable {
 
     public Enemy(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, 
     String bulletType, String sprite) {
-        sizeX = 64;
-        sizeY = 64;
+        float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+
+        //atributes
+        sizeX = width/25;
+        sizeY = width/25;
         damage = 100;
         this.positionX = positionX;
         this.positionY = positionY;
@@ -166,7 +175,9 @@ public class Enemy implements Shootable {
         if(shootable.isAlive() && isAlive) { //don't move this please, I feel that with a very bad luck the player could die if I don't check the health
             bulletPool.checkCollision(shootable, this.damage);
             if (Intersector.overlapConvexPolygons(getCollider(), shootable.getCollider())) {
-                shootable.setHealth(100);
+                if (shootable.getTag().compareTo("enemy") != 0) {
+                    shootable.setHealth(shootable.getDamage());
+                } 
             }
         }
     }
@@ -201,16 +212,21 @@ public class Enemy implements Shootable {
     public float getHealth() {
         return health;
     }
-    public int getSizeY() {
+    public float getSizeY() {
         return sizeY;
     }
-    public int getSizeX() {
+    public float getSizeX() {
         return sizeX;
     }
 
     @Override
     public String getTag() {
         return tag;
+    }
+
+    @Override
+    public float getDamage() {
+        return damage;
     }
 
 

@@ -17,6 +17,8 @@ public class BulletPool {
     private Bullet[] pool; // pool of bullets already prealocated in memory
     private float elapsedTime = 0;
 
+    private float sizeX, sizeY;
+
     private boolean isShooting = false;
 
     public BulletPool(int poolSize) {
@@ -24,17 +26,23 @@ public class BulletPool {
     }
 
     public void createBulletPool(String imgPath, String bulletType) {
+        float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+
+        //atributes
+        sizeX = width/40;
+        sizeY = width/40;
 
         pool = new Bullet[poolSize];
         if(bulletType.compareTo("EnemyBullet") == 0) {
             for (int i = 0; i < poolSize; i++) {
-                pool[i] = new EnemyBullet(-1, -1, 32, 32);
+                pool[i] = new EnemyBullet(-1, -1, sizeX, sizeY);
                 pool[i].createBullet(imgPath);
             }
         }
         if(bulletType.compareTo("SimpleBullet") == 0) {
             for (int i = 0; i < poolSize; i++) {
-                pool[i] = new SimpleBullet(-1, -1, 32, 32);
+                pool[i] = new SimpleBullet(-1, -1, sizeX, sizeY);
                 pool[i].createBullet(imgPath);
             }
         }

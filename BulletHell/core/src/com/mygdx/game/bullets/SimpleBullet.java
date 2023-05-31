@@ -12,7 +12,7 @@ public class SimpleBullet implements Bullet {
     protected Texture texture;
     protected SpriteBatch spriteBatch;
     protected float positionX, positionY; //for the position manipulation of the bullet
-    protected int sizeX, sizeY; //for the size
+    protected float sizeX, sizeY; //for the size
     protected float bulletSpeed = 500;
     protected float velocityX = 200, velocityY = 200; //for the velocity manipulation of the bullet
     protected float playerRotation = 0f;
@@ -21,7 +21,7 @@ public class SimpleBullet implements Bullet {
 
     protected int guarantee = 1;
 
-    SimpleBullet(float positionX, float positionY, int sizeX, int sizeY){ //Constructor to get players position
+    SimpleBullet(float positionX, float positionY, float sizeX, float sizeY){ //Constructor to get players position
         this.positionX = positionX;
         this.positionY = positionY;
         this.sizeX = sizeX;
@@ -53,7 +53,8 @@ public class SimpleBullet implements Bullet {
 
         
         spriteBatch.begin();
-        spriteBatch.draw(texture, this.positionX, this.positionY, sizeX / 2, sizeY / 2, sizeX, sizeY, 1f, 1f, this.playerRotation, 0, 0, sizeX, sizeY, false, false);
+        spriteBatch.draw(texture, this.positionX, this.positionY, sizeX / 2, sizeY / 2, sizeX, sizeY, 1f, 1f, this.playerRotation, 0, 0, texture.getWidth(),
+        texture.getHeight(), false, false);
         spriteBatch.end();
 
         //drawCollider();

@@ -17,6 +17,10 @@ import com.mygdx.game.uirelated.HealthBar;
 
 public class Player implements ShotListener, Shootable {
 
+    //For conversion between different screen sizes
+    private float width;
+	private float height;
+
     // Player atributes
     private float health = 640;
     private float damage = 100;
@@ -29,8 +33,8 @@ public class Player implements ShotListener, Shootable {
     private HealthBar healthBar = new HealthBar();
 
     // Movement and sizing
-    private float spriteSizeX = 64, spriteSizeY = 64; // float for the size
-    private float spritePositionX = 0f, spritePositionY = 0f; // float for the position
+    private float spriteSizeX, spriteSizeY; // float for the size
+    private float spritePositionX , spritePositionY = height/2; // float for the position
     private float speedX = 450f, speedY = 450f; // float for the speed
 
     private float centerX, centerY;
@@ -54,6 +58,15 @@ public class Player implements ShotListener, Shootable {
     private float currentTime;
 
     public void createPlayer() { // do these actions once the game starts
+        float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+
+        //atributes
+        spriteSizeX = width/25;
+        spriteSizeY = width/25;
+        spritePositionX = (width/2) - (spriteSizeX) ;
+        spritePositionY = (height/2) - (spriteSizeY) ;
+
 
         // player rendering
         batch = new SpriteBatch();
@@ -221,9 +234,9 @@ public class Player implements ShotListener, Shootable {
             bulletPool.checkCollision(shootable, this.damage);
             if (Intersector.overlapConvexPolygons(getCollider(), shootable.getCollider())) {
                 if (shootable.getTag().compareTo("enemy") == 0) {
-                    setHealth(damage * 2);
+                    setHealth(shootable.getDamage() * 2);
                 } 
-                else shootable.setHealth(100);
+                else shootable.setHealth(shootable.getDamage());
             }
         }
     }
@@ -271,5 +284,10 @@ public class Player implements ShotListener, Shootable {
     @Override
     public String getTag() {
         return tag;
+    }
+
+    @Override
+    public float getDamage() {
+        return damage;
     }
 }

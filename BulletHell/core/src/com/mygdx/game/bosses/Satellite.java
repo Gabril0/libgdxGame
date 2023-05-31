@@ -32,6 +32,10 @@ public class Satellite extends BossFundamentals {
             checkBounds();
             checkHealth();
 
+            
+            bulletPool.renderBulletPoolEnemy(positionX, positionY,
+                    sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90);
+
             if (elapsedTime > lastBlink + blinkCooldown) {
                 lastBlink = elapsedTime;
             }
@@ -50,8 +54,6 @@ public class Satellite extends BossFundamentals {
 
             batch.end();
 
-            bulletPool.renderBulletPoolEnemy(positionX, positionY,
-                    sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90);
 
             // Update the collider's position and rotation
             // drawCollider(getCollider());

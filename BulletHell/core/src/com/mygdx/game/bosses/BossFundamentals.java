@@ -12,8 +12,12 @@ public class BossFundamentals extends Enemy {
     public BossFundamentals(float positionX, float positionY, float speedX, float speedY, float health,
             String bulletImg, String bulletType, String sprite) {
         super(positionX, positionY, speedX, speedY, health, bulletImg, bulletType, sprite);
-        sizeX = 256;
-        sizeY = 256;
+        float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+
+        //atributes
+        sizeX = width/6;
+        sizeY = width/6;
 
     }
 
