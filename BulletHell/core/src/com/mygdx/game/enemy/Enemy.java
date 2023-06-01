@@ -79,6 +79,8 @@ public class Enemy implements Shootable {
 
         collider = new ShapeRenderer();
         bulletPool.createBulletPool(bulletImg, bulletType, damage);
+
+        bulletPool.setCoolDown(0.5f);
     }
 
     public void render(float playerCenterX, float playerCenterY){

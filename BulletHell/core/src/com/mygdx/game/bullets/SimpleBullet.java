@@ -133,4 +133,7 @@ public class SimpleBullet implements Bullet {
     public Bullet getBullet() {
         return this;
     }
+    public void setBulletSpeed(float bulletSpeed) {
+        this.bulletSpeed = bulletSpeed;
+    }
 }
