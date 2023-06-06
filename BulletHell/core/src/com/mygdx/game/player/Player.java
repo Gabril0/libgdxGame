@@ -89,8 +89,8 @@ public class Player implements ShotListener, Shootable {
         shootingAnimation.create();
 
 
-        //evolution = new StoredEnergy(this);
-        //evolution.makeChanges(this);
+        // evolution = new StoredEnergy(this);
+        // evolution.makeChanges(this);
 
     }
 
