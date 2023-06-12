@@ -28,7 +28,7 @@ public class BossFundamentals extends Enemy {
 
             this.playerCenterX = playerCenterX;
             this.playerCenterY = playerCenterY;
-            move();
+            move(1f, 1);
             checkBounds();
             checkHealth();
             
@@ -49,41 +49,5 @@ public class BossFundamentals extends Enemy {
 
         }
 
-    }
-
-    public void move() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        elapsedTime += deltaTime;
-        if (elapsedTime >= lastMoved + moveDuration) {
-            if(lock == 1){
-                randomX = moveRandomPosition();
-                randomY = moveRandomPosition();
-                lock = 0;
-                startingMovingTime = elapsedTime;
-            }
-            if (positionX == 0 || positionY == 0){ 
-                positionX += (deltaTime * speedX) * 1;
-                positionY += (deltaTime * speedY) * 1;
-            }
-
-            if (positionX == Gdx.graphics.getWidth() - sizeX || positionY == Gdx.graphics.getHeight() - sizeY) {
-                positionX += (deltaTime * speedX) * -1;
-                positionY += (deltaTime * speedY) * -1;}
-            else{
-                positionX += (deltaTime * speedX) * randomX;
-                positionY += (deltaTime * speedY) * randomY;
-                timeMoving = elapsedTime - startingMovingTime ;}
-            
-            if(timeMoving > stationaryTime){ //condition to stop enemy stuck
-                timeMoving = 0;
-                lock = 1;
-                lastMoved = elapsedTime ;
-            }
-        }
-            
-    }
-
-    private float moveRandomPosition(){
-        return (-1 + random.nextInt(3));
     }
 }

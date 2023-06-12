@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.backgroundAndCursor.Background;
 import com.mygdx.game.bosses.BossFundamentals;
 import com.mygdx.game.bosses.Satellite;
+import com.mygdx.game.enemy.Bull;
 import com.mygdx.game.enemy.Enemy;
 import com.mygdx.game.player.Player;
 
@@ -23,6 +24,7 @@ public class Stage1 extends StageFundamental {
 
 	Enemy e;
 	BossFundamentals miniBoss;
+	Bull bullEnemy;
 	ArrayList<Enemy> enemiesList = new ArrayList<>();
 
 	public void create() {
@@ -36,8 +38,12 @@ public class Stage1 extends StageFundamental {
 		miniBoss = new Satellite(width / 8, height / 8, 200, 200, 10000, "EnemyBullet.png", "EnemyBullet",
 				"Satellite.png");
 
+		bullEnemy = new Bull(0, height - 1, 700, 700, 1000, 
+		"EnemyBullet.png", "EnemyBullet", "bull.png");
+
 		enemiesList.add(e);
 		enemiesList.add(miniBoss);
+		enemiesList.add(bullEnemy);
 	}
 
 	public void render() {
@@ -62,6 +68,7 @@ public class Stage1 extends StageFundamental {
 			bg.renderBackground();
 			miniBoss.render(player.getCenterX(), player.getCenterY());
 			e.render(player.getCenterX(), player.getCenterY());
+			bullEnemy.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 		}
 		pause();
@@ -73,6 +80,7 @@ public class Stage1 extends StageFundamental {
 		player.disposePlayer();
 		e.dispose();
 		miniBoss.dispose();
+		bullEnemy.dispose();
 	}
 
 	public void collisionTest() {
