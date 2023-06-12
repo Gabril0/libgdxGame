@@ -112,7 +112,7 @@ public class Enemy implements Shootable {
     }
 
 
-    protected void checkBounds(){ //checks if the player still on bounds
+    protected void checkBounds(){ //checks if the enemy still on bounds
         if (positionX < 0) positionX = 0;
         if (positionY < 0) positionY = 0;
         if (positionX > Gdx.graphics.getWidth() - sizeX) positionX = Gdx.graphics.getWidth() - sizeX;
