@@ -96,10 +96,10 @@ public class SimpleBullet implements Bullet {
     }
 
     private void checkBounds(){
-        if (positionX < -50) deactivate();
-        if (positionY < -50) deactivate();
-        if (positionX > Gdx.graphics.getWidth() + 50) deactivate();
-        if (positionY > Gdx.graphics.getHeight() + 50) deactivate();
+        if (positionX < -500) deactivate();
+        if (positionY < -500) deactivate();
+        if (positionX > Gdx.graphics.getWidth() + 500) deactivate();
+        if (positionY > Gdx.graphics.getHeight() + 500) deactivate();
     } 
 
     // private void drawCollider() {

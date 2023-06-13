@@ -1,6 +1,7 @@
 package com.mygdx.game.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
@@ -54,6 +55,7 @@ public class Player implements ShotListener, Shootable {
     private Animation transitionAnimation;
     private Animation transformShooting;
     private Animation transformationIdle;
+    protected Animation explosion;
 
     // Booleans
     private boolean isShooting;
@@ -62,6 +64,9 @@ public class Player implements ShotListener, Shootable {
     private boolean gotHit = false;
     private boolean isTransformed = false;
     private boolean transformationFlag = false; // checks if the player has already transformed
+    protected boolean explosionLock = true;
+
+
 
     // Timing
     private float timeHit = 0; // initializing to not lock
@@ -98,11 +103,13 @@ public class Player implements ShotListener, Shootable {
         transitionAnimation = new PlayerTransitionAnimation();
         transformShooting = new TransformShooting();
         transformationIdle = new TransformationIdle();
+        explosion = new Explosion();
 
         shootingAnimation.create();
         transitionAnimation.create();
         transformShooting.create();
         transformationIdle.create();
+        explosion.create();
 
 
         // evolution = new StoredEnergy(this);
@@ -111,6 +118,21 @@ public class Player implements ShotListener, Shootable {
     }
 
     public void renderPlayer() { // do these actions every frame
+        if(!isAlive){
+            batch.begin();
+            batch.setColor(Color.WHITE);
+
+            if(explosionLock){
+                explosion.render(spritePositionX - spriteSizeX, spritePositionY - spriteSizeY, spriteSizeX*3,
+                        spriteSizeY*3, 0, batch);
+
+                if(explosion.getWasFinished()){
+                    explosionLock = false;
+
+                }
+            }
+            batch.end();
+        }
         if (isAlive) {
             deltaTime = Gdx.graphics.getDeltaTime();
             currentTime += deltaTime;
@@ -132,6 +154,7 @@ public class Player implements ShotListener, Shootable {
         bulletPool.disposeBulletPool();
         healthBar.disposeHealthBar();
         transitionAnimation.dispose();
+        explosion.dispose();
     }
 
     private void shoot() {

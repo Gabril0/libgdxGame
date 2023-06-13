@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
+import com.mygdx.game.animation.Animation;
+import com.mygdx.game.animation.Explosion;
 import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.bullets.Shootable;
 import com.mygdx.game.uirelated.EnemyHealthBar;
@@ -54,6 +56,9 @@ public class Enemy implements Shootable {
     protected float hitCurrentTime = 0f;
 
     protected boolean isHit = false;
+    protected boolean explosionLock = true;
+
+    protected Animation explosion;
 
 
     public Enemy(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, 
@@ -81,10 +86,26 @@ public class Enemy implements Shootable {
         bulletPool.createBulletPool(bulletImg, bulletType, damage);
 
         bulletPool.setCoolDown(0.5f);
+
+        explosion = new Explosion();
+        explosion.create();
     }
 
     public void render(float playerCenterX, float playerCenterY){
         float deltaTime = Gdx.graphics.getDeltaTime();
+        batch.begin();
+        if(!isAlive){
+            batch.setColor(Color.WHITE);
+
+            if(explosionLock){
+            explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                    0, batch);
+
+            if(explosion.getWasFinished()){
+                explosionLock = false;
+            }
+            }
+        }
         if(isAlive){
 
         this.playerCenterX = playerCenterX;
@@ -95,19 +116,19 @@ public class Enemy implements Shootable {
         
         bulletPool.renderBulletPoolEnemy(positionX, positionY, 
 		sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
-        
-        batch.begin();
+
         batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
         sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
         texture.getHeight(), false, false);
         if(isHit){gotHitAnimation(deltaTime);}
-        batch.end();
+
         healthBar.renderHealthBar(this);
 
         // Update the collider's position and rotation
        // drawCollider(getCollider());
 
         }
+        batch.end();
 
     }
 
