@@ -36,6 +36,7 @@ public class PlayerTransitionAnimation extends AnimationFundamentals{
         animation.add(new Texture("playerAnimation/playerTransition12.png"));
         animation.add(new Texture("playerAnimation/playerTransition13.png"));
         animation.add(new Texture("playerAnimation/playerTransition14.png"));
+        animation.add(new Texture("playerAnimation/playerTransition14.png"));
 
 
 
