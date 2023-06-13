@@ -9,6 +9,7 @@ public class AnimationFundamentals implements Animation{
     protected int currentFrameIndex;
     protected float frameDuration = 0.1f; //duration of animation speed
     protected float frameTimer = 0f;
+    private boolean animationWasFinished = false;
     @Override
     public void create() {
         animation = new Array<Texture>();
@@ -25,6 +26,9 @@ public class AnimationFundamentals implements Animation{
         batch.draw(currentFrame, spritePositionX, spritePositionY, spriteSizeX / 2, spriteSizeY / 2, spriteSizeX,
                 spriteSizeY, 1f, 1f, rotateToCursor, 0, 0, currentFrame.getWidth(),
                 currentFrame.getHeight(), false, false);
+        if(currentFrameIndex == animation.size -1){
+            animationWasFinished = true;
+        }
     }
 
     @Override
@@ -37,5 +41,8 @@ public class AnimationFundamentals implements Animation{
     public void setFrameDuration(float frameDuration) {
         this.frameDuration = frameDuration;
     }
-    
+
+    public boolean getWasFinished() {
+        return animationWasFinished;
+    }
 }
