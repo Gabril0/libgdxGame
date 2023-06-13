@@ -7,9 +7,7 @@ import com.badlogic.gdx.Input;
 //import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
-import com.mygdx.game.animation.Animation;
-import com.mygdx.game.animation.PlayerTransitionAnimation;
-import com.mygdx.game.animation.ShootingAnimation;
+import com.mygdx.game.animation.*;
 import com.mygdx.game.bullets.Bullet;
 import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.bullets.Shootable;
@@ -54,6 +52,8 @@ public class Player implements ShotListener, Shootable {
 
     private Animation shootingAnimation;
     private Animation transitionAnimation;
+    private Animation transformShooting;
+    private Animation transformationIdle;
 
     // Booleans
     private boolean isShooting;
@@ -84,19 +84,25 @@ public class Player implements ShotListener, Shootable {
         // player rendering
         batch = new SpriteBatch();
 
-        img = new Texture("PlayerBaseSprite.png");
-        transformImg = new Texture("PlayerTransformation.png");
+        img = new Texture("playerAnimation/PlayerBaseSprite.png");
+        transformImg = new Texture("playerAnimation/PlayerTransformation.png");
         //collision = new ShapeRenderer();
         healthBar.createHealthBar();
         tag = "player";
 
         // shooting AND shooting animation
-        bulletPool.createBulletPool("PlayerBullet.png", "SimpleBullet", damage);
+        bulletPool.createBulletPool("Bullets/PlayerBullet.png", "SimpleBullet", damage);
         em.addShotListener(this);
+
         shootingAnimation = new ShootingAnimation();
         transitionAnimation = new PlayerTransitionAnimation();
+        transformShooting = new TransformShooting();
+        transformationIdle = new TransformationIdle();
+
         shootingAnimation.create();
         transitionAnimation.create();
+        transformShooting.create();
+        transformationIdle.create();
 
 
         // evolution = new StoredEnergy(this);
@@ -168,24 +174,19 @@ public class Player implements ShotListener, Shootable {
     private void drawTransformedPlayer() { // Draws the player sprite each frame
 
 
-        if (isShooting) { // shooting animation
-            shootingAnimation.render(spritePositionX, spritePositionY, spriteSizeX,
-                    spriteSizeY, rotateToCursor(),batch);
-
-        }
-        if(!transformationFlag) { // idle
-            transitionAnimation.render(spritePositionX, spritePositionY, spriteSizeX,
-                    spriteSizeY, rotateToCursor(),batch);
-            if(transitionAnimation.getWasFinished()){ //changes player by transforming them
-                damage = damage*1.2f;
-
+        if (isShooting) {
+            // Shooting animation
+            transformShooting.render(spritePositionX, spritePositionY, spriteSizeX, spriteSizeY, rotateToCursor(), batch);
+        } else if (!transformationFlag) {
+            transitionAnimation.render(spritePositionX, spritePositionY, spriteSizeX, spriteSizeY, rotateToCursor(), batch);
+            if (transitionAnimation.getWasFinished()) {
+                // Changes player by transforming them
+                damage = damage * 1.2f;
                 transformationFlag = true;
             }
-        }
-        else{
-            batch.draw(transformImg, spritePositionX, spritePositionY, spriteSizeX / 2, spriteSizeY / 2, spriteSizeX,
-                    spriteSizeY, 1f, 1f, rotateToCursor(), 0, 0, img.getWidth(),
-                    img.getHeight(), false, false);
+        } else {
+            // Default transformation animation
+            transformationIdle.render(spritePositionX, spritePositionY, spriteSizeX, spriteSizeY, rotateToCursor(), batch);
         }
 
 

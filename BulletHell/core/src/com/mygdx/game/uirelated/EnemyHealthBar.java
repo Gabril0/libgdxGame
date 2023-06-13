@@ -9,8 +9,8 @@ public class EnemyHealthBar extends HealthBar{
     private int lock = 1;
     @Override
     public void createHealthBar(){
-        lifeBar = new Texture("EnemyHealthBar.png");
-        lifeBarBg = new Texture("HealthBarBg.png");
+        lifeBar = new Texture("UI/EnemyHealthBar.png");
+        lifeBarBg = new Texture("UI/HealthBarBg.png");
         batch = new SpriteBatch();
         currentSizeX = 128;
         bgSizeX = currentSizeX;

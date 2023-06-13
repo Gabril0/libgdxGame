@@ -17,7 +17,7 @@ public class StageFundamental implements Stage {
 	StageFundamental(float width, float height) {
 		this.width = width;
 		this.height = height;
-		pauseTexture = new Texture("pause.png");
+		pauseTexture = new Texture("UI/pause.png");
 		batch = new SpriteBatch();
 		isPaused = false;
 		sound = Gdx.audio.newSound(Gdx.files.internal("Sounds/funnySound.mp3"));

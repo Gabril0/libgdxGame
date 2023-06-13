@@ -20,7 +20,7 @@ public class Background {
         batch = new SpriteBatch();
         imgSlow = new Texture(pathSlow);
         imgFast = new Texture(pathFast);
-        opacityEffect = new Texture("opacityEffect.png");
+        opacityEffect = new Texture("Backgrounds/opacityEffect.png");
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         bounds = -sizeX / 2.05f; //this is because of the conversion when getting players monitor size

@@ -19,8 +19,8 @@ public class HealthBar {
 
 
     public void createHealthBar(){
-        lifeBar = new Texture("HealthBar.png");
-        lifeBarBg = new Texture("HealthBarBg.png");
+        lifeBar = new Texture("UI/HealthBar.png");
+        lifeBarBg = new Texture("UI/HealthBarBg.png");
         batch = new SpriteBatch();
         currentSizeX = 64;
         bgSizeX = currentSizeX;
