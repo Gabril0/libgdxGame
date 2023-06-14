@@ -148,28 +148,25 @@ public class BulletPool {
             for (int i = 0; i < poolSize; i++) {
                 pool[i] = new EnemyBullet(-1, -1, sizeX, sizeY);
                 pool[i].createBullet(imgPath);
-                pool[i].updateBulletTexture(imgPath);
             }
         }
         if(bulletType.compareTo("SimpleBullet") == 0) {
             for (int i = 0; i < poolSize; i++) {
                 pool[i] = new SimpleBullet(-1, -1, sizeX, sizeY);
                 pool[i].createBullet(imgPath);
-                pool[i].updateBulletTexture(imgPath);
             }
         }
         if(bulletType.compareTo("StoredEnergyBullet") == 0) {
             for (int i = 0; i < poolSize; i++) {
                 pool[i] = new StoredEnergyBullet(-1, -1, sizeX, sizeY);
                 pool[i].createBullet(imgPath);
-                pool[i].updateBulletTexture(imgPath);
             }
         }
         if(bulletType.compareTo("TransformationBullet") == 0) {
             for (int i = 0; i < poolSize; i++) {
                 pool[i] = new TransformationBullet(-1, -1, sizeX, sizeY);
                 pool[i].createBullet(imgPath);
-                pool[i].updateBulletTexture(imgPath);
+
                 deactivateAll();
             }
         }
