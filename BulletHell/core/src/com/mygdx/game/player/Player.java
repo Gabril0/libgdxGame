@@ -205,6 +205,8 @@ public class Player implements ShotListener, Shootable {
             if (transitionAnimation.getWasFinished()) {
                 // Changes player by transforming them
                 damage = damage * 1.2f;
+                bulletPool.setBulletType("TransformationBullet", "Bullets/TransformationBullet.png");
+                setShootingRate(1.25f);
                 transformationFlag = true;
             }
         } else {
@@ -341,6 +343,7 @@ public class Player implements ShotListener, Shootable {
             isAlive = false;
         }
     }
+
 
     public float getCenterX() {
         centerX = spritePositionX + (spriteSizeX / 2);

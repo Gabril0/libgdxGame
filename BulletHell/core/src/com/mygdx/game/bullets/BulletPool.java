@@ -3,6 +3,7 @@ package com.mygdx.game.bullets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Intersector;
 import com.mygdx.game.listeners.EventManager;
 
@@ -140,23 +141,36 @@ public class BulletPool {
         return coolDown;
     }
 
-    public void setBulletType(String bulletType, String imgPath) { 
-        if(bulletType.compareTo("EnemyBullet") == 0) {
+    public void setBulletType(String bulletType, String imgPath) {
+        this.bulletType = bulletType;
+        this.imgPath = imgPath;
+        if(bulletType.compareTo("EnemyBullet") == 0) { //initializing the bullets at -1,-1 to not appear at the screen when not active
             for (int i = 0; i < poolSize; i++) {
                 pool[i] = new EnemyBullet(-1, -1, sizeX, sizeY);
                 pool[i].createBullet(imgPath);
+                pool[i].updateBulletTexture(imgPath);
             }
         }
         if(bulletType.compareTo("SimpleBullet") == 0) {
             for (int i = 0; i < poolSize; i++) {
                 pool[i] = new SimpleBullet(-1, -1, sizeX, sizeY);
                 pool[i].createBullet(imgPath);
+                pool[i].updateBulletTexture(imgPath);
             }
         }
         if(bulletType.compareTo("StoredEnergyBullet") == 0) {
             for (int i = 0; i < poolSize; i++) {
                 pool[i] = new StoredEnergyBullet(-1, -1, sizeX, sizeY);
                 pool[i].createBullet(imgPath);
+                pool[i].updateBulletTexture(imgPath);
+            }
+        }
+        if(bulletType.compareTo("TransformationBullet") == 0) {
+            for (int i = 0; i < poolSize; i++) {
+                pool[i] = new TransformationBullet(-1, -1, sizeX, sizeY);
+                pool[i].createBullet(imgPath);
+                pool[i].updateBulletTexture(imgPath);
+                deactivateAll();
             }
         }
     }
@@ -168,6 +182,11 @@ public class BulletPool {
             setBulletType(bulletType, imgPath);
             originalDamage = damage;
         }
+    }
+
+    private void deactivateAll(){ //used to clean the bullets and refresh for the changes
+        for (int i = 0; i < poolSize; i++) {
+                pool[i].deactivate();}
     }
 
     public Bullet getBullet(){

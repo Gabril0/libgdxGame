@@ -48,6 +48,7 @@ public class SimpleBullet implements Bullet {
         }
         guarantee = 0;
 
+
         checkBounds();
         move();
         specialAction();
@@ -135,5 +136,8 @@ public class SimpleBullet implements Bullet {
     }
     public void setBulletSpeed(float bulletSpeed) {
         this.bulletSpeed = bulletSpeed;
+    }
+    public void updateBulletTexture(String imgPath) {
+        this.texture = new Texture(imgPath);
     }
 }

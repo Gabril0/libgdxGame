@@ -12,4 +12,5 @@ public interface Bullet {
     public boolean getIsActive();
     public Polygon getCollider();
     public Bullet getBullet();
+    public void updateBulletTexture(String imgPath);
 }
