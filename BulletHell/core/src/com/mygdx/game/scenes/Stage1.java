@@ -11,6 +11,7 @@ import com.mygdx.game.bosses.BossFundamentals;
 import com.mygdx.game.bosses.Satellite;
 import com.mygdx.game.enemy.Bull;
 import com.mygdx.game.enemy.Enemy;
+import com.mygdx.game.enemy.Fire;
 import com.mygdx.game.player.Player;
 
 public class Stage1 extends StageFundamental {
@@ -25,6 +26,7 @@ public class Stage1 extends StageFundamental {
 	Enemy e;
 	BossFundamentals miniBoss;
 	Bull bullEnemy;
+	Fire fireEnemy;
 	ArrayList<Enemy> enemiesList = new ArrayList<>();
 
 	public void create() {
@@ -40,10 +42,13 @@ public class Stage1 extends StageFundamental {
 
 		bullEnemy = new Bull(0, height - 1, 700, 700, 1000, 
 		"EnemyBullet.png", "EnemyBullet", "bull.png");
+		fireEnemy = new Fire(0, height/2, 0, 0, 1000,
+		"EnemyBullet.png", "EnemyBullet", "fire.png");
 
 		enemiesList.add(e);
 		enemiesList.add(miniBoss);
 		enemiesList.add(bullEnemy);
+		enemiesList.add(fireEnemy);
 	}
 
 	public void render() {
@@ -71,6 +76,7 @@ public class Stage1 extends StageFundamental {
 			// the bull has to get the actual player position, because it runs right towards him and using the
 			// libgdx natural position system makes it easier
 			bullEnemy.render(player.getSpritePositionX(), player.getSpritePositionY());
+			fireEnemy.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 		}
 		pause();
@@ -83,6 +89,7 @@ public class Stage1 extends StageFundamental {
 		e.dispose();
 		miniBoss.dispose();
 		bullEnemy.dispose();
+		fireEnemy.dispose();
 	}
 
 	public void collisionTest() {
