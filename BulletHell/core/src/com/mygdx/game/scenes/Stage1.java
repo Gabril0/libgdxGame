@@ -68,7 +68,9 @@ public class Stage1 extends StageFundamental {
 			bg.renderBackground();
 			miniBoss.render(player.getCenterX(), player.getCenterY());
 			e.render(player.getCenterX(), player.getCenterY());
-			bullEnemy.render(player.getCenterX(), player.getCenterY());
+			// the bull has to get the actual player position, because it runs right towards him and using the
+			// libgdx natural position system makes it easier
+			bullEnemy.render(player.getSpritePositionX(), player.getSpritePositionY());
 			player.renderPlayer();
 		}
 		pause();

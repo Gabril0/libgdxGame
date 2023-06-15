@@ -134,19 +134,12 @@ public class Enemy implements Shootable {
                 lock = 0;
                 startingMovingTime = elapsedTime;
             }
-            if (positionX == 0 || positionY == 0){ 
-                positionX += (deltaTime * speedX) * 1;
-                positionY += (deltaTime * speedY) * 1;
+            else {
+                // decides the signal of the random number, so it knows where to go
+                positionX += speedX * deltaTime * Math.signum(randomX);
+                positionY += speedY * deltaTime * Math.signum(randomY);
+                timeMoving = elapsedTime - startingMovingTime;
             }
-
-            if (positionX == Gdx.graphics.getWidth() - sizeX || positionY == Gdx.graphics.getHeight() - sizeY) {
-                positionX += (deltaTime * speedX) * -1;
-                positionY += (deltaTime * speedY) * -1;}
-            else{
-                positionX += (deltaTime * speedX) * randomX;
-                positionY += (deltaTime * speedY) * randomY;
-                timeMoving = elapsedTime - startingMovingTime ;}
-            
             if(timeMoving > stationaryTime){ //condition to stop enemy stuck
                 timeMoving = 0;
                 lock = 1;
