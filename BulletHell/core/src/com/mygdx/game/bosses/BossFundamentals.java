@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.enemy.Enemy;
-
+import com.mygdx.game.listeners.EventManager;
 
 
 public class BossFundamentals extends Enemy {
@@ -19,6 +19,7 @@ public class BossFundamentals extends Enemy {
         //atributes
         sizeX = width/6;
         sizeY = width/6;
+
 
     }
 
@@ -95,6 +96,9 @@ public class BossFundamentals extends Enemy {
             }
         }
             
+    }
+    public boolean died(){
+        return !isAlive;
     }
 
     private float moveRandomPosition(){

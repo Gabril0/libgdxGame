@@ -17,21 +17,22 @@ public class Stage1 extends StageFundamental {
 		super(width, height);
 	}
 
-	Player player = new Player();
+	private Background bg = new Background();
 
-	Background bg = new Background();
+	private Enemy e;
+	private BossFundamentals miniBoss;
+	private ArrayList<Enemy> enemiesList = new ArrayList<>();
 
-	Enemy e;
-	BossFundamentals miniBoss;
-	ArrayList<Enemy> enemiesList = new ArrayList<>();
+
+
 
 	public void create() {
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
-
 		bg.createBackground(width * 1.96f, height, "Backgrounds/map1Slow.png", "Backgrounds/map1Fast.png");
 		e = new Enemy(width / 10, height / 10, 300, 300, 1000,
 				"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/star.png");
+
 		player.createPlayer();
 		miniBoss = new Satellite(width / 8, height / 8, 200, 200, 10000, "Bullets/EnemyBullet.png", "EnemyBullet",
 				"Enemies/Satellite.png");
@@ -40,18 +41,8 @@ public class Stage1 extends StageFundamental {
 		enemiesList.add(miniBoss);
 	}
 
-	public void render() {
-		if (isPaused) {
-			float mouseX = Gdx.input.getX();
-			float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
-	
-			if (mouseY >= Gdx.graphics.getHeight() * 0.66 && Gdx.input.isButtonJustPressed(Buttons.LEFT) 
-			) {
-				System.out.println("Clicked resume");
-				isPaused = false;
-			}
-			// Handle other pause-related actions here
-		} else {
+	public void renderContinuation() {
+
 			// bg default color
 			ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 	
@@ -63,8 +54,9 @@ public class Stage1 extends StageFundamental {
 			miniBoss.render(player.getCenterX(), player.getCenterY());
 			e.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
-		}
-		pause();
+
+			checkBossDefeat(miniBoss);
+
 	}
 	
 

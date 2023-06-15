@@ -1,6 +1,6 @@
 package com.mygdx.game.listeners;
 
-public interface ShotListener {
+public interface Listener {
     void onShoot(boolean bool);
     
 }

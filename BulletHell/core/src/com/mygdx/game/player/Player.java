@@ -15,10 +15,10 @@ import com.mygdx.game.bullets.Shootable;
 import com.mygdx.game.evolution.Evolution;
 import com.mygdx.game.evolution.StoredEnergy;
 import com.mygdx.game.listeners.EventManager;
-import com.mygdx.game.listeners.ShotListener;
+import com.mygdx.game.listeners.Listener;
 import com.mygdx.game.uirelated.HealthBar;
 
-public class Player implements ShotListener, Shootable {
+public class Player implements Listener, Shootable {
 
     private Evolution evolution;
 
@@ -44,6 +44,7 @@ public class Player implements ShotListener, Shootable {
     private float speedX = 450f, speedY = 450f; // float for the speed
 
     private float centerX, centerY;
+    private float transformTime = -10;
 
     private BulletPool bulletPool = new BulletPool(200);
 
@@ -55,7 +56,9 @@ public class Player implements ShotListener, Shootable {
     private Animation transitionAnimation;
     private Animation transformShooting;
     private Animation transformationIdle;
+    private Animation backToNormalAnimation;
     protected Animation explosion;
+
 
     // Booleans
     private boolean isShooting;
@@ -65,6 +68,7 @@ public class Player implements ShotListener, Shootable {
     private boolean isTransformed = false;
     private boolean transformationFlag = false; // checks if the player has already transformed
     protected boolean explosionLock = true;
+    private boolean canShoot = true;
 
 
 
@@ -104,16 +108,14 @@ public class Player implements ShotListener, Shootable {
         transformShooting = new TransformShooting();
         transformationIdle = new TransformationIdle();
         explosion = new Explosion();
+        backToNormalAnimation = new BackToNormal();
 
+        backToNormalAnimation.create();
         shootingAnimation.create();
         transitionAnimation.create();
         transformShooting.create();
         transformationIdle.create();
         explosion.create();
-
-
-        // evolution = new StoredEnergy(this);
-        // evolution.makeChanges(this);
 
     }
 
@@ -138,7 +140,7 @@ public class Player implements ShotListener, Shootable {
             currentTime += deltaTime;
             checkHealth();
             movePlayer();
-            shoot();
+            if(canShoot) shoot();
             checkBounds();
             drawPlayer();
 
@@ -158,9 +160,12 @@ public class Player implements ShotListener, Shootable {
     }
 
     private void shoot() {
-        if(Gdx.input.isKeyPressed(Input.Keys.F)){
-            isTransformed = true;
-        }
+        //if(currentTime > transformTime + 10) {
+            if (Gdx.input.isKeyPressed(Input.Keys.F)) {
+                //transformTime = currentTime + 2;
+                isTransformed = true;
+            }
+        //}
         bulletPool.renderBulletPoolPlayer(getSpritePositionX(), getSpritePositionY(),
                 getSpriteSizeX(), getSpriteSizeY(), rotateToCursor() - 90,damage, em); // -op because bullets are in a diferent
                                                                                 // orientation
@@ -195,19 +200,34 @@ public class Player implements ShotListener, Shootable {
 
     }
     private void drawTransformedPlayer() { // Draws the player sprite each frame
-
-
-        if (isShooting) {
+//this part makes the player transform back to normal
+//        if(currentTime > transformTime + 20){
+//            backToNormalAnimation.render(spritePositionX, spritePositionY, spriteSizeX, spriteSizeY, rotateToCursor(), batch);
+//            canShoot = false;
+//            if (backToNormalAnimation.getWasFinished()) {
+//                damage = damage / 0.8f;
+//                bulletPool.setBulletType("PlayerBullet", "Bullets/PlayerBullet.png");
+//                setShootingRate((1 / 0.75f));
+//                transformationFlag = false;
+//                transformTime = currentTime;
+//                canShoot = true;
+//                isTransformed = false;
+//            }
+//        }
+        if (isShooting && transformationFlag ) {
             // Shooting animation
             transformShooting.render(spritePositionX, spritePositionY, spriteSizeX, spriteSizeY, rotateToCursor(), batch);
         } else if (!transformationFlag) {
             transitionAnimation.render(spritePositionX, spritePositionY, spriteSizeX, spriteSizeY, rotateToCursor(), batch);
+            canShoot = false;
             if (transitionAnimation.getWasFinished()) {
                 // Changes player by transforming them
+                transformTime = currentTime;
                 damage = damage * 1.2f;
                 bulletPool.setBulletType("TransformationBullet", "Bullets/TransformationBullet.png");
                 setShootingRate(1.25f);
                 transformationFlag = true;
+                canShoot = true;
             }
         } else {
             // Default transformation animation
@@ -389,5 +409,13 @@ public class Player implements ShotListener, Shootable {
     }
     public Bullet getBullet(){
         return bulletPool.getBullet();
+    }
+    public void setSpeed(float speed){
+        speedY = speedY * speed;
+        speedX = speedX * speed;
+    }
+    public void setLife(float percentage){ //alternative to setHealth to adjust the life instead of just damage
+        health = health * percentage;
+
     }
 }
