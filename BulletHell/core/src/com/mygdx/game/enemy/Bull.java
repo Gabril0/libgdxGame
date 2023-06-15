@@ -53,7 +53,6 @@ public class Bull extends Enemy {
             }
             else {
                 // follows the player
-                // THE BULL IS NOT FOLLOWING THE PLAYER CORRECTLY, it follows the top right corner of the player
                 positionX += speedX * deltaTime * lockedPlayerCenterX;
                 positionY += speedY * deltaTime * lockedPlayerCenterY;
                 // wait to follow the player again
@@ -73,12 +72,14 @@ public class Bull extends Enemy {
         return false;
     }
 
-    // this had to be changed, because the bull consider its position accorind to the center of the sprite
-    // @Override
-    // protected void checkBounds(){ //checks if the enemy still on bounds
-    //     if (positionX < sizeX / 2) positionX = sizeX / 2;
-    //     if (positionY < sizeY / 2) positionY = sizeY / 2;
-    //     if (positionX > Gdx.graphics.getWidth() - sizeX / 2) positionX = Gdx.graphics.getWidth() - (sizeX / 2);
-    //     if (positionY > Gdx.graphics.getHeight() - sizeY / 2) positionY = Gdx.graphics.getHeight() - (sizeY / 2);
-    // }
+    @Override
+    protected void applyMovement() {
+        move(3, 2);
+    }
+
+    @Override
+    // this enemy does not shoot
+    protected void enemyBullet() {
+        return;
+    }
 }
