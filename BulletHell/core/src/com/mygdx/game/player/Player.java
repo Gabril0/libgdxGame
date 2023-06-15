@@ -28,7 +28,7 @@ public class Player implements Listener, Shootable {
     
     // Player atributes
     private float health = 640;
-    private float damage = 100;
+    private float damage = 500;
     private String tag = "player";
 
     // Base sprite rendering variables

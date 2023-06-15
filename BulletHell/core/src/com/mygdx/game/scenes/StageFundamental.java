@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.bosses.BossFundamentals;
-import com.mygdx.game.evolution.Evolution;
-import com.mygdx.game.evolution.Overweight;
-import com.mygdx.game.evolution.StoredEnergy;
-import com.mygdx.game.evolution.SuddenDeath;
+import com.mygdx.game.evolution.*;
 import com.mygdx.game.listeners.EventManager;
 import com.mygdx.game.listeners.Listener;
 import com.mygdx.game.player.Player;
@@ -48,6 +45,7 @@ public class StageFundamental implements Stage {
 		evolutions.add(new StoredEnergy());
 		evolutions.add(new Overweight());
 		evolutions.add(new SuddenDeath());
+		evolutions.add(new CosmicHeal());
 	}
 
 	@Override
@@ -115,7 +113,7 @@ public class StageFundamental implements Stage {
 	protected void evolute(){
 
 		if(evolutionPoolingLock) {
-			for (int i = 1; i <= evolutions.size(); i++) { //gets random values for the evolution pool
+			for (int i = 1; i <= 3; i++) { //gets random values for the evolution pool
 				number[i] = random.nextInt(evolutions.size());
 			}
 

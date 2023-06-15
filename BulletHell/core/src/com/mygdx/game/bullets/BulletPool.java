@@ -166,10 +166,17 @@ public class BulletPool {
 
     private void changeSize(float damage){
         if(originalDamage != damage){
-            sizeX = sizeX * damage/100;
-            sizeY = sizeY * damage/100;
+            if(originalDamage > damage) {
+                sizeX = sizeX - damage / 100;
+                sizeY = sizeY - damage / 100;
+            }
+            if(originalDamage < damage) {
+                sizeX = sizeX + damage / 100;
+                sizeY = sizeY + damage / 100;
+            }
             setBulletType(bulletType, imgPath);
             originalDamage = damage;
+            deactivateAll();
         }
     }
 
