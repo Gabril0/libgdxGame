@@ -66,10 +66,10 @@ public class Bull extends Enemy {
         }
     }
     private boolean hitCorner(){
-        if (positionX < sizeX / 2) return true;
-        if (positionY < sizeY / 2) return true;
-        if (positionX > Gdx.graphics.getWidth() - sizeX / 2) return true;
-        if (positionY > Gdx.graphics.getHeight() - sizeY / 2) return true;
+        if (positionX < 0) return true;
+        if (positionY < 0) return true;
+        if (positionX > Gdx.graphics.getWidth() - sizeX) return true;
+        if (positionY > Gdx.graphics.getHeight() - sizeY) return true;
         return false;
     }
 

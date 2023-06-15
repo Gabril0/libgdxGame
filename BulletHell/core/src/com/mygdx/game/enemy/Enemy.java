@@ -122,9 +122,6 @@ public class Enemy implements Shootable {
 
 
     protected void move(float moveDuration, float stationaryTime) {
-        // float randomX = 0;
-        // float randomY = 0;
-        // float startingMovingTime = 0;
         float deltaTime = Gdx.graphics.getDeltaTime();
         elapsedTime += deltaTime;
         if (elapsedTime >= lastMoved + moveDuration) {
