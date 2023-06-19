@@ -28,7 +28,7 @@ public class Player implements Listener, Shootable {
     
     // Player atributes
     private float health = 640;
-    private float damage = 500;
+    private float damage = 100;
     private String tag = "player";
 
     // Base sprite rendering variables
@@ -42,6 +42,7 @@ public class Player implements Listener, Shootable {
     private float spriteSizeX, spriteSizeY; // float for the size
     private float spritePositionX , spritePositionY = height/2; // float for the position
     private float speedX = 450f, speedY = 450f; // float for the speed
+    private float originalSpeed = 450f;
 
     private float centerX, centerY;
     private float transformTime = -10;
@@ -69,6 +70,7 @@ public class Player implements Listener, Shootable {
     private boolean transformationFlag = false; // checks if the player has already transformed
     protected boolean explosionLock = true;
     private boolean canShoot = true;
+    private boolean canSlowdown = false;
 
 
 
@@ -141,6 +143,7 @@ public class Player implements Listener, Shootable {
             checkHealth();
             movePlayer();
             if(canShoot) shoot();
+            if(canSlowdown) slowDown();
             checkBounds();
             drawPlayer();
 
@@ -364,6 +367,18 @@ public class Player implements Listener, Shootable {
         }
     }
 
+    public void slowDown(){
+        if(isShooting){
+            speedX = originalSpeed / 2;
+            speedY = originalSpeed / 2;
+
+        }
+        else{
+            speedX = originalSpeed;
+            speedY = originalSpeed;
+        }
+    }
+
 
     public float getCenterX() {
         centerX = spritePositionX + (spriteSizeX / 2);
@@ -413,9 +428,14 @@ public class Player implements Listener, Shootable {
     public void setSpeed(float speed){
         speedY = speedY * speed;
         speedX = speedX * speed;
+        originalSpeed = originalSpeed * speed;
     }
     public void setLife(float percentage){ //alternative to setHealth to adjust the life instead of just damage
         health = health * percentage;
 
+    }
+
+    public void setCanSlowdown(boolean bool){
+        canSlowdown = bool;
     }
 }

@@ -46,6 +46,10 @@ public class StageFundamental implements Stage {
 		evolutions.add(new Overweight());
 		evolutions.add(new SuddenDeath());
 		evolutions.add(new CosmicHeal());
+		evolutions.add(new CosmicStrength());
+		evolutions.add(new CosmicFlow());
+		evolutions.add(new BigBang());
+		evolutions.add(new GalacticCannon());
 	}
 
 	@Override
