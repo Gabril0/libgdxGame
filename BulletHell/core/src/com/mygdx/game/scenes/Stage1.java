@@ -29,9 +29,9 @@ public class Stage1 extends StageFundamental {
 	public void create() {
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
-		bg.createBackground(width * 1.96f, height, "Backgrounds/map1Slow.png", "Backgrounds/map1Fast.png");
+		bg.createBackground(width * 1.96f, height, "Backgrounds/map2Slow.png", "Backgrounds/map2Fast.png", "Backgrounds/opacityEffect2.png");
 		e = new Enemy(width / 10, height / 10, 300, 300, 1000,
-				"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/star.png");
+				"Bullets/StarBullet.png", "EnemyBullet", "Enemies/star.png");
 
 		player.createPlayer();
 		miniBoss = new Satellite(width / 8, height / 8, 200, 200, 10000, "Bullets/EnemyBullet.png", "EnemyBullet",
