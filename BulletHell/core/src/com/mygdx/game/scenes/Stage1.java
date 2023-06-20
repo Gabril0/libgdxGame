@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.backgroundAndCursor.Background;
+import com.mygdx.game.bosses.BlackHole;
 import com.mygdx.game.bosses.BossFundamentals;
 import com.mygdx.game.bosses.Satellite;
 import com.mygdx.game.bosses.SpaceMan;
@@ -21,8 +22,9 @@ public class Stage1 extends StageFundamental {
 	private Background bg = new Background();
 
 	private Enemy e;
-	private BossFundamentals satellite;
-	private BossFundamentals spaceMan;
+	private Satellite satellite;
+	private SpaceMan spaceMan;
+	private BlackHole blackHole;
 	private ArrayList<Enemy> enemiesList = new ArrayList<>();
 
 
@@ -40,10 +42,13 @@ public class Stage1 extends StageFundamental {
 				"Enemies/Satellite.png");
 		spaceMan = new SpaceMan(width / 2, height / 2, 300, 300, 8000, "Bullets/EnergyBullet.png", "EnemyBullet",
 				"Enemies/SpaceMan.png");
+		blackHole = new BlackHole(width / 2, height / 2, 300, 300, 10000, "Bullets/StarBullet.png", "EnemyBullet",
+				"Enemies/BlackHole.png");
 
-		enemiesList.add(e);
-		enemiesList.add(satellite);
-		enemiesList.add(spaceMan);
+//		enemiesList.add(e);
+//		enemiesList.add(satellite);
+//		enemiesList.add(spaceMan);
+		enemiesList.add(blackHole);
 	}
 
 	public void renderContinuation() {
@@ -56,13 +61,15 @@ public class Stage1 extends StageFundamental {
 	
 			// rendering
 			bg.renderBackground();
-			satellite.render(player.getCenterX(), player.getCenterY());
-			spaceMan.render(player.getCenterX(), player.getCenterY());
-			e.render(player.getCenterX(), player.getCenterY());
+			//satellite.render(player.getCenterX(), player.getCenterY());
+			//spaceMan.render(player.getCenterX(), player.getCenterY());
+			blackHole.render(player);
+			//e.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 
 			checkBossDefeat(satellite);
 			checkBossDefeat(spaceMan);
+			checkBossDefeat(blackHole);
 
 	}
 	
@@ -73,6 +80,7 @@ public class Stage1 extends StageFundamental {
 		e.dispose();
 		satellite.dispose();
 		spaceMan.dispose();
+		blackHole.dispose();
 	}
 
 	public void collisionTest() {

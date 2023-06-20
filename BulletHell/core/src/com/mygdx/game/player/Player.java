@@ -379,6 +379,13 @@ public class Player implements Listener, Shootable {
         }
     }
 
+    public void goToPoint(float x, float y){
+        if(spritePositionX > x) spritePositionX += -1 * 200 * deltaTime;
+        if(spritePositionX < x) spritePositionX += 1 * 200   * deltaTime;
+        if(spritePositionY > y) spritePositionY += -1 * 200   * deltaTime;
+        if(spritePositionY < y) spritePositionY += 1 * 200   * deltaTime;
+    }
+
 
     public float getCenterX() {
         centerX = spritePositionX + (spriteSizeX / 2);

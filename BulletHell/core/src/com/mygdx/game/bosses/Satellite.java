@@ -18,7 +18,8 @@ public class Satellite extends BossFundamentals {
         super(positionX, positionY, speedX, speedY, health, bulletImg, bulletType, sprite);
         idle = new SatelliteIdle();
         idle.create();
-        super.bulletPool.setCoolDown(0.2f);
+        super.bulletPool.setCoolDown(0.3f);
+        super.bulletPool.changeSize(2000);
     }
 
     @Override
