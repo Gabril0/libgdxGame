@@ -15,5 +15,6 @@ public class SuddenDeath implements Evolution {
     public void makeChanges(Player player) {
         player.setDamage(10f);
         player.setLife(0.01f);
+        player.getBulletPool().changeSize(10000);
     }
 }

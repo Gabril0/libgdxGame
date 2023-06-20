@@ -380,10 +380,10 @@ public class Player implements Listener, Shootable {
     }
 
     public void goToPoint(float x, float y){
-        if(spritePositionX > x) spritePositionX += -1 * 200 * deltaTime;
-        if(spritePositionX < x) spritePositionX += 1 * 200   * deltaTime;
-        if(spritePositionY > y) spritePositionY += -1 * 200   * deltaTime;
-        if(spritePositionY < y) spritePositionY += 1 * 200   * deltaTime;
+        if(spritePositionX > x) spritePositionX += -1 * 250 * deltaTime;
+        if(spritePositionX < x) spritePositionX += 1 * 250   * deltaTime;
+        if(spritePositionY > y) spritePositionY += -1 * 250   * deltaTime;
+        if(spritePositionY < y) spritePositionY += 1 * 250   * deltaTime;
     }
 
 
@@ -444,5 +444,9 @@ public class Player implements Listener, Shootable {
 
     public void setCanSlowdown(boolean bool){
         canSlowdown = bool;
+    }
+
+    public BulletPool getBulletPool() {
+        return bulletPool;
     }
 }
