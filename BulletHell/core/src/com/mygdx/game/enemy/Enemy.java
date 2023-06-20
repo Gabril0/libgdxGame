@@ -95,12 +95,10 @@ public class Enemy implements Shootable {
             checkBounds();
             checkHealth();
             
-            enemyBullet();
+            shot();
             
             batch.begin();
-            batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
-            sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
-            texture.getHeight(), false, false);
+            renderVariations();
             if(isHit)
                 gotHitAnimation(deltaTime);
             batch.end();
@@ -257,9 +255,15 @@ public class Enemy implements Shootable {
         move(3, 1);
     }
     // a capsule for the different types of bullet
-    protected void enemyBullet(){
+    protected void shot(){
         bulletPool.renderBulletPoolEnemy(positionX, positionY, 
             sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
+    }
+    // a capsule for the different types os rendering
+    protected void renderVariations(){
+        batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
+            sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
+            texture.getHeight(), false, false);
     }
 
 }

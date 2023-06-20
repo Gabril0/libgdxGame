@@ -12,6 +12,8 @@ import com.mygdx.game.bosses.Satellite;
 import com.mygdx.game.enemy.Bull;
 import com.mygdx.game.enemy.Enemy;
 import com.mygdx.game.enemy.Fire;
+import com.mygdx.game.enemy.StaticShootState;
+import com.mygdx.game.enemy.VariableShootState;
 import com.mygdx.game.player.Player;
 
 public class Stage1 extends StageFundamental {
@@ -27,6 +29,8 @@ public class Stage1 extends StageFundamental {
 	BossFundamentals miniBoss;
 	Bull bullEnemy;
 	Fire fireEnemy;
+	Fire staticShootFire;
+	Fire variableShootFire;
 	ArrayList<Enemy> enemiesList = new ArrayList<>();
 
 	public void create() {
@@ -44,11 +48,20 @@ public class Stage1 extends StageFundamental {
 		"EnemyBullet.png", "EnemyBullet", "bull.png");
 		fireEnemy = new Fire(0, height/2, 0, 0, 1000,
 		"EnemyBullet.png", "EnemyBullet", "fire.png");
+		staticShootFire = new Fire(0, height/2, 0, 0, 1000,
+		"EnemyBullet.png", "EnemyBullet", "fire.png");
+		staticShootFire.changeState(new StaticShootState(staticShootFire));
+		variableShootFire = new Fire(0, height/2, 0, 0, 1000,
+		"EnemyBullet.png", "EnemyBullet", "fire.png");
+		variableShootFire.changeState(new VariableShootState(variableShootFire));
+
 
 		enemiesList.add(e);
 		enemiesList.add(miniBoss);
 		enemiesList.add(bullEnemy);
 		enemiesList.add(fireEnemy);
+		enemiesList.add(staticShootFire);
+		enemiesList.add(variableShootFire);
 	}
 
 	public void render() {
@@ -77,6 +90,8 @@ public class Stage1 extends StageFundamental {
 			// libgdx natural position system makes it easier
 			bullEnemy.render(player.getSpritePositionX(), player.getSpritePositionY());
 			fireEnemy.render(player.getCenterX(), player.getCenterY());
+			staticShootFire.render(player.getCenterX(), player.getCenterY());
+			variableShootFire.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 		}
 		pause();
@@ -90,6 +105,8 @@ public class Stage1 extends StageFundamental {
 		miniBoss.dispose();
 		bullEnemy.dispose();
 		fireEnemy.dispose();
+		staticShootFire.dispose();
+		variableShootFire.dispose();
 	}
 
 	public void collisionTest() {

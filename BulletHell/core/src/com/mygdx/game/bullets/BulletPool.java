@@ -140,6 +140,7 @@ public class BulletPool {
         return coolDown;
     }
 
+    // Abstract Factory in which each tag means a different bullet type
     public void setBulletType(String bulletType, String imgPath) { 
         if(bulletType.compareTo("EnemyBullet") == 0) {
             for (int i = 0; i < poolSize; i++) {
@@ -161,7 +162,7 @@ public class BulletPool {
         }
     }
 
-    private void changeSize(float damage){
+    public void changeSize(float damage){
         if(originalDamage != damage){
             sizeX = sizeX * damage/100;
             sizeY = sizeY * damage/100;

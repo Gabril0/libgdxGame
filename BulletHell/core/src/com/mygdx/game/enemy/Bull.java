@@ -79,7 +79,7 @@ public class Bull extends Enemy {
 
     @Override
     // this enemy does not shoot
-    protected void enemyBullet() {
+    protected void shot() {
         return;
     }
 }
