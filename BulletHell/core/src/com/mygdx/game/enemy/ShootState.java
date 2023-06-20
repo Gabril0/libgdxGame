@@ -4,11 +4,12 @@ package com.mygdx.game.enemy;
 public class ShootState extends AbstractShootState {
     public ShootState(Enemy context) {
         super(context);
+        // change the shooting frequency
+        context.bulletPool.setCoolDown(0.08f);
     }
 
     @Override
     public void shoot() {
-        context.bulletPool.setCoolDown(0.08f);
         context.bulletPool.renderBulletPoolEnemy(context.positionX, context.positionY, 
             context.sizeX, context.sizeY, context.rotateToPlayer(context.playerCenterX, context.playerCenterY) - 90, context.damage);
     }
