@@ -174,6 +174,7 @@ public class StageFundamental implements Stage {
 			setIsBossDefeated(e.died());
 			if(e.died()){
 				upgradeLock = true;
+
 			}
 		}
 	}

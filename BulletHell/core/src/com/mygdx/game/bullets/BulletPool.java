@@ -164,7 +164,7 @@ public class BulletPool {
         }
     }
 
-    private void changeSize(float damage){
+    public void changeSize(float damage){
         if(originalDamage != damage){
             if(originalDamage > damage) {
                 sizeX = sizeX - damage / 100;

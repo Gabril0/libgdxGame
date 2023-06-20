@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.backgroundAndCursor.Background;
 import com.mygdx.game.bosses.BossFundamentals;
 import com.mygdx.game.bosses.Satellite;
+import com.mygdx.game.bosses.SpaceMan;
 import com.mygdx.game.enemy.Enemy;
 import com.mygdx.game.player.Player;
 
@@ -20,7 +21,8 @@ public class Stage1 extends StageFundamental {
 	private Background bg = new Background();
 
 	private Enemy e;
-	private BossFundamentals miniBoss;
+	private BossFundamentals satellite;
+	private BossFundamentals spaceMan;
 	private ArrayList<Enemy> enemiesList = new ArrayList<>();
 
 
@@ -34,11 +36,14 @@ public class Stage1 extends StageFundamental {
 				"Bullets/StarBullet.png", "EnemyBullet", "Enemies/star.png");
 
 		player.createPlayer();
-		miniBoss = new Satellite(width / 8, height / 8, 200, 200, 10000, "Bullets/EnemyBullet.png", "EnemyBullet",
+		satellite = new Satellite(width / 8, height / 8, 200, 200, 10000, "Bullets/EnemyBullet.png", "EnemyBullet",
 				"Enemies/Satellite.png");
+		spaceMan = new SpaceMan(width / 2, height / 2, 300, 300, 8000, "Bullets/EnergyBullet.png", "EnemyBullet",
+				"Enemies/SpaceMan.png");
 
 		enemiesList.add(e);
-		enemiesList.add(miniBoss);
+		enemiesList.add(satellite);
+		enemiesList.add(spaceMan);
 	}
 
 	public void renderContinuation() {
@@ -51,11 +56,13 @@ public class Stage1 extends StageFundamental {
 	
 			// rendering
 			bg.renderBackground();
-			miniBoss.render(player.getCenterX(), player.getCenterY());
+			satellite.render(player.getCenterX(), player.getCenterY());
+			spaceMan.render(player.getCenterX(), player.getCenterY());
 			e.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 
-			checkBossDefeat(miniBoss);
+			checkBossDefeat(satellite);
+			checkBossDefeat(spaceMan);
 
 	}
 	
@@ -64,7 +71,8 @@ public class Stage1 extends StageFundamental {
 		bg.disposeBackground();
 		player.disposePlayer();
 		e.dispose();
-		miniBoss.dispose();
+		satellite.dispose();
+		spaceMan.dispose();
 	}
 
 	public void collisionTest() {
