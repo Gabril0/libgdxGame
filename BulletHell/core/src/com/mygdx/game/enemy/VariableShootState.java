@@ -5,8 +5,6 @@ public class VariableShootState extends AbstractShootState {
 
     public VariableShootState(Enemy context) {
         super(context);
-        // change the shooting frequency
-        context.bulletPool.setCoolDown(0.08f);
     }
     
     @Override

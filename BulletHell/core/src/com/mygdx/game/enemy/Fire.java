@@ -17,6 +17,8 @@ public class Fire extends Enemy {
         this.positionY = random.nextInt(Math.round(Gdx.graphics.getHeight() - sizeY));
 
         state = new ShootState(this);
+        // change the shooting frequency
+        bulletPool.setCoolDown(0.08f);
     }
 
     public void changeState(State state){
@@ -26,5 +28,16 @@ public class Fire extends Enemy {
     @Override
     protected void shot() {
         state.shoot();
+    }
+
+    @Override
+    protected void renderVariations() {
+        if (!(state instanceof ShootState)){
+            batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
+            sizeY, 1f, 1f, 0, 0, 0, texture.getWidth(),
+            texture.getHeight(), false, false);
+        }
+        else 
+            super.renderVariations();
     }
 }

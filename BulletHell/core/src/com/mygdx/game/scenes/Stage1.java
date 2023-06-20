@@ -11,6 +11,7 @@ import com.mygdx.game.bosses.BossFundamentals;
 import com.mygdx.game.bosses.Satellite;
 import com.mygdx.game.enemy.Bull;
 import com.mygdx.game.enemy.Enemy;
+import com.mygdx.game.enemy.Factory;
 import com.mygdx.game.enemy.Fire;
 import com.mygdx.game.enemy.GiantFace;
 import com.mygdx.game.enemy.StaticShootState;
@@ -33,6 +34,7 @@ public class Stage1 extends StageFundamental {
 	Fire staticShootFire;
 	Fire variableShootFire;
 	GiantFace giantFaceEnemy;
+	Factory factoryEnemy;
 	ArrayList<Enemy> enemiesList = new ArrayList<>();
 
 	public void create() {
@@ -58,6 +60,8 @@ public class Stage1 extends StageFundamental {
 		variableShootFire.changeState(new VariableShootState(variableShootFire));
 		giantFaceEnemy = new GiantFace(0, height/2, 100, 100, 1000,
 		"EnemyBullet.png", "EnemyBullet", "giantFace.png");
+		factoryEnemy = new Factory(0, height/2, 0, 0, 1000,
+		"EnemyBullet.png", "EnemyBullet", "factory0.png");
 
 
 		enemiesList.add(e);
@@ -67,6 +71,8 @@ public class Stage1 extends StageFundamental {
 		enemiesList.add(staticShootFire);
 		enemiesList.add(variableShootFire);
 		enemiesList.add(giantFaceEnemy);
+		enemiesList.add(factoryEnemy);
+		factoryEnemy.addEnemiesCollision(enemiesList);
 	}
 
 	public void render() {
@@ -98,6 +104,7 @@ public class Stage1 extends StageFundamental {
 			staticShootFire.render(player.getCenterX(), player.getCenterY());
 			variableShootFire.render(player.getCenterX(), player.getCenterY());
 			giantFaceEnemy.render(player.getCenterX(), player.getCenterY());
+			factoryEnemy.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 		}
 		pause();
@@ -114,6 +121,7 @@ public class Stage1 extends StageFundamental {
 		staticShootFire.dispose();
 		variableShootFire.dispose();
 		giantFaceEnemy.dispose();
+		factoryEnemy.dispose();
 	}
 
 	public void collisionTest() {

@@ -187,6 +187,10 @@ public class Enemy implements Shootable {
         return isAlive;
     }
 
+    public void setAlive(boolean isAlive) {
+        this.isAlive = isAlive;
+    }
+
     public void checkCollision(Shootable shootable){
         if(shootable.isAlive() && isAlive) { //don't move this please, I feel that with a very bad luck the player could die if I don't check the health
             bulletPool.checkCollision(shootable, this.damage);

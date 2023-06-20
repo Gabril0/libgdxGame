@@ -5,8 +5,6 @@ public class StaticShootState extends AbstractShootState {
 
     public StaticShootState(Enemy context){
         super(context);
-        // change the shooting frequency
-        context.bulletPool.setCoolDown(0.08f);
     }
 
 
