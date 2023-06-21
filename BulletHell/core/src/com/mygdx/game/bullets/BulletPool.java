@@ -162,6 +162,18 @@ public class BulletPool {
                 pool[i].createBullet(imgPath);
             }
         }
+        if(bulletType.compareTo("EnergyBullet") == 0) {
+            for (int i = 0; i < poolSize; i++) {
+                pool[i] = new EnergyBullet(-1, -1, sizeX, sizeY);
+                pool[i].createBullet(imgPath);
+            }
+        }
+        if(bulletType.compareTo("SlowBullet") == 0) {
+            for (int i = 0; i < poolSize; i++) {
+                pool[i] = new SlowBullet(-1, -1, sizeX, sizeY);
+                pool[i].createBullet(imgPath);
+            }
+        }
     }
 
     public void changeSize(float damage){

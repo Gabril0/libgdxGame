@@ -7,10 +7,7 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.backgroundAndCursor.Background;
-import com.mygdx.game.bosses.BlackHole;
-import com.mygdx.game.bosses.BossFundamentals;
-import com.mygdx.game.bosses.Satellite;
-import com.mygdx.game.bosses.SpaceMan;
+import com.mygdx.game.bosses.*;
 import com.mygdx.game.enemy.Enemy;
 import com.mygdx.game.player.Player;
 
@@ -25,6 +22,8 @@ public class Stage1 extends StageFundamental {
 	private Satellite satellite;
 	private SpaceMan spaceMan;
 	private BlackHole blackHole;
+	private Alien alien;
+	private Sun sun;
 	private ArrayList<Enemy> enemiesList = new ArrayList<>();
 
 
@@ -40,15 +39,22 @@ public class Stage1 extends StageFundamental {
 		player.createPlayer();
 		satellite = new Satellite(width / 8, height / 8, 200, 200, 10000, "Bullets/EnemyBullet.png", "EnemyBullet",
 				"Enemies/Satellite.png");
-		spaceMan = new SpaceMan(width / 2, height / 2, 300, 300, 8000, "Bullets/EnergyBullet.png", "EnemyBullet",
+		spaceMan = new SpaceMan(width / 2, height / 2, 300, 300, 8000, "Bullets/EnergyBullet.png", "EnergyBullet",
 				"Enemies/SpaceMan.png");
 		blackHole = new BlackHole(width / 2, height / 2, 300, 300, 10000, "Bullets/StarBullet.png", "EnemyBullet",
 				"Enemies/BlackHole.png");
+		alien = new Alien(width / 2, height / 2, 50, 50, 3000, "Bullets/EnergyBullet.png", "EnergyBullet",
+				"Enemies/Alien.png");
+		sun = new Sun(width, height, 0, 0, 30000, "Bullets/SunBullet.png", "SlowBullet",
+				"Enemies/Sun.png");
 
-//		enemiesList.add(e);
-//		enemiesList.add(satellite);
-//		enemiesList.add(spaceMan);
-		enemiesList.add(blackHole);
+
+		//enemiesList.add(e);
+		//enemiesList.add(satellite);
+		//enemiesList.add(spaceMan);
+		//enemiesList.add(blackHole);
+		//enemiesList.add(alien);
+		enemiesList.add(sun);
 	}
 
 	public void renderContinuation() {
@@ -63,13 +69,17 @@ public class Stage1 extends StageFundamental {
 			bg.renderBackground();
 			//satellite.render(player.getCenterX(), player.getCenterY());
 			//spaceMan.render(player.getCenterX(), player.getCenterY());
-			blackHole.render(player);
+			//blackHole.render(player);
 			//e.render(player.getCenterX(), player.getCenterY());
+			//alien.render(player.getCenterX(), player.getCenterY());
+			sun.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 
 			checkBossDefeat(satellite);
 			checkBossDefeat(spaceMan);
 			checkBossDefeat(blackHole);
+			checkBossDefeat(alien);
+			checkBossDefeat(sun);
 
 	}
 	
@@ -81,6 +91,8 @@ public class Stage1 extends StageFundamental {
 		satellite.dispose();
 		spaceMan.dispose();
 		blackHole.dispose();
+		alien.dispose();
+		sun.dispose();
 	}
 
 	public void collisionTest() {
