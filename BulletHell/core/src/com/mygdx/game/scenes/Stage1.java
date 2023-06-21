@@ -61,7 +61,7 @@ public class Stage1 extends StageFundamental {
 		giantFaceEnemy = new GiantFace(0, height/2, 100, 100, 1000,
 		"EnemyBullet.png", "EnemyBullet", "giantFace.png");
 		factoryEnemy = new Factory(0, height/2, 0, 0, 1000,
-		"EnemyBullet.png", "EnemyBullet", "factory0.png");
+		"EnemyBullet.png", "EnemyBullet", "factory0.png", "Enemy");
 
 
 		enemiesList.add(e);
