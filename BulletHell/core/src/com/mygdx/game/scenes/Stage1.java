@@ -14,6 +14,7 @@ import com.mygdx.game.enemy.Enemy;
 import com.mygdx.game.enemy.Factory;
 import com.mygdx.game.enemy.Fire;
 import com.mygdx.game.enemy.GiantFace;
+import com.mygdx.game.enemy.Shield;
 import com.mygdx.game.enemy.StaticShootState;
 import com.mygdx.game.enemy.VariableShootState;
 import com.mygdx.game.player.Player;
@@ -35,6 +36,7 @@ public class Stage1 extends StageFundamental {
 	Fire variableShootFire;
 	GiantFace giantFaceEnemy;
 	Factory factoryEnemy;
+	Shield shieldEnemy;
 	ArrayList<Enemy> enemiesList = new ArrayList<>();
 
 	public void create() {
@@ -62,6 +64,8 @@ public class Stage1 extends StageFundamental {
 		"EnemyBullet.png", "EnemyBullet", "giantFace.png");
 		factoryEnemy = new Factory(0, height/2, 0, 0, 1000,
 		"EnemyBullet.png", "EnemyBullet", "factory0.png", "Enemy");
+		shieldEnemy = new Shield(100, 100, 0, 0, 2000, 
+		"EnemyBullet.png", "EnemyBullet", "shield.png");
 
 
 		enemiesList.add(e);
@@ -72,6 +76,7 @@ public class Stage1 extends StageFundamental {
 		enemiesList.add(variableShootFire);
 		enemiesList.add(giantFaceEnemy);
 		enemiesList.add(factoryEnemy);
+		enemiesList.add(shieldEnemy);
 		factoryEnemy.addEnemiesCollision(enemiesList);
 	}
 
@@ -105,6 +110,7 @@ public class Stage1 extends StageFundamental {
 			variableShootFire.render(player.getCenterX(), player.getCenterY());
 			giantFaceEnemy.render(player.getCenterX(), player.getCenterY());
 			factoryEnemy.render(player.getCenterX(), player.getCenterY());
+			shieldEnemy.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 		}
 		pause();
@@ -122,13 +128,18 @@ public class Stage1 extends StageFundamental {
 		variableShootFire.dispose();
 		giantFaceEnemy.dispose();
 		factoryEnemy.dispose();
+		shieldEnemy.dispose();
 	}
 
 	public void collisionTest() {
 		for (Enemy enemy : enemiesList) {
-			player.checkCollision(enemy);
+			if (shieldEnemy.isAlive()){
+				player.checkCollision(shieldEnemy);
+			}
+			else {
+				player.checkCollision(enemy);
+			}
 			enemy.checkCollision(player);
 		}
-
 	}
 }
