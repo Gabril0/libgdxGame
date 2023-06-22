@@ -24,6 +24,7 @@ public class Stage1 extends StageFundamental {
 	private BlackHole blackHole;
 	private Alien alien;
 	private Sun sun;
+	private BullBoss bullBoss;
 	private ArrayList<Enemy> enemiesList = new ArrayList<>();
 
 
@@ -47,6 +48,8 @@ public class Stage1 extends StageFundamental {
 				"Enemies/Alien.png");
 		sun = new Sun(width, height, 0, 0, 30000, "Bullets/SunBullet.png", "SlowBullet",
 				"Enemies/Sun.png");
+		bullBoss = new BullBoss(width / 2, height / 2, 50, 50, 10000, "Bullets/EnemyBullet.png", "EnergyBullet",
+				"Enemies/BullBoss.png");
 
 
 		//enemiesList.add(e);
@@ -54,7 +57,8 @@ public class Stage1 extends StageFundamental {
 		//enemiesList.add(spaceMan);
 		//enemiesList.add(blackHole);
 		//enemiesList.add(alien);
-		enemiesList.add(sun);
+		//enemiesList.add(sun);
+		enemiesList.add(bullBoss);
 	}
 
 	public void renderContinuation() {
@@ -72,7 +76,8 @@ public class Stage1 extends StageFundamental {
 			//blackHole.render(player);
 			//e.render(player.getCenterX(), player.getCenterY());
 			//alien.render(player.getCenterX(), player.getCenterY());
-			sun.render(player.getCenterX(), player.getCenterY());
+			//sun.render(player.getCenterX(), player.getCenterY());
+			bullBoss.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 
 			checkBossDefeat(satellite);
@@ -80,6 +85,8 @@ public class Stage1 extends StageFundamental {
 			checkBossDefeat(blackHole);
 			checkBossDefeat(alien);
 			checkBossDefeat(sun);
+			checkBossDefeat(bullBoss);
+
 
 	}
 	
@@ -93,6 +100,7 @@ public class Stage1 extends StageFundamental {
 		blackHole.dispose();
 		alien.dispose();
 		sun.dispose();
+		bullBoss.dispose();
 	}
 
 	public void collisionTest() {
