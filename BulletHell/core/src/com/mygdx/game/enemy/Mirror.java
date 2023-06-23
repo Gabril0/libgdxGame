@@ -19,6 +19,7 @@ public class Mirror extends Enemy {
 
         state = new ChargeShootState(this);
         bulletPool.setCoolDown(100000);
+        damage = 400;
     }
 
     @Override
