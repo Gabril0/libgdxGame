@@ -35,7 +35,7 @@ public class Factory extends Enemy {
         if (enemyType.compareTo("Enemy") == 0)
             for (int i = 0; i < 20; i++){
                 pool[i] = new Enemy(positionX + 50, positionY, 300, 300, 1000 , 
-                "EnemyBullet.png", "EnemyBullet", "star.png");
+                "Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/star.png");
                 pool[i].setAlive(false);
             }
         // if (enemyType.compareTo("Bull") == 0)
@@ -66,9 +66,12 @@ public class Factory extends Enemy {
         elapsedTime += deltaTime;
 
         for (int i = 0; i < 20; i++) {
-            if (elapsedTime >= coolDown + lastTimeSpawn && !pool[i].isAlive){
+            if (elapsedTime >= coolDown + lastTimeSpawn && !pool[i].isAlive()){
                 pool[i].setAlive(true);
                 lastTimeSpawn = elapsedTime;
+            }
+            if (!pool[i].isAlive()){
+                pool[i].setAlive(false);
             }
         }
     }

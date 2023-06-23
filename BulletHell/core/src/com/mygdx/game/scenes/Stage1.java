@@ -64,51 +64,49 @@ public class Stage1 extends StageFundamental {
 		blackHole = new BlackHole(width / 2, height / 2, 300, 300, 10000, "Bullets/StarBullet.png", "EnemyBullet",
 				"Enemies/BlackHole.png");
 		alien = new Alien(width / 2, height / 2, 50, 50, 3000, "Bullets/EnergyBullet.png", "EnergyBullet",
-				"Enemies/Alien.png");
+				"Enemies/alien.png");
 		sun = new Sun(width, height, 0, 0, 30000, "Bullets/SunBullet.png", "SlowBullet",
 				"Enemies/Sun.png");
 		bullBoss = new BullBoss(width / 2, height / 2, 50, 50, 10000, "Bullets/EnemyBullet.png", "EnergyBullet",
 				"Enemies/BullBoss.png");
 
 
-		//enemiesList.add(e);
-		//enemiesList.add(satellite);
-		//enemiesList.add(spaceMan);
-		//enemiesList.add(blackHole);
-		//enemiesList.add(alien);
-		//enemiesList.add(sun);
+		enemiesList.add(satellite);
+		enemiesList.add(spaceMan);
+		enemiesList.add(blackHole);
+		enemiesList.add(alien);
+		enemiesList.add(sun);
 		enemiesList.add(bullBoss);
-		// bullEnemy = new Bull(0, height - 1, 700, 700, 1000, 
-		// "EnemyBullet.png", "EnemyBullet", "bull.png");
-		// fireEnemy = new Fire(0, height/2, 0, 0, 1000,
-		// "EnemyBullet.png", "EnemyBullet", "fire.png");
-		// staticShootFire = new Fire(0, height/2, 0, 0, 1000,
-		// "EnemyBullet.png", "EnemyBullet", "fire.png");
-		// staticShootFire.changeState(new StaticShootState(staticShootFire));
-		// variableShootFire = new Fire(0, height/2, 0, 0, 1000,
-		// "EnemyBullet.png", "EnemyBullet", "fire.png");
-		// variableShootFire.changeState(new VariableShootState(variableShootFire));
-		// giantFaceEnemy = new GiantFace(0, height/2, 100, 100, 1000,
-		// "EnemyBullet.png", "EnemyBullet", "giantFace.png");
-		// factoryEnemy = new Factory(0, height/2, 0, 0, 1000,
-		// "EnemyBullet.png", "EnemyBullet", "factory0.png", "Enemy");
-		// shieldEnemy = new Shield(100, 100, 0, 0, 2000, 
-		// "EnemyBullet.png", "EnemyBullet", "shield.png");
+		bullEnemy = new Bull(0, height - 1, 700, 700, 1000, 
+		"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/bull.png");
+		fireEnemy = new Fire(0, height/2, 0, 0, 1000,
+		"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/fire.png");
+		staticShootFire = new Fire(0, height/2, 0, 0, 1000,
+		"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/fire.png");
+		staticShootFire.changeState(new StaticShootState(staticShootFire));
+		variableShootFire = new Fire(0, height/2, 0, 0, 1000,
+		"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/fire.png");
+		variableShootFire.changeState(new VariableShootState(variableShootFire));
+		giantFaceEnemy = new GiantFace(0, height/2, 100, 100, 1000,
+		"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/giantFace.png");
+		factoryEnemy = new Factory(0, height/2, 0, 0, 1000,
+		"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/factory0.png", "Enemy");
+		shieldEnemy = new Shield(100, 100, 0, 0, 2000, 
+		"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/shield.png");
 		mirrorEnemy = new Mirror(0, height/2, 100, 100, 1000,
-		"EnemyBullet.png", "EnemyBullet", "mirror.png");
+		"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/mirror.png");
 
 
 		enemiesList.add(e);
-		enemiesList.add(miniBoss);
-		// enemiesList.add(bullEnemy);
-		// enemiesList.add(fireEnemy);
-		// enemiesList.add(staticShootFire);
-		// enemiesList.add(variableShootFire);
-		// enemiesList.add(giantFaceEnemy);
-		// enemiesList.add(factoryEnemy);
-		// enemiesList.add(shieldEnemy);
+		enemiesList.add(bullEnemy);
+		enemiesList.add(fireEnemy);
+		enemiesList.add(staticShootFire);
+		enemiesList.add(variableShootFire);
+		enemiesList.add(giantFaceEnemy);
+		enemiesList.add(factoryEnemy);
+		enemiesList.add(shieldEnemy);
 		enemiesList.add(mirrorEnemy);
-		// factoryEnemy.addEnemiesCollision(enemiesList);
+		factoryEnemy.addEnemiesCollision(enemiesList);
 	}
 
 	public void renderContinuation() {
@@ -121,24 +119,22 @@ public class Stage1 extends StageFundamental {
 	
 			// rendering
 			bg.renderBackground();
-			//satellite.render(player.getCenterX(), player.getCenterY());
-			//spaceMan.render(player.getCenterX(), player.getCenterY());
-			//blackHole.render(player);
-			//e.render(player.getCenterX(), player.getCenterY());
-			//alien.render(player.getCenterX(), player.getCenterY());
-			//sun.render(player.getCenterX(), player.getCenterY());
+			satellite.render(player.getCenterX(), player.getCenterY());
+			spaceMan.render(player.getCenterX(), player.getCenterY());
+			blackHole.render(player);
+			alien.render(player.getCenterX(), player.getCenterY());
+			sun.render(player.getCenterX(), player.getCenterY());
 			bullBoss.render(player.getCenterX(), player.getCenterY());
-			miniBoss.render(player.getCenterX(), player.getCenterY());
-			// e.render(player.getCenterX(), player.getCenterY());
-			// // the bull has to get the actual player position, because it runs right towards him and using the
-			// // libgdx natural position system makes it easier
-			// bullEnemy.render(player.getSpritePositionX(), player.getSpritePositionY());
-			// fireEnemy.render(player.getCenterX(), player.getCenterY());
-			// staticShootFire.render(player.getCenterX(), player.getCenterY());
-			// variableShootFire.render(player.getCenterX(), player.getCenterY());
-			// giantFaceEnemy.render(player.getCenterX(), player.getCenterY());
-			// factoryEnemy.render(player.getCenterX(), player.getCenterY());
-			// shieldEnemy.render(player.getCenterX(), player.getCenterY());
+			e.render(player.getCenterX(), player.getCenterY());
+			// the bull has to get the actual player position, because it runs right towards him and using the
+			// libgdx natural position system makes it easier
+			bullEnemy.render(player.getSpritePositionX(), player.getSpritePositionY());
+			fireEnemy.render(player.getCenterX(), player.getCenterY());
+			staticShootFire.render(player.getCenterX(), player.getCenterY());
+			variableShootFire.render(player.getCenterX(), player.getCenterY());
+			giantFaceEnemy.render(player.getCenterX(), player.getCenterY());
+			factoryEnemy.render(player.getCenterX(), player.getCenterY());
+			shieldEnemy.render(player.getCenterX(), player.getCenterY());
 			mirrorEnemy.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 
@@ -163,7 +159,6 @@ public class Stage1 extends StageFundamental {
 		alien.dispose();
 		sun.dispose();
 		bullBoss.dispose();
-		miniBoss.dispose();
 		bullEnemy.dispose();
 		fireEnemy.dispose();
 		staticShootFire.dispose();
@@ -176,12 +171,12 @@ public class Stage1 extends StageFundamental {
 
 	public void collisionTest() {
 		for (Enemy enemy : enemiesList) {
-			// if (shieldEnemy.isAlive()){
-			// 	player.checkCollision(shieldEnemy);
-			// }
-			// else {
+			if (shieldEnemy.isAlive()){
+				player.checkCollision(shieldEnemy);
+			}
+			else {
 				player.checkCollision(enemy);
-			//}
+			}
 			enemy.checkCollision(player);
 		}
 	}
