@@ -7,8 +7,7 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.backgroundAndCursor.Background;
-import com.mygdx.game.bosses.BossFundamentals;
-import com.mygdx.game.bosses.Satellite;
+import com.mygdx.game.bosses.*;
 import com.mygdx.game.enemy.Enemy;
 import com.mygdx.game.player.Player;
 
@@ -17,41 +16,53 @@ public class Stage1 extends StageFundamental {
 		super(width, height);
 	}
 
-	Player player = new Player();
+	private Background bg = new Background();
 
-	Background bg = new Background();
+	private Enemy e;
+	private Satellite satellite;
+	private SpaceMan spaceMan;
+	private BlackHole blackHole;
+	private Alien alien;
+	private Sun sun;
+	private BullBoss bullBoss;
+	private ArrayList<Enemy> enemiesList = new ArrayList<>();
 
-	Enemy e;
-	BossFundamentals miniBoss;
-	ArrayList<Enemy> enemiesList = new ArrayList<>();
+
+
 
 	public void create() {
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
-
-		bg.createBackground(width * 1.96f, height, "map1Slow.png", "map1Fast.png");
+		bg.createBackground(width * 1.96f, height, "Backgrounds/map2Slow.png", "Backgrounds/map2Fast.png", "Backgrounds/opacityEffect2.png");
 		e = new Enemy(width / 10, height / 10, 300, 300, 1000,
-				"EnemyBullet.png", "EnemyBullet", "star.png");
-		player.createPlayer();
-		miniBoss = new Satellite(width / 8, height / 8, 200, 200, 10000, "EnemyBullet.png", "EnemyBullet",
-				"Satellite.png");
+				"Bullets/StarBullet.png", "EnemyBullet", "Enemies/star.png");
 
-		enemiesList.add(e);
-		enemiesList.add(miniBoss);
+		player.createPlayer();
+		satellite = new Satellite(width / 8, height / 8, 200, 200, 10000, "Bullets/EnemyBullet.png", "EnemyBullet",
+				"Enemies/Satellite.png");
+		spaceMan = new SpaceMan(width / 2, height / 2, 300, 300, 8000, "Bullets/EnergyBullet.png", "EnergyBullet",
+				"Enemies/SpaceMan.png");
+		blackHole = new BlackHole(width / 2, height / 2, 300, 300, 10000, "Bullets/StarBullet.png", "EnemyBullet",
+				"Enemies/BlackHole.png");
+		alien = new Alien(width / 2, height / 2, 50, 50, 3000, "Bullets/EnergyBullet.png", "EnergyBullet",
+				"Enemies/Alien.png");
+		sun = new Sun(width, height, 0, 0, 30000, "Bullets/SunBullet.png", "SlowBullet",
+				"Enemies/Sun.png");
+		bullBoss = new BullBoss(width / 2, height / 2, 50, 50, 10000, "Bullets/EnemyBullet.png", "EnergyBullet",
+				"Enemies/BullBoss.png");
+
+
+		//enemiesList.add(e);
+		//enemiesList.add(satellite);
+		//enemiesList.add(spaceMan);
+		//enemiesList.add(blackHole);
+		//enemiesList.add(alien);
+		//enemiesList.add(sun);
+		enemiesList.add(bullBoss);
 	}
 
-	public void render() {
-		if (isPaused) {
-			float mouseX = Gdx.input.getX();
-			float mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
-	
-			if (mouseY >= Gdx.graphics.getHeight() * 0.66 && Gdx.input.isButtonJustPressed(Buttons.LEFT) 
-			) {
-				System.out.println("Clicked resume");
-				isPaused = false;
-			}
-			// Handle other pause-related actions here
-		} else {
+	public void renderContinuation() {
+
 			// bg default color
 			ScreenUtils.clear(0.2f, 0.2f, 0.2f, 1);
 	
@@ -60,11 +71,23 @@ public class Stage1 extends StageFundamental {
 	
 			// rendering
 			bg.renderBackground();
-			miniBoss.render(player.getCenterX(), player.getCenterY());
-			e.render(player.getCenterX(), player.getCenterY());
+			//satellite.render(player.getCenterX(), player.getCenterY());
+			//spaceMan.render(player.getCenterX(), player.getCenterY());
+			//blackHole.render(player);
+			//e.render(player.getCenterX(), player.getCenterY());
+			//alien.render(player.getCenterX(), player.getCenterY());
+			//sun.render(player.getCenterX(), player.getCenterY());
+			bullBoss.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
-		}
-		pause();
+
+			checkBossDefeat(satellite);
+			checkBossDefeat(spaceMan);
+			checkBossDefeat(blackHole);
+			checkBossDefeat(alien);
+			checkBossDefeat(sun);
+			checkBossDefeat(bullBoss);
+
+
 	}
 	
 
@@ -72,7 +95,12 @@ public class Stage1 extends StageFundamental {
 		bg.disposeBackground();
 		player.disposePlayer();
 		e.dispose();
-		miniBoss.dispose();
+		satellite.dispose();
+		spaceMan.dispose();
+		blackHole.dispose();
+		alien.dispose();
+		sun.dispose();
+		bullBoss.dispose();
 	}
 
 	public void collisionTest() {

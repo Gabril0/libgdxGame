@@ -4,10 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.player.Player;
 
 public class StoredEnergy implements Evolution {
-    private Texture description = new Texture("oldbullet.png");// remember to put a texture here later
+    private Texture description = new Texture("UI/StoredEnergy.png");
 
-    public StoredEnergy(Player player) {
-        player.setBulletType("StoredEnergyBullet", "PlayerBullet.png");
+    public StoredEnergy() {
     }
 
     @Override

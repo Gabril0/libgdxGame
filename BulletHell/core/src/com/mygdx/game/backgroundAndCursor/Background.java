@@ -16,11 +16,11 @@ public class Background {
     private float bounds;
     private float scrollSpeed = 10;
 
-    public void createBackground(float sizeX, float sizeY, String pathSlow, String pathFast) {
+    public void createBackground(float sizeX, float sizeY, String pathSlow, String pathFast, String opacityEffect) {
         batch = new SpriteBatch();
         imgSlow = new Texture(pathSlow);
         imgFast = new Texture(pathFast);
-        opacityEffect = new Texture("opacityEffect.png");
+        this.opacityEffect = new Texture(opacityEffect);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         bounds = -sizeX / 2.05f; //this is because of the conversion when getting players monitor size

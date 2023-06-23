@@ -7,4 +7,5 @@ public interface Animation {
     public void create();
     public void render(float spritePositionX, float spritePositionY, float spriteSizeX, float spriteSizeY, float rotateToCursor, SpriteBatch batch);
     public void dispose();
+    public boolean getWasFinished();
 }

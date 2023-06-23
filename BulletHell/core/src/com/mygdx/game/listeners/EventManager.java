@@ -3,17 +3,19 @@ package com.mygdx.game.listeners;
 import java.util.ArrayList;
 
 public class EventManager {
-    private ArrayList<ShotListener> shotListeners = new ArrayList<ShotListener>();
+    private ArrayList<Listener> shotListeners = new ArrayList<Listener>();
 
-    public void addShotListener(ShotListener listener) {
+    public void addShotListener(Listener listener) {
         shotListeners.add(listener);
     }
-    public void removeShotListener(ShotListener listener) {
+    public void removeShotListener(Listener listener) {
         shotListeners.remove(listener);
     }
+
     public void eventCall(boolean event) {
-        for(ShotListener listener : shotListeners){
+        for(Listener listener : shotListeners){
             listener.onShoot(event);
         }
     }
+
 }

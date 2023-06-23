@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(144);
 		config.setTitle("TrabalhoPOO2");
-		config.setWindowIcon("PlayerBaseSprite.png");
+		config.setWindowIcon("playerAnimation/PlayerBaseSprite.png");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth() - (int)(screenSize.getWidth() * 0.1f);
         int screenHeight = (int) screenSize.getHeight() - (int)(screenSize.getHeight() * 0.1f);

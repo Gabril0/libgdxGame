@@ -1,6 +1,7 @@
 package com.mygdx.game.bosses;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.animation.Animation;
 import com.mygdx.game.animation.SatelliteIdle;
 
@@ -17,15 +18,28 @@ public class Satellite extends BossFundamentals {
         super(positionX, positionY, speedX, speedY, health, bulletImg, bulletType, sprite);
         idle = new SatelliteIdle();
         idle.create();
-        super.bulletPool.setCoolDown(0.2f);
+        super.bulletPool.setCoolDown(0.3f);
+        super.bulletPool.changeSize(2000);
     }
 
     @Override
     public void render(float playerCenterX, float playerCenterY) {
         float deltaTime = Gdx.graphics.getDeltaTime();
         elapsedTime += deltaTime;
+        batch.begin();
+        if(!isAlive){
+            batch.setColor(Color.WHITE);
+
+            if(explosionLock){
+                explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                        0, batch);
+
+                if(explosion.getWasFinished()){
+                    explosionLock = false;
+                }
+            }
+        }
         if (isAlive) {
-            batch.begin();
 
             this.playerCenterX = playerCenterX;
             this.playerCenterY = playerCenterY;
@@ -53,7 +67,7 @@ public class Satellite extends BossFundamentals {
                 gotHitAnimation(deltaTime);
             }
 
-            batch.end();
+
 
 
             // Update the collider's position and rotation
@@ -61,6 +75,7 @@ public class Satellite extends BossFundamentals {
             healthBar.renderHealthBar(this);
 
         }
+        batch.end();
 
     }
 

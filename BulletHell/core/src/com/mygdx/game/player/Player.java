@@ -1,24 +1,24 @@
 package com.mygdx.game.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Input;
 //import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
-import com.mygdx.game.animation.Animation;
-import com.mygdx.game.animation.ShootingAnimation;
+import com.mygdx.game.animation.*;
 import com.mygdx.game.bullets.Bullet;
 import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.bullets.Shootable;
 import com.mygdx.game.evolution.Evolution;
 import com.mygdx.game.evolution.StoredEnergy;
 import com.mygdx.game.listeners.EventManager;
-import com.mygdx.game.listeners.ShotListener;
+import com.mygdx.game.listeners.Listener;
 import com.mygdx.game.uirelated.HealthBar;
 
-public class Player implements ShotListener, Shootable {
+public class Player implements Listener, Shootable {
 
     private Evolution evolution;
 
@@ -32,8 +32,9 @@ public class Player implements ShotListener, Shootable {
     private String tag = "player";
 
     // Base sprite rendering variables
+    private float deltaTime;
     private SpriteBatch batch;
-    private Texture img;
+    private Texture img, transformImg;
     //private ShapeRenderer collision;
     private HealthBar healthBar = new HealthBar();
 
@@ -41,21 +42,37 @@ public class Player implements ShotListener, Shootable {
     private float spriteSizeX, spriteSizeY; // float for the size
     private float spritePositionX , spritePositionY = height/2; // float for the position
     private float speedX = 450f, speedY = 450f; // float for the speed
+    private float originalSpeed = 450f;
 
     private float centerX, centerY;
+    private float transformTime = -10;
 
     private BulletPool bulletPool = new BulletPool(200);
 
     // Animations
     private EventManager em = new EventManager();
 
+
     private Animation shootingAnimation;
+    private Animation transitionAnimation;
+    private Animation transformShooting;
+    private Animation transformationIdle;
+    private Animation backToNormalAnimation;
+    protected Animation explosion;
+
 
     // Booleans
     private boolean isShooting;
     private boolean isAlive = true;
 
     private boolean gotHit = false;
+    private boolean isTransformed = false;
+    private boolean transformationFlag = false; // checks if the player has already transformed
+    protected boolean explosionLock = true;
+    private boolean canShoot = true;
+    private boolean canSlowdown = false;
+
+
 
     // Timing
     private float timeHit = 0; // initializing to not lock
@@ -77,31 +94,59 @@ public class Player implements ShotListener, Shootable {
 
         // player rendering
         batch = new SpriteBatch();
-        img = new Texture("PlayerBaseSprite.png");
+
+        img = new Texture("playerAnimation/PlayerBaseSprite.png");
+        transformImg = new Texture("playerAnimation/PlayerTransformation.png");
         //collision = new ShapeRenderer();
         healthBar.createHealthBar();
         tag = "player";
 
         // shooting AND shooting animation
-        bulletPool.createBulletPool("PlayerBullet.png", "SimpleBullet", damage);
+        bulletPool.createBulletPool("Bullets/PlayerBullet.png", "SimpleBullet", damage);
         em.addShotListener(this);
+
         shootingAnimation = new ShootingAnimation();
+        transitionAnimation = new PlayerTransitionAnimation();
+        transformShooting = new TransformShooting();
+        transformationIdle = new TransformationIdle();
+        explosion = new Explosion();
+        backToNormalAnimation = new BackToNormal();
+
+        backToNormalAnimation.create();
         shootingAnimation.create();
-
-
-        // evolution = new StoredEnergy(this);
-        // evolution.makeChanges(this);
+        transitionAnimation.create();
+        transformShooting.create();
+        transformationIdle.create();
+        explosion.create();
 
     }
 
     public void renderPlayer() { // do these actions every frame
+        if(!isAlive){
+            batch.begin();
+            batch.setColor(Color.WHITE);
+
+            if(explosionLock){
+                explosion.render(spritePositionX - spriteSizeX, spritePositionY - spriteSizeY, spriteSizeX*3,
+                        spriteSizeY*3, 0, batch);
+
+                if(explosion.getWasFinished()){
+                    explosionLock = false;
+
+                }
+            }
+            batch.end();
+        }
         if (isAlive) {
-            currentTime += Gdx.graphics.getDeltaTime();
+            deltaTime = Gdx.graphics.getDeltaTime();
+            currentTime += deltaTime;
             checkHealth();
             movePlayer();
-            shoot();
+            if(canShoot) shoot();
+            if(canSlowdown) slowDown();
             checkBounds();
             drawPlayer();
+
             // drawCollider();
             healthBar.renderHealthBar(this);
         }
@@ -113,16 +158,24 @@ public class Player implements ShotListener, Shootable {
         shootingAnimation.dispose();
         bulletPool.disposeBulletPool();
         healthBar.disposeHealthBar();
+        transitionAnimation.dispose();
+        explosion.dispose();
     }
 
     private void shoot() {
+        //if(currentTime > transformTime + 10) {
+            if (Gdx.input.isKeyPressed(Input.Keys.F)) {
+                //transformTime = currentTime + 2;
+                isTransformed = true;
+            }
+        //}
         bulletPool.renderBulletPoolPlayer(getSpritePositionX(), getSpritePositionY(),
                 getSpriteSizeX(), getSpriteSizeY(), rotateToCursor() - 90,damage, em); // -op because bullets are in a diferent
                                                                                 // orientation
     }
 
     private void movePlayer() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
+
         spritePositionX += deltaTime * speedX * horizontalMovement();
         spritePositionY += deltaTime * speedY * verticalMovement();
     }
@@ -130,17 +183,60 @@ public class Player implements ShotListener, Shootable {
     private void drawPlayer() { // Draws the player sprite each frame
         batch.begin();
 
-        if (isShooting) { // shooting animation
-            shootingAnimation.render(spritePositionX, spritePositionY, spriteSizeX,
-                    spriteSizeY, rotateToCursor(), batch);
+        if(isTransformed) {
+            drawTransformedPlayer();
+        }
+        else {
+            if (isShooting) { // shooting animation
+                shootingAnimation.render(spritePositionX, spritePositionY, spriteSizeX,
+                        spriteSizeY, rotateToCursor(), batch);
 
-        } else { // idle
-            batch.draw(img, spritePositionX, spritePositionY, spriteSizeX / 2, spriteSizeY / 2, spriteSizeX,
-                    spriteSizeY, 1f, 1f, rotateToCursor(), 0, 0, img.getWidth(),
-                    img.getHeight(), false, false); // Giant constructor because the framework doesn`t accept it any
-                                                    // shorter
+            } else { // idle
+                batch.draw(img, spritePositionX, spritePositionY, spriteSizeX / 2, spriteSizeY / 2, spriteSizeX,
+                        spriteSizeY, 1f, 1f, rotateToCursor(), 0, 0, img.getWidth(),
+                        img.getHeight(), false, false); // Giant constructor because the framework doesn`t accept it any
+                // shorter
+            }
+
         }
         batch.end();
+
+    }
+    private void drawTransformedPlayer() { // Draws the player sprite each frame
+//this part makes the player transform back to normal
+//        if(currentTime > transformTime + 20){
+//            backToNormalAnimation.render(spritePositionX, spritePositionY, spriteSizeX, spriteSizeY, rotateToCursor(), batch);
+//            canShoot = false;
+//            if (backToNormalAnimation.getWasFinished()) {
+//                damage = damage / 0.8f;
+//                bulletPool.setBulletType("PlayerBullet", "Bullets/PlayerBullet.png");
+//                setShootingRate((1 / 0.75f));
+//                transformationFlag = false;
+//                transformTime = currentTime;
+//                canShoot = true;
+//                isTransformed = false;
+//            }
+//        }
+        if (isShooting && transformationFlag ) {
+            // Shooting animation
+            transformShooting.render(spritePositionX, spritePositionY, spriteSizeX, spriteSizeY, rotateToCursor(), batch);
+        } else if (!transformationFlag) {
+            transitionAnimation.render(spritePositionX, spritePositionY, spriteSizeX, spriteSizeY, rotateToCursor(), batch);
+            canShoot = false;
+            if (transitionAnimation.getWasFinished()) {
+                // Changes player by transforming them
+                transformTime = currentTime;
+                damage = damage * 1.2f;
+                bulletPool.setBulletType("TransformationBullet", "Bullets/TransformationBullet.png");
+                setShootingRate(1.25f);
+                transformationFlag = true;
+                canShoot = true;
+            }
+        } else {
+            // Default transformation animation
+            transformationIdle.render(spritePositionX, spritePositionY, spriteSizeX, spriteSizeY, rotateToCursor(), batch);
+        }
+
 
     }
 
@@ -271,6 +367,26 @@ public class Player implements ShotListener, Shootable {
         }
     }
 
+    public void slowDown(){
+        if(isShooting){
+            speedX = originalSpeed / 2;
+            speedY = originalSpeed / 2;
+
+        }
+        else{
+            speedX = originalSpeed;
+            speedY = originalSpeed;
+        }
+    }
+
+    public void goToPoint(float x, float y){
+        if(spritePositionX > x) spritePositionX += -1 * 250 * deltaTime;
+        if(spritePositionX < x) spritePositionX += 1 * 250   * deltaTime;
+        if(spritePositionY > y) spritePositionY += -1 * 250   * deltaTime;
+        if(spritePositionY < y) spritePositionY += 1 * 250   * deltaTime;
+    }
+
+
     public float getCenterX() {
         centerX = spritePositionX + (spriteSizeX / 2);
         return centerX;
@@ -315,5 +431,22 @@ public class Player implements ShotListener, Shootable {
     }
     public Bullet getBullet(){
         return bulletPool.getBullet();
+    }
+    public void setSpeed(float speed){
+        speedY = speedY * speed;
+        speedX = speedX * speed;
+        originalSpeed = originalSpeed * speed;
+    }
+    public void setLife(float percentage){ //alternative to setHealth to adjust the life instead of just damage
+        health = health * percentage;
+
+    }
+
+    public void setCanSlowdown(boolean bool){
+        canSlowdown = bool;
+    }
+
+    public BulletPool getBulletPool() {
+        return bulletPool;
     }
 }

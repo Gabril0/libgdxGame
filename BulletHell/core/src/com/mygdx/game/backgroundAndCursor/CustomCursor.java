@@ -8,7 +8,7 @@ public class CustomCursor {
     private Cursor customCursor;
 
     public void create() {
-        Pixmap cursorPixmap = new Pixmap(Gdx.files.internal("cursor.png")); //create a cursor
+        Pixmap cursorPixmap = new Pixmap(Gdx.files.internal("UI/cursor.png")); //create a cursor
         
         int hotspotX = cursorPixmap.getWidth() / 2;
         int hotspotY = cursorPixmap.getHeight() / 2;

@@ -9,10 +9,10 @@ public class SatelliteIdle extends AnimationFundamentals{
         animation = new Array<Texture>();
         setFrameDuration(0.5f);
 
-        animation.add(new Texture("SatelliteIdle(2-3).png"));
-        animation.add(new Texture("SatelliteIdle(3-3).png"));
-        animation.add(new Texture("SatelliteIdle(3-3).png"));
-        animation.add(new Texture("SatelliteIdle(3-3).png"));
+        animation.add(new Texture("Enemies/SatelliteIdle(2-3).png"));
+        animation.add(new Texture("Enemies/SatelliteIdle(3-3).png"));
+        animation.add(new Texture("Enemies/SatelliteIdle(3-3).png"));
+        animation.add(new Texture("Enemies/SatelliteIdle(3-3).png"));
 
     }
     

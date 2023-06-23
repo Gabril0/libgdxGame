@@ -3,8 +3,9 @@ package com.mygdx.game.bosses;
 import com.badlogic.gdx.Gdx;
 
 
+import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.enemy.Enemy;
-
+import com.mygdx.game.listeners.EventManager;
 
 
 public class BossFundamentals extends Enemy {
@@ -19,11 +20,25 @@ public class BossFundamentals extends Enemy {
         sizeX = width/6;
         sizeY = width/6;
 
+
     }
 
     @Override
     public void render(float playerCenterX, float playerCenterY){
         float deltaTime = Gdx.graphics.getDeltaTime();
+        batch.begin();
+        if(!isAlive){
+            batch.setColor(Color.WHITE);
+
+            if(explosionLock){
+                explosion.render(positionX - sizeX/2, positionY - sizeY/2, sizeX * 3, sizeY * 3,
+                        0, batch);
+
+                if(explosion.getWasFinished()){
+                    explosionLock = false;
+                }
+            }
+        }
         if(isAlive){
 
             this.playerCenterX = playerCenterX;
@@ -36,18 +51,18 @@ public class BossFundamentals extends Enemy {
             bulletPool.renderBulletPoolEnemy(positionX, positionY,
                     sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
 
-            batch.begin();
             batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
                     sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
                     texture.getHeight(), false, false);
             if(isHit){gotHitAnimation(deltaTime);}
-            batch.end();
+
 
             // Update the collider's position and rotation
             //drawCollider(getCollider());
             healthBar.renderHealthBar(this);
 
         }
+        batch.end();
 
     }
 
@@ -81,6 +96,9 @@ public class BossFundamentals extends Enemy {
             }
         }
             
+    }
+    public boolean died(){
+        return !isAlive;
     }
 
     private float moveRandomPosition(){
