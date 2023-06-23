@@ -43,7 +43,7 @@ public class Satellite extends BossFundamentals {
 
             this.playerCenterX = playerCenterX;
             this.playerCenterY = playerCenterY;
-            move();
+            move(1f, 1);
             checkBounds();
             checkHealth();
 

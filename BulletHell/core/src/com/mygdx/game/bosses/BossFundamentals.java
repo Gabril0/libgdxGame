@@ -43,7 +43,7 @@ public class BossFundamentals extends Enemy {
 
             this.playerCenterX = playerCenterX;
             this.playerCenterY = playerCenterY;
-            move();
+            move(1f, 1);
             checkBounds();
             checkHealth();
             

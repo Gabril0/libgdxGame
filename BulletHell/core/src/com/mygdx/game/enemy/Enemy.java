@@ -91,6 +91,7 @@ public class Enemy implements Shootable {
         explosion.create();
     }
 
+    // template method was applied here so all subclasses can change its algorithm without messing things up
     public void render(float playerCenterX, float playerCenterY){
         float deltaTime = Gdx.graphics.getDeltaTime();
         batch.begin();
@@ -98,34 +99,29 @@ public class Enemy implements Shootable {
             batch.setColor(Color.WHITE);
 
             if(explosionLock){
-            explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
                     0, batch);
 
-            if(explosion.getWasFinished()){
-                explosionLock = false;
-            }
+                if(explosion.getWasFinished()){
+                    explosionLock = false;
+                }
             }
         }
-        if(isAlive){
-
-        this.playerCenterX = playerCenterX;
-        this.playerCenterY = playerCenterY;
-        randomMove(deltaTime);
-        checkBounds();
-        checkHealth();
         
-        bulletPool.renderBulletPoolEnemy(positionX, positionY, 
-		sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
+        if(isAlive) {
 
-        batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
-        sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
-        texture.getHeight(), false, false);
-        if(isHit){gotHitAnimation(deltaTime);}
-
-        healthBar.renderHealthBar(this);
-
-        // Update the collider's position and rotation
-       // drawCollider(getCollider());
+            this.playerCenterX = playerCenterX;
+            this.playerCenterY = playerCenterY;
+            applyMovement();
+            checkBounds();
+            checkHealth();
+            
+            shot();
+            
+            renderVariations();
+            if(isHit)
+                gotHitAnimation(deltaTime);
+            healthBar.renderHealthBar(this);
 
         }
         batch.end();
@@ -133,7 +129,7 @@ public class Enemy implements Shootable {
     }
 
 
-    protected void checkBounds(){ //checks if the player still on bounds
+    protected void checkBounds(){ //checks if the enemy still on bounds
         if (positionX < 0) positionX = 0;
         if (positionY < 0) positionY = 0;
         if (positionX > Gdx.graphics.getWidth() - sizeX) positionX = Gdx.graphics.getWidth() - sizeX;
@@ -142,10 +138,28 @@ public class Enemy implements Shootable {
     }
 
 
-    protected void randomMove(float deltaTime) {
-
-        positionX += deltaTime * speedX * 1;
-        positionY += deltaTime * speedY * 1;
+    protected void move(float moveDuration, float stationaryTime) {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        elapsedTime += deltaTime;
+        if (elapsedTime >= lastMoved + moveDuration) {
+            if(lock == 1){
+                randomX = moveRandomPosition();
+                randomY = moveRandomPosition();
+                lock = 0;
+                startingMovingTime = elapsedTime;
+            }
+            else {
+                // decides the signal of the random number, so it knows where to go
+                positionX += speedX * deltaTime * Math.signum(randomX);
+                positionY += speedY * deltaTime * Math.signum(randomY);
+                timeMoving = elapsedTime - startingMovingTime;
+            }
+            if(timeMoving > stationaryTime){ //condition to stop enemy stuck
+                timeMoving = 0;
+                lock = 1;
+                lastMoved = elapsedTime ;
+            }
+        }
     }
 
     public Polygon getCollider() { //I found the solution in a forum, I don`t really understand this one
@@ -191,6 +205,10 @@ public class Enemy implements Shootable {
 
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public void setAlive(boolean isAlive) {
+        this.isAlive = isAlive;
     }
 
     public void checkCollision(Shootable shootable){
@@ -251,7 +269,25 @@ public class Enemy implements Shootable {
         return damage;
     }
 
+    private float moveRandomPosition(){
+        return (-1 + random.nextInt(3));
+    }
 
-
+    // simply a capsule for the move call, so other enemies can change the parameters and not
+    // affect the subclasses
+    protected void applyMovement() {
+        move(3, 1);
+    }
+    // a capsule for the different types of bullet
+    protected void shot(){
+        bulletPool.renderBulletPoolEnemy(positionX, positionY, 
+            sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
+    }
+    // a capsule for the different types os rendering
+    protected void renderVariations(){
+        batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
+            sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
+            texture.getHeight(), false, false);
+    }
 
 }

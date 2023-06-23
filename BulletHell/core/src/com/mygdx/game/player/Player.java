@@ -27,7 +27,7 @@ public class Player implements Listener, Shootable {
 	private float height;
     
     // Player atributes
-    private float health = 640;
+    private float health = 64000000;
     private float damage = 100;
     private String tag = "player";
 
