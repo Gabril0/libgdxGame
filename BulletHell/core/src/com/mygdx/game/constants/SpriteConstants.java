@@ -23,4 +23,5 @@ public class SpriteConstants {
     public static final String GIANT_FACE = "Enemies/giantFace.png";
     public static final String SHIELD = "Enemies/shield.png";
     public static final String MIRROR = "Enemies/mirror.png";
+    public static final String FACTORY = "Enemies/factory0.png";
 }

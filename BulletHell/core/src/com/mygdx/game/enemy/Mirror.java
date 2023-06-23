@@ -1,7 +1,6 @@
 package com.mygdx.game.enemy;
 
 import com.badlogic.gdx.Gdx;
-import com.mygdx.game.bullets.BulletPool;
 
 public class Mirror extends Enemy {
     State state;
@@ -19,7 +18,7 @@ public class Mirror extends Enemy {
 
         state = new ChargeShootState(this);
         bulletPool.setCoolDown(100000);
-        damage = 400;
+        damage = 300;
     }
 
     @Override

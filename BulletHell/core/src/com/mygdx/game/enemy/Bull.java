@@ -21,15 +21,8 @@ public class Bull extends Enemy {
         // sets the size of the sprite on screen
         sizeX = width/15;
         sizeY = width/15;
+        damage = 300;
     }
-
-    // @Override
-    // public void render(float playerCenterX, float playerCenterY) {
-    //     this.playerCenterX = playerCenterX;
-    //     this.playerCenterY = playerCenterY;
-
-
-    // }
 
     @Override
     protected void move(float moveDuration, float stationaryTime){

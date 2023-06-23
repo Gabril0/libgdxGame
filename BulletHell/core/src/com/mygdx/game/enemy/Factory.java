@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.animation.Animation;
 import com.mygdx.game.animation.FactoryAnimation;
+import com.mygdx.game.constants.EnemyConstants;
+import com.mygdx.game.constants.SpriteConstants;
 
 public class Factory extends Enemy {
     private String enemyType;
@@ -34,8 +36,8 @@ public class Factory extends Enemy {
     private void populatePool(){
         if (enemyType.compareTo("Enemy") == 0)
             for (int i = 0; i < 20; i++){
-                pool[i] = new Enemy(positionX + 50, positionY, 300, 300, 1000 , 
-                "Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/star.png");
+                pool[i] = new Enemy(positionX + 50, positionY, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH, 
+                SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY);
                 pool[i].setAlive(false);
             }
         // if (enemyType.compareTo("Bull") == 0)

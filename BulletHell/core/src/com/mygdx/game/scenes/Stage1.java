@@ -93,7 +93,7 @@ public class Stage1 extends StageFundamental {
 		giantFaceEnemy = new GiantFace(0, height/2, 100, 100, 1000,
 		"Bullets/EnemyBullet.png", "EnemyBullet", SpriteConstants.GIANT_FACE);
 		factoryEnemy = new Factory(0, height/2, 0, 0, 1000,
-		"Bullets/EnemyBullet.png", "EnemyBullet", "Enemies/factory0.png", "Enemy");
+		"Bullets/EnemyBullet.png", "EnemyBullet", SpriteConstants.FACTORY, "Enemy");
 		shieldEnemy = new Shield(100, 100, 0, 0, 2000, 
 		"Bullets/EnemyBullet.png", "EnemyBullet", SpriteConstants.SHIELD);
 		mirrorEnemy = new Mirror(0, height/2, 100, 100, 1000,

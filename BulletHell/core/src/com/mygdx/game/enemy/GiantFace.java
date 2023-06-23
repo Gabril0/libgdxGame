@@ -16,6 +16,7 @@ public class GiantFace extends Enemy {
         this.positionX = random.nextInt(Math.round(width - sizeX));
         this.positionY = random.nextInt(Math.round(Gdx.graphics.getHeight() - sizeY));
 
+        damage = 300;
         state = new ChargeShootState(this);
     }
 
