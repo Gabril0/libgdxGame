@@ -1,6 +1,7 @@
 package com.mygdx.game.enemy;
 
 import com.badlogic.gdx.Gdx;
+import com.mygdx.game.player.Player;
 
 public class Bull extends Enemy {
     // needs another render to take off the bullets
@@ -10,9 +11,10 @@ public class Bull extends Enemy {
     private float lockedPlayerCenterX = 0;
     private float lockedPlayerCenterY = 0;
     private float attackTimer = 0;
+    private Player player;
 
     public Bull(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, 
-    String bulletType, String sprite) {
+    String bulletType, String sprite, Player player) {
         super(positionX, positionY, speedX, speedY, health, bulletImg, bulletType, sprite);
         float width = Gdx.graphics.getWidth();
 
@@ -22,6 +24,8 @@ public class Bull extends Enemy {
         sizeX = width/15;
         sizeY = width/15;
         damage = 300;
+
+        this.player = player;
     }
 
     @Override
@@ -65,13 +69,19 @@ public class Bull extends Enemy {
         return false;
     }
 
+    // Renders the enemy following the pattern of the other ones
+    @Override
+    public void render(float playerCenterX, float playerCenterY) {
+        super.render(player.getSpritePositionX(), player.getSpritePositionY());
+    }
+
     @Override
     protected void applyMovement() {
         move(3, 2);
     }
 
+    // This enemy doesnt shoot, so this method does nothing
     @Override
-    // this enemy does not shoot
     protected void shot() {
         return;
     }

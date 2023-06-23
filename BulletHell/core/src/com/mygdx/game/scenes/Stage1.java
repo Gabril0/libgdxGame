@@ -81,7 +81,7 @@ public class Stage1 extends StageFundamental {
 		enemiesList.add(sun);
 		enemiesList.add(bullBoss);
 		bullEnemy = new Bull(0, height - 1, 700, 700, 1000, 
-		SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.BULL);
+		SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.BULL, player);
 		fireEnemy = new Fire(0, height/2, 0, 0, 1000,
 		SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.FIRE);
 		staticShootFire = new Fire(0, height/2, 0, 0, 1000,
@@ -91,9 +91,9 @@ public class Stage1 extends StageFundamental {
 		"Bullets/EnemyBullet.png", "EnemyBullet", SpriteConstants.FIRE);
 		variableShootFire.changeState(new VariableShootState(variableShootFire));
 		giantFaceEnemy = new GiantFace(0, height/2, 100, 100, 1000,
-		"Bullets/EnemyBullet.png", "EnemyBullet", SpriteConstants.GIANT_FACE);
+		SpriteConstants.ENERGY_BULLET, "EnemyBullet", SpriteConstants.GIANT_FACE);
 		factoryEnemy = new Factory(0, height/2, 0, 0, 1000,
-		"Bullets/EnemyBullet.png", "EnemyBullet", SpriteConstants.FACTORY, "Enemy");
+		"Bullets/EnemyBullet.png", "EnemyBullet", SpriteConstants.FACTORY, "Bull", player);
 		shieldEnemy = new Shield(100, 100, 0, 0, 2000, 
 		"Bullets/EnemyBullet.png", "EnemyBullet", SpriteConstants.SHIELD);
 		mirrorEnemy = new Mirror(0, height/2, 100, 100, 1000,

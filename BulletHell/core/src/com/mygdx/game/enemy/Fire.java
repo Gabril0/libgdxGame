@@ -13,9 +13,6 @@ public class Fire extends Enemy {
         sizeX = width / 25;
         sizeY = width / 25;
 
-        this.positionX = random.nextInt(Math.round(width - sizeX));
-        this.positionY = random.nextInt(Math.round(Gdx.graphics.getHeight() - sizeY));
-
         state = new ShootState(this);
         // change the shooting frequency
         bulletPool.setCoolDown(0.08f);

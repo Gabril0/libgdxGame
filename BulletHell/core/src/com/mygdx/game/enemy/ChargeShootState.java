@@ -4,7 +4,7 @@ public class ChargeShootState extends AbstractShootState {
     public ChargeShootState(Enemy context){
         super(context);
         context.bulletPool.setCoolDown(2.5f);
-        context.bulletPool.changeSize(10000);
+        context.bulletPool.changeSize(5000);
     }
 
     @Override
