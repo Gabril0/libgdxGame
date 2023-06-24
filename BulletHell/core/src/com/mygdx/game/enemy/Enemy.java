@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.mygdx.game.animation.Animation;
 import com.mygdx.game.animation.Explosion;
+import com.mygdx.game.animation.IntroAnimation;
 import com.mygdx.game.bullets.BulletPool;
 import com.mygdx.game.bullets.Shootable;
 import com.mygdx.game.uirelated.EnemyHealthBar;
@@ -59,6 +60,9 @@ public class Enemy implements Shootable {
     protected boolean explosionLock = true;
 
     protected Animation explosion;
+    protected Animation intro;
+
+    protected boolean startupAnimation = true;
 
 
     public Enemy(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, 
@@ -89,40 +93,55 @@ public class Enemy implements Shootable {
 
         explosion = new Explosion();
         explosion.create();
+
+        intro = new IntroAnimation();
+        intro.create();
     }
 
     // template method was applied here so all subclasses can change its algorithm without messing things up
     public void render(float playerCenterX, float playerCenterY){
         float deltaTime = Gdx.graphics.getDeltaTime();
         batch.begin();
-        if(!isAlive){
-            batch.setColor(Color.WHITE);
+        if(startupAnimation){
+            batch.setColor(Color.RED);
+                intro.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                        0, batch);
 
-            if(explosionLock){
-                explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
-                    0, batch);
-
-                if(explosion.getWasFinished()){
-                    explosionLock = false;
+                if (intro.getWasFinished()) {
+                    batch.setColor(Color.WHITE);
+                    startupAnimation = false;
                 }
             }
-        }
-        
-        if(isAlive) {
+        else {
+            if (!isAlive) {
+                batch.setColor(Color.WHITE);
 
-            this.playerCenterX = playerCenterX;
-            this.playerCenterY = playerCenterY;
-            applyMovement();
-            checkBounds();
-            checkHealth();
-            
-            shot();
-            
-            renderVariations();
-            if(isHit)
-                gotHitAnimation(deltaTime);
-            healthBar.renderHealthBar(this);
+                if (explosionLock) {
+                    explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                            0, batch);
 
+                    if (explosion.getWasFinished()) {
+                        explosionLock = false;
+                    }
+                }
+            }
+
+            if (isAlive) {
+
+                this.playerCenterX = playerCenterX;
+                this.playerCenterY = playerCenterY;
+                applyMovement();
+                checkBounds();
+                checkHealth();
+
+                shot();
+
+                renderVariations();
+                if (isHit)
+                    gotHitAnimation(deltaTime);
+                healthBar.renderHealthBar(this);
+
+            }
         }
         batch.end();
 

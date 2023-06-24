@@ -1,6 +1,7 @@
 package com.mygdx.game.enemy;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.player.Player;
 
 public class Bull extends Enemy {
@@ -29,34 +30,60 @@ public class Bull extends Enemy {
     }
 
     @Override
-    protected void move(float moveDuration, float stationaryTime){
+    protected void move(float moveDuration, float stationaryTime) {
         float deltaTime = Gdx.graphics.getDeltaTime();
         elapsedTime += deltaTime;
         attackTimer += deltaTime;
-        if (attackTimer >= stationaryTime) {
-            if (lock == 1) {
-                // checks the direction where the player is headed
-                lockedPlayerCenterX = playerCenterX - positionX;
-                lockedPlayerCenterY = playerCenterY - positionY;
-                // calculates the straight line that leads to the player
-                float lenght = (float) Math.sqrt(Math.pow(lockedPlayerCenterX, 2) + Math.pow(lockedPlayerCenterY, 2));
-                if (lenght != 0){
-                    // normalize the result, so its always btw 0 and 1
-                    lockedPlayerCenterX /= lenght;
-                    lockedPlayerCenterY /= lenght;
-                }
-                // reset the lock to 0, so it can start following the player
-                lock = 0;
+        if (startupAnimation) {
+            batch.setColor(Color.RED);
+            intro.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                    0, batch);
+
+            if (intro.getWasFinished()) {
+                batch.setColor(Color.WHITE);
+                startupAnimation = false;
             }
-            else {
-                // follows the player
-                positionX += speedX * deltaTime * lockedPlayerCenterX;
-                positionY += speedY * deltaTime * lockedPlayerCenterY;
-                // wait to follow the player again
-                if (hitCorner()) {
-                    attackTimer = 0;
-                    lock = 1;
-                    lastMoved = elapsedTime ;
+        } else {
+            if (!isAlive) {
+                batch.setColor(Color.WHITE);
+
+                if (explosionLock) {
+                    explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                            0, batch);
+
+                    if (explosion.getWasFinished()) {
+                        explosionLock = false;
+                    }
+                }
+            }
+
+            if (isAlive) {
+                if (attackTimer >= stationaryTime) {
+                    if (lock == 1) {
+                        // checks the direction where the player is headed
+                        lockedPlayerCenterX = playerCenterX - positionX;
+                        lockedPlayerCenterY = playerCenterY - positionY;
+                        // calculates the straight line that leads to the player
+                        float lenght = (float) Math.sqrt(Math.pow(lockedPlayerCenterX, 2) + Math.pow(lockedPlayerCenterY, 2));
+                        if (lenght != 0) {
+                            // normalize the result, so its always btw 0 and 1
+                            lockedPlayerCenterX /= lenght;
+                            lockedPlayerCenterY /= lenght;
+                        }
+                        // reset the lock to 0, so it can start following the player
+                        lock = 0;
+                    } else {
+                        // follows the player
+                        positionX += speedX * deltaTime * lockedPlayerCenterX;
+                        positionY += speedY * deltaTime * lockedPlayerCenterY;
+                        // wait to follow the player again
+                        if (hitCorner()) {
+                            attackTimer = 0;
+                            lock = 1;
+                            lastMoved = elapsedTime;
+                        }
+                        ;
+                    }
                 }
             }
         }
