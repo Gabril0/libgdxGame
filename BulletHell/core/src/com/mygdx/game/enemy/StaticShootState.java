@@ -8,6 +8,7 @@ public class StaticShootState extends AbstractShootState {
     }
 
 
+
     @Override
     public void shoot() {
         context.bulletPool.renderBulletPoolEnemy(context.positionX, context.positionY, 

@@ -1,7 +1,6 @@
 package com.mygdx.game.enemy;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 
 public class Fire extends Enemy {
     State state;
@@ -30,37 +29,12 @@ public class Fire extends Enemy {
 
     @Override
     protected void renderVariations() {
-        if (startupAnimation) {
-            batch.setColor(Color.RED);
-            intro.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
-                    0, batch);
-
-            if (intro.getWasFinished()) {
-                batch.setColor(Color.WHITE);
-                startupAnimation = false;
-            }
-        } else {
-            if (!isAlive) {
-                batch.setColor(Color.WHITE);
-
-                if (explosionLock) {
-                    explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
-                            0, batch);
-
-                    if (explosion.getWasFinished()) {
-                        explosionLock = false;
-                    }
-                }
-            }
-
-            if (isAlive) {
-                if (!(state instanceof ShootState)) {
-                    batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
-                            sizeY, 1f, 1f, 0, 0, 0, texture.getWidth(),
-                            texture.getHeight(), false, false);
-                } else
-                    super.renderVariations();
-            }
+        if (!(state instanceof ShootState)){
+            batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
+            sizeY, 1f, 1f, 0, 0, 0, texture.getWidth(),
+            texture.getHeight(), false, false);
         }
+        else
+            super.renderVariations();
     }
 }

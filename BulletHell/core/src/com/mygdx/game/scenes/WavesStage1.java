@@ -1,6 +1,7 @@
 package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.mygdx.game.constants.EnemyConstants;
 import com.mygdx.game.constants.SpriteConstants;
 import com.mygdx.game.enemy.*;
 import com.mygdx.game.player.Player;
@@ -21,34 +22,90 @@ public class WavesStage1 extends WaveManager{
         for(int i = 0; i< 15 ; i++){
             enemiesToAdd[i] = new ArrayList<Enemy>();
         }
-
+        //wave 1
         //creation of a wave
 
             enemiesToAdd[1].add(
-                    new Bull(0, height - 1, 700, 700, 1000,
-                            SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.BULL, player)
+                    new Enemy(width * 0.15f, height  * 0.18f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
+				SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
             );
             enemiesToAdd[1].add(
-                    new GiantFace(0, height / 2, 100, 100, 1000,
-                            SpriteConstants.ENERGY_BULLET, "EnemyBullet", SpriteConstants.GIANT_FACE)
+                new Enemy(width * 0.85f, height  * 0.15f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
+                        SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
             );
+
             wave[1].createWave(enemiesToAdd[1], player);
             waves.add(wave[1]);
 
         //End of the process
 
-            enemiesToAdd[2].add(
-                    new Fire(1000, height / 2, 0, 0, 1000,
-                            SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.FIRE)
-            );
-            enemiesToAdd[2].add(
-                    new Mirror(0, height / 2, 100, 100, 1000,
-                            "Bullets/EnemyBullet.png", "EnemyBullet", SpriteConstants.MIRROR)
-            );
-            wave[2].createWave(enemiesToAdd[2], player);
-            waves.add(wave[2]);
+        //wave 2
+        enemiesToAdd[2].add(
+                new Enemy(width * 0.50f, height  * 0.85f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
+                        SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
+        );
+        enemiesToAdd[2].add(
+                new Enemy(width * 0.75f, height  * 0.25f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
+                        SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
+        );
+        enemiesToAdd[2].add(
+                new Enemy(width * 0.25f, height  * 0.25f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
+                        SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
+        );
 
-            totalWaves = 2;
+        wave[2].createWave(enemiesToAdd[2], player);
+        waves.add(wave[2]);
+
+
+        //wave 3
+        enemiesToAdd[3].add(
+                new Enemy(width * 0.15f, height  * 0.15f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
+                        SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
+        );
+        enemiesToAdd[3].add(
+                new Enemy(width * 0.85f, height  * 0.15f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
+                        SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
+        );
+        enemiesToAdd[3].add(
+                new Enemy(width * 0.85f, height  * 0.85f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
+                        SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
+        );
+        enemiesToAdd[3].add(
+                new Enemy(width * 0.15f, height  * 0.85f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
+                        SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
+        );
+
+
+
+        wave[3].createWave(enemiesToAdd[3], player);
+        waves.add(wave[3]);
+
+        //wave 4
+
+        enemiesToAdd[4].add(
+                 new Fire(width * 0.5f, height * 0.5f, 0, 0, 1000,
+		SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.FIRE)
+        );
+
+
+        wave[4].createWave(enemiesToAdd[4], player);
+        waves.add(wave[4]);
+
+        //wave 5
+        Fire staticShootFire1 = new Fire(width * 0.15f, height * 0.9f, 0, 0, 1000,
+		SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.FIRE);
+		staticShootFire1.changeState(new StaticShootState(staticShootFire1));
+        enemiesToAdd[5].add(staticShootFire1);
+        Fire staticShootFire2 = new Fire(width * 0.85f, height * 0.9f, 0, 0, 1000,
+                SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.FIRE);
+        staticShootFire2.changeState(new StaticShootState(staticShootFire2));
+        enemiesToAdd[5].add(staticShootFire2);
+
+        wave[5].createWave(enemiesToAdd[5], player);
+        waves.add(wave[5]);
+
+
+            totalWaves = 10;
 
             //enemiesToAdd.clear();
 

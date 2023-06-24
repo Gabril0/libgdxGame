@@ -61,7 +61,7 @@ public class Stage1 extends StageFundamental {
 
 		ws1.createWaves(width,height,player);
 
-		bg.createBackground(width * 1.96f, height, "Backgrounds/map2Slow.png", "Backgrounds/map2Fast.png", "Backgrounds/opacityEffect2.png");
+		bg.createBackground(width * 1.96f, height, "Backgrounds/map1Slow.png", "Backgrounds/map1Fast.png", "Backgrounds/opacityEffect.png");
 //		e = new Enemy(width / 10, height / 10, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
 //				SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY);
 //
