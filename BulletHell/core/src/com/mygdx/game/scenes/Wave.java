@@ -12,6 +12,7 @@ public class Wave {
     private boolean turn = false;
     protected ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
+
     public void createWave(ArrayList<Enemy> enemies, Player player){
         this.enemies = enemies;
         this.player = player;
@@ -45,14 +46,20 @@ public class Wave {
     }
 
     public void collisionTest() {
+        boolean shieldEnemyEncountered = false; // Flag to track if a shield enemy is found
+
         for (Enemy enemy : enemies) {
-//            if (shieldEnemy.isAlive()){
-//                player.checkCollision(shieldEnemy);
-//            }
-            //else {
+            if (enemy.getTag().equals("shield") && enemy.isAlive()) {
                 player.checkCollision(enemy);
-            //}
-            enemy.checkCollision(player);
+                shieldEnemyEncountered = true;
+            }
+        }
+
+        for (Enemy enemy : enemies) {
+            if (!shieldEnemyEncountered) {
+                player.checkCollision(enemy);
+                enemy.checkCollision(player);
+            }
         }
     }
 

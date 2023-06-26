@@ -5,12 +5,15 @@ import com.mygdx.game.bosses.Satellite;
 import com.mygdx.game.bosses.SpaceMan;
 import com.mygdx.game.constants.EnemyConstants;
 import com.mygdx.game.constants.SpriteConstants;
-import com.mygdx.game.enemy.*;
+import com.mygdx.game.enemy.Bull;
+import com.mygdx.game.enemy.Enemy;
+import com.mygdx.game.enemy.Fire;
+import com.mygdx.game.enemy.GiantFace;
 import com.mygdx.game.player.Player;
 
 import java.util.ArrayList;
 
-public class WavesStage1 extends WaveManager{
+public class WavesStage3 extends WaveManager{
     private Wave []wave = new Wave[21];
     private ArrayList<Enemy> enemiesToAdd[] = new ArrayList[17];
     private boolean timeLock = true, isOver = false; //timelock for waiting between waves
@@ -27,17 +30,17 @@ public class WavesStage1 extends WaveManager{
         //wave 1
         //creation of a wave
 
-            enemiesToAdd[1].add(
-                    new Enemy(width * 0.15f, height  * 0.18f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
-				SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
-            );
-            enemiesToAdd[1].add(
+        enemiesToAdd[1].add(
+                new Enemy(width * 0.15f, height  * 0.18f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
+                        SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
+        );
+        enemiesToAdd[1].add(
                 new Enemy(width * 0.85f, height  * 0.15f, EnemyConstants.ENEMY_SPEED, EnemyConstants.ENEMY_SPEED, EnemyConstants.HEALTH,
                         SpriteConstants.STAR_BULLET, "EnemyBullet", SpriteConstants.ENEMY)
-            );
+        );
 
-            wave[1].createWave(enemiesToAdd[1], player);
-            waves.add(wave[1]);
+        wave[1].createWave(enemiesToAdd[1], player);
+        waves.add(wave[1]);
 
         //End of the process
 
@@ -83,8 +86,8 @@ public class WavesStage1 extends WaveManager{
 
         //wave 4
         enemiesToAdd[4].add(
-                 new Fire(width * 0.5f, height * 0.5f, 0, 0, 1000,
-		SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.FIRE)
+                new Fire(width * 0.5f, height * 0.5f, 0, 0, 1000,
+                        SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.FIRE)
         );
 
 
@@ -118,7 +121,7 @@ public class WavesStage1 extends WaveManager{
         );
         enemiesToAdd[6].add(
                 new GiantFace(width * 0.25f, height  * 0.25f, 100, 100, 1000,
-		SpriteConstants.ENERGY_BULLET, "EnemyBullet", SpriteConstants.GIANT_FACE)
+                        SpriteConstants.ENERGY_BULLET, "EnemyBullet", SpriteConstants.GIANT_FACE)
         );
         wave[6].createWave(enemiesToAdd[6], player);
         waves.add(wave[6]);
@@ -158,7 +161,7 @@ public class WavesStage1 extends WaveManager{
         //wave 9
         enemiesToAdd[9].add(
                 new Bull(width * 0.15f, height  * 0.5f, 700, 700, 1000,
-		SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.BULL, player)
+                        SpriteConstants.ENEMY_BULLET, "EnemyBullet", SpriteConstants.BULL, player)
         );
         enemiesToAdd[9].add(
                 new Bull(width * 0.85f, height  * 0.5f, 700, 700, 1000,
@@ -258,7 +261,7 @@ public class WavesStage1 extends WaveManager{
         //wave 15
         enemiesToAdd[15].add(
                 new SpaceMan(width * 0.5f, height  * 0.5f, 300, 300, 8000, SpriteConstants.ENERGY_BULLET, "EnergyBullet",
-				SpriteConstants.SPACEMAN)
+                        SpriteConstants.SPACEMAN)
         );
         wave[15].createWave(enemiesToAdd[15], player);
         waves.add(wave[15]);
@@ -266,7 +269,7 @@ public class WavesStage1 extends WaveManager{
 
         totalWaves = 16;
 
-            //enemiesToAdd.clear();
+        //enemiesToAdd.clear();
 
     }
 

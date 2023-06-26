@@ -33,6 +33,7 @@ public class StageFundamental implements Stage {
 	private Texture textures[] = new Texture[4];
 	private int eNumber[] = new int[4];
 	protected boolean upgradeLock = false;
+	protected boolean isOver = false;
 
 	StageFundamental(float width, float height) {
 		this.width = width;
@@ -182,5 +183,11 @@ public class StageFundamental implements Stage {
 
 	public void setIsBossDefeated(boolean bool) {
 		isBossDefeated = bool;
+	}
+	public boolean isOver() {
+		return isOver;
+	}
+	public void setIsOver(boolean over) {
+		isOver = over;
 	}
 }

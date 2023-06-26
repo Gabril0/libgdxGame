@@ -10,6 +10,7 @@ public class Shield extends Enemy {
 
         sizeX = width / 15;
         sizeY = width / 15;
+        tag = "shield";
     }
 
     @Override

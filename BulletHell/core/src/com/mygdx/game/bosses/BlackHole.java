@@ -6,11 +6,12 @@ import com.mygdx.game.player.Player;
 
 public class BlackHole extends BossFundamentals{
     private Player player;
-    public BlackHole(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, String bulletType, String sprite) {
+    public BlackHole(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, String bulletType, String sprite, Player player) {
         super(positionX, positionY, speedX, speedY, health, bulletImg, bulletType, sprite);
         bulletPool.setCoolDown(0.5f);
         damage = 200;
         bulletPool.changeSize(10000);
+        this.player = player;
     }
     public void render(float playerCenterX, float playerCenterY){
         float deltaTime = Gdx.graphics.getDeltaTime();
