@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 public class Fire extends Enemy {
     State state;
+    private float rotation = 0;
 
     public Fire(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, 
     String bulletType, String sprite) {
@@ -31,10 +32,16 @@ public class Fire extends Enemy {
     protected void renderVariations() {
         if (!(state instanceof ShootState)){
             batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
-            sizeY, 1f, 1f, 0, 0, 0, texture.getWidth(),
+            sizeY, 1f, 1f, rotation, 0, 0, texture.getWidth(),
             texture.getHeight(), false, false);
+            bulletPool.renderBulletPoolEnemy(positionX, positionY,
+                    sizeX, sizeY, rotation, damage);
         }
         else
             super.renderVariations();
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
     }
 }

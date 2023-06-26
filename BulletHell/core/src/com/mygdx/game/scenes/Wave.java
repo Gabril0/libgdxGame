@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Wave {
     private boolean isActive = false;
     protected Player player;
+    protected boolean wasBeaten = false; //used only for boss and evolution logic
     private boolean turn = false;
     protected ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
@@ -26,6 +27,7 @@ public class Wave {
                 return false;
             }
         }
+        wasBeaten = true;
         return true;
     }
     public boolean isActive(){
@@ -59,5 +61,13 @@ public class Wave {
     }
     public void setTurn(boolean turn){
         this.turn = turn;
+    }
+
+    public void setWasBeaten(boolean wasBeaten) {
+        this.wasBeaten = wasBeaten;
+    }
+
+    public boolean wasBeaten() {
+        return wasBeaten;
     }
 }

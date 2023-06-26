@@ -20,37 +20,50 @@ public class BullBoss extends BossFundamentals{
         deltaTime = Gdx.graphics.getDeltaTime();
         elapsedTime += deltaTime;
         batch.begin();
+        if(startupAnimation){
+            batch.setColor(Color.RED);
+            intro.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                    0, batch);
 
-        if(!isAlive){
-            batch.setColor(Color.WHITE);
-
-            if(explosionLock){
-                explosion.render(positionX - sizeX/2, positionY - sizeY/2, sizeX * 3, sizeY * 3,
-                        0, batch);
-
-                if(explosion.getWasFinished()){
-                    explosionLock = false;
-                }
+            if (intro.getWasFinished()) {
+                batch.setColor(Color.WHITE);
+                startupAnimation = false;
             }
         }
-        if(isAlive){
+        else {
+            if (!isAlive) {
+                batch.setColor(Color.WHITE);
 
-            this.playerCenterX = playerCenterX;
-            this.playerCenterY = playerCenterY;
-            moveToPlayer(playerCenterX,playerCenterY);
-            checkBounds();
-            checkHealth();
+                if (explosionLock) {
+                    explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                            0, batch);
 
-            batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
-                    sizeY, 1f, 1f,  rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
-                    texture.getHeight(), false, false);
-            if(isHit){gotHitAnimation(deltaTime);}
+                    if (explosion.getWasFinished()) {
+                        explosionLock = false;
+                    }
+                }
+            }
+            if (isAlive) {
+
+                this.playerCenterX = playerCenterX;
+                this.playerCenterY = playerCenterY;
+                moveToPlayer(playerCenterX, playerCenterY);
+                checkBounds();
+                checkHealth();
+
+                batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
+                        sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
+                        texture.getHeight(), false, false);
+                if (isHit) {
+                    gotHitAnimation(deltaTime);
+                }
 
 
-            // Update the collider's position and rotation
-            //drawCollider(getCollider());
-            healthBar.renderHealthBar(this);
+                // Update the collider's position and rotation
+                //drawCollider(getCollider());
+                healthBar.renderHealthBar(this);
 
+            }
         }
         batch.end();
 

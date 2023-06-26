@@ -27,53 +27,63 @@ public class Satellite extends BossFundamentals {
         float deltaTime = Gdx.graphics.getDeltaTime();
         elapsedTime += deltaTime;
         batch.begin();
-        if(!isAlive){
-            batch.setColor(Color.WHITE);
+        if(startupAnimation){
+            batch.setColor(Color.RED);
+            intro.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                    0, batch);
 
-            if(explosionLock){
-                explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
-                        0, batch);
-
-                if(explosion.getWasFinished()){
-                    explosionLock = false;
-                }
+            if (intro.getWasFinished()) {
+                batch.setColor(Color.WHITE);
+                startupAnimation = false;
             }
         }
-        if (isAlive) {
+        else {
+            if (!isAlive) {
+                batch.setColor(Color.WHITE);
 
-            this.playerCenterX = playerCenterX;
-            this.playerCenterY = playerCenterY;
-            move(1f, 1);
-            checkBounds();
-            checkHealth();
+                if (explosionLock) {
+                    explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                            0, batch);
 
-            
-            bulletPool.renderBulletPoolEnemy(positionX, positionY,
-                    sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
-
-            if (elapsedTime > lastBlink + blinkCooldown) {
-                lastBlink = elapsedTime;
+                    if (explosion.getWasFinished()) {
+                        explosionLock = false;
+                    }
+                }
             }
+            if (isAlive) {
 
-            if (elapsedTime <= lastBlink + blinkDuration) {
-                idle.render(positionX, positionY, sizeX, sizeY, rotateToPlayer(playerCenterX, playerCenterY), batch);
-            } else {
-                batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
-                        sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
-                        texture.getHeight(), false, false);
+                this.playerCenterX = playerCenterX;
+                this.playerCenterY = playerCenterY;
+                move(1f, 1);
+                checkBounds();
+                checkHealth();
+
+
+                bulletPool.renderBulletPoolEnemy(positionX, positionY,
+                        sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
+
+                if (elapsedTime > lastBlink + blinkCooldown) {
+                    lastBlink = elapsedTime;
+                }
+
+                if (elapsedTime <= lastBlink + blinkDuration) {
+                    idle.render(positionX, positionY, sizeX, sizeY, rotateToPlayer(playerCenterX, playerCenterY), batch);
+                } else {
+                    batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
+                            sizeY, 1f, 1f, rotateToPlayer(this.playerCenterX, this.playerCenterY), 0, 0, texture.getWidth(),
+                            texture.getHeight(), false, false);
+                }
+
+                if (isHit) {
+                    gotHitAnimation(deltaTime);
+                }
+
+
+                // Update the collider's position and rotation
+                // drawCollider(getCollider());
+                healthBar.renderHealthBar(this);
+
             }
-
-            if (isHit) {
-                gotHitAnimation(deltaTime);
-            }
-
-
-
-
-            // Update the collider's position and rotation
-            // drawCollider(getCollider());
-            healthBar.renderHealthBar(this);
-
         }
         batch.end();
 

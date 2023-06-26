@@ -169,14 +169,14 @@ public class StageFundamental implements Stage {
 
 	}
 
-	protected void  checkBossDefeat(BossFundamentals e){
-		if(!upgradeLock) {
-			setIsBossDefeated(e.died());
-			if(e.died()){
+	protected void  checkBossDefeat(boolean bool){
+		if(bool) {
+			if (!upgradeLock) {
+				isBossDefeated = true;
 				upgradeLock = true;
-
 			}
 		}
+
 	}
 
 

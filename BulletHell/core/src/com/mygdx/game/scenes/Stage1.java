@@ -149,6 +149,8 @@ public class Stage1 extends StageFundamental {
 //			mirrorEnemy.render(player.getCenterX(), player.getCenterY());
 			player.renderPlayer();
 
+			checkBossDefeat(ws1.checkEvolution());
+
 //			checkBossDefeat(satellite);
 //			checkBossDefeat(spaceMan);
 //			checkBossDefeat(blackHole);

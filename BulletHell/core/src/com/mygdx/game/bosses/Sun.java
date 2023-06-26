@@ -17,54 +17,69 @@ public class Sun extends BossFundamentals{
     @Override
     public void render(float playerCenterX, float playerCenterY){
         float deltaTime = Gdx.graphics.getDeltaTime();
+
         batch.begin();
-        if(!isAlive){
-            batch.setColor(Color.WHITE);
+        if(startupAnimation){
+            batch.setColor(Color.RED);
+            intro.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                    0, batch);
 
-            if(explosionLock){
-                explosion.render(positionX - sizeX/2, positionY - sizeY/2, sizeX * 3, sizeY * 3,
-                        0, batch);
-
-                if(explosion.getWasFinished()){
-                    explosionLock = false;
-                }
+            if (intro.getWasFinished()) {
+                batch.setColor(Color.WHITE);
+                startupAnimation = false;
             }
         }
-        if(isAlive){
+        else {
+            if (!isAlive) {
+                batch.setColor(Color.WHITE);
 
-            this.playerCenterX = playerCenterX;
-            this.playerCenterY = playerCenterY;
-            move();
-            checkBounds();
-            checkHealth();
+                if (explosionLock) {
+                    explosion.render(positionX - sizeX, positionY - sizeY, sizeX * 3, sizeY * 3,
+                            0, batch);
 
+                    if (explosion.getWasFinished()) {
+                        explosionLock = false;
+                    }
+                }
+            }
+            if (isAlive) {
 
-            bulletPool.renderBulletPoolEnemy(positionX, positionY,
-                    sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
-
-            bulletPool.renderBulletPoolEnemy(positionX , positionY - sizeY/4,
-                    sizeX, sizeY, rotateToPlayer(this.playerCenterX , this.playerCenterY + sizeY/4) - 90, damage);
-
-            bulletPool.renderBulletPoolEnemy(positionX , positionY + sizeY/2,
-                    sizeX, sizeY, rotateToPlayer(this.playerCenterX - sizeY/2, this.playerCenterY - sizeY/2) - 90, damage);
-
-            bulletPool.renderBulletPoolEnemy(positionX , positionY - sizeY/4,
-                    sizeX, sizeY, rotateToPlayer(this.playerCenterX , this.playerCenterY + sizeY/4) - 90, damage);
-
-            bulletPool.renderBulletPoolEnemy(positionX , positionY - sizeY/2,
-                    sizeX, sizeY, rotateToPlayer(this.playerCenterX , this.playerCenterY + sizeY/2) - 90, damage);
+                this.playerCenterX = playerCenterX;
+                this.playerCenterY = playerCenterY;
+                move();
+                checkBounds();
+                checkHealth();
 
 
-            batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
-                    sizeY, 1f, 1f, 0, 0, 0, texture.getWidth(),
-                    texture.getHeight(), false, false);
-            if(isHit){gotHitAnimation(deltaTime);}
+                bulletPool.renderBulletPoolEnemy(positionX, positionY,
+                        sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY) - 90, damage);
+
+                bulletPool.renderBulletPoolEnemy(positionX, positionY - sizeY / 4,
+                        sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY + sizeY / 4) - 90, damage);
+
+                bulletPool.renderBulletPoolEnemy(positionX, positionY + sizeY / 2,
+                        sizeX, sizeY, rotateToPlayer(this.playerCenterX - sizeY / 2, this.playerCenterY - sizeY / 2) - 90, damage);
+
+                bulletPool.renderBulletPoolEnemy(positionX, positionY - sizeY / 4,
+                        sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY + sizeY / 4) - 90, damage);
+
+                bulletPool.renderBulletPoolEnemy(positionX, positionY - sizeY / 2,
+                        sizeX, sizeY, rotateToPlayer(this.playerCenterX, this.playerCenterY + sizeY / 2) - 90, damage);
 
 
-            // Update the collider's position and rotation
-            //drawCollider(getCollider());
-            healthBar.renderHealthBar(this);
+                batch.draw(texture, positionX, positionY, sizeX / 2, sizeY / 2, sizeX,
+                        sizeY, 1f, 1f, 0, 0, 0, texture.getWidth(),
+                        texture.getHeight(), false, false);
+                if (isHit) {
+                    gotHitAnimation(deltaTime);
+                }
 
+
+                // Update the collider's position and rotation
+                //drawCollider(getCollider());
+                healthBar.renderHealthBar(this);
+
+            }
         }
         batch.end();
 
