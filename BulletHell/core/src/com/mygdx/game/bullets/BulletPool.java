@@ -68,7 +68,6 @@ public class BulletPool {
                     }
 
                     if (i == poolSize - 1 && pool[i].getIsActive() == true) {
-                        System.out.println("Pool is full!");
                         break;
                     }
                 }
@@ -128,7 +127,6 @@ public class BulletPool {
                 }
 
                 if(i == poolSize - 1 && pool[i].getIsActive() == true){
-                    System.out.println("Pool is full!");
                     break;
                 }  
             }

@@ -49,7 +49,7 @@ public class Enemy implements Shootable {
     protected float startingMovingTime = 0;
     protected float playerCenterX, playerCenterY;
 
-    protected BulletPool bulletPool = new BulletPool(50);
+    protected BulletPool bulletPool = new BulletPool(20);
 
     protected Random random = new Random();
 

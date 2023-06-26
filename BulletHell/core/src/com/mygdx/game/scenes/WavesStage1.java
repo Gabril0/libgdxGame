@@ -11,14 +11,14 @@ import com.mygdx.game.player.Player;
 import java.util.ArrayList;
 
 public class WavesStage1 extends WaveManager{
-    private Wave []wave = new Wave[21];
+    private Wave []wave = new Wave[17];
     private ArrayList<Enemy> enemiesToAdd[] = new ArrayList[17];
     private boolean timeLock = true, isOver = false; //timelock for waiting between waves
     private float deltaTime, elapsedTime = 0, finishTime, waveCooldown = 0.5f;
     private int totalWaves;
     @Override
     public void createWaves(float width, float height, Player player) {
-        for(int i = 0; i <= 20 ; i++){
+        for(int i = 0; i <= 16 ; i++){
             wave[i] = new Wave();
         }
         for(int i = 0; i <= 16 ; i++){

@@ -27,7 +27,6 @@ public class Mirror extends Enemy {
         if(pastHealth > health){
             bulletPool.setCoolDown(0);
             state.shoot();
-            System.out.println("Shooting");
             pastHealth = health;
         }
         bulletPool.setCoolDown(100000);
