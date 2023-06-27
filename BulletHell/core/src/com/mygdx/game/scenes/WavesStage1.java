@@ -321,4 +321,13 @@ public class WavesStage1 extends WaveManager{
     public void setIsOver(boolean bool){
         isOver = bool;
     }
+    public void dispose(){
+        for(int i = 0; i <= 16 ; i++){
+            wave[i].dispose();
+        }
+        for(int i = 0; i <= 16 ; i++){
+            enemiesToAdd[i].clear();
+        }
+        disposeWaves();
+    }
 }

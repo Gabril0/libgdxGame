@@ -27,8 +27,8 @@ public class Player implements Listener, Shootable {
 	private float height;
     
     // Player atributes
-    private float health = 64000000;
-    private float damage = 100000;
+    private float health = 640;
+    private float damage = 100;
     private String tag = "player";
 
     // Base sprite rendering variables
@@ -132,6 +132,7 @@ public class Player implements Listener, Shootable {
 
                 if(explosion.getWasFinished()){
                     explosionLock = false;
+                    System.exit(1);
 
                 }
             }
@@ -342,7 +343,7 @@ public class Player implements Listener, Shootable {
             bulletPool.checkCollision(shootable, this.damage);
             if (Intersector.overlapConvexPolygons(getCollider(), shootable.getCollider())) {
                 if (shootable.getTag().compareTo("enemy") == 0) {
-                    setHealth(shootable.getDamage() * 2);
+                    setHealth(shootable.getDamage());
                 } 
                 else shootable.setHealth(shootable.getDamage());
             }

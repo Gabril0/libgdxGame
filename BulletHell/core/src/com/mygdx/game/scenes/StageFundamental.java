@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class StageFundamental implements Stage {
-	protected Player player = new Player();;
+	protected Player player;
 	protected boolean isPaused = false;
 	protected boolean isEvoluting = false;
 	private Texture pauseTexture;

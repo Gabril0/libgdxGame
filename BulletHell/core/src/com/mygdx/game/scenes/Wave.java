@@ -1,5 +1,6 @@
 package com.mygdx.game.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.mygdx.game.enemy.Enemy;
 import com.mygdx.game.player.Player;
 
@@ -11,6 +12,7 @@ public class Wave {
     protected boolean wasBeaten = false; //used only for boss and evolution logic
     private boolean turn = false;
     protected ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+    private float deltaTime, currentTime = 0, waveEnd;
 
 
     public void createWave(ArrayList<Enemy> enemies, Player player){
@@ -18,8 +20,12 @@ public class Wave {
         this.player = player;
     }
     public void run(float playerCenterX, float playerCenterY){
+        deltaTime = Gdx.graphics.getDeltaTime();
+        currentTime += deltaTime;
+
         for (Enemy enemy : enemies) {
             enemy.render(playerCenterX,playerCenterY);
+
         }
     }
     public boolean allEnemiesDead() {
@@ -29,6 +35,7 @@ public class Wave {
             }
         }
         wasBeaten = true;
+        enemies.clear();
         return true;
     }
     public boolean isActive(){

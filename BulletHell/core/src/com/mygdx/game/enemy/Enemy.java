@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.game.animation.Animation;
 import com.mygdx.game.animation.Explosion;
 import com.mygdx.game.animation.IntroAnimation;
@@ -16,7 +17,7 @@ import com.mygdx.game.uirelated.EnemyHealthBar;
 
 import java.util.Random;
 
-public class Enemy implements Shootable {
+public class Enemy implements Shootable, Disposable {
 
     //For conversion between different screen sizes
     private float width;
@@ -254,12 +255,15 @@ public class Enemy implements Shootable {
         }
     }
 
+    @Override
     public void dispose() {
         texture.dispose();
         batch.dispose();
         collider.dispose();
         bulletPool.disposeBulletPool();
         healthBar.disposeHealthBar();
+        explosion.dispose();
+        intro.dispose();
     }
 
     public float getPositionX() {
