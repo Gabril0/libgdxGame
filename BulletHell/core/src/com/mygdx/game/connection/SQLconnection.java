@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 public class SQLconnection {
+    //I know this is on github but please don't change the table, thank you
     private static final String DATABASE_URL = "jdbc:postgresql://silly.db.elephantsql.com/zqlujwbj";
     private static final String USERNAME = "zqlujwbj";
     private static final String PASSWORD = "MopidgvMOHvdAiw8DdCv9MK5mUiTAA5_";
@@ -48,4 +49,28 @@ public class SQLconnection {
             disconnect();
         }
     }
+
+    public float getLowerTime() {
+        connect();
+        float lowerTime = Float.MAX_VALUE;
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT MIN(time) FROM deathcounter WHERE stage = 4");
+
+            if (resultSet.next()) {
+                lowerTime = resultSet.getFloat(1);
+            }
+
+            resultSet.close();
+            statement.close();
+            disconnect();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            disconnect();
+        }
+
+        return lowerTime;
+    }
+
 }

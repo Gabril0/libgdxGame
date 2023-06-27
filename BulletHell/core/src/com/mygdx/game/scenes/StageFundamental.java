@@ -190,4 +190,7 @@ public class StageFundamental implements Stage {
 	public void setIsOver(boolean over) {
 		isOver = over;
 	}
+	public boolean isPaused(){
+		return isPaused;
+	}
 }

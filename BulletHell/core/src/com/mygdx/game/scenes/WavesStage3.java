@@ -166,10 +166,10 @@ public class WavesStage3 extends WaveManager{
     }
 
     public boolean checkEvolution(){
-        if(wave[8].wasBeaten){//doing just to go to evolution screen, 8 is the boss wave
-            wave[8].setWasBeaten(false);
-            return  true;
-        }
+//        if(wave[5].wasBeaten &&){//doing just to go to evolution screen, 8 is the boss wave
+//            wave[5].setWasBeaten(false);
+//            return  true;
+//        }
         return false;
     }
 

@@ -2,7 +2,9 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.backgroundAndCursor.CustomCursor;
 import com.mygdx.game.connection.SQLconnection;
@@ -26,7 +28,9 @@ public class MyGdxGame extends ApplicationAdapter {
 	SQLconnection sql = new SQLconnection();
 	boolean sqlLock = true;
 
-	float deltaTime, currentTime = 0;
+	float deltaTime, currentTime = 0, finalTime, lowerTimeEver;
+
+	BitmapFont font;
 	
 	@Override
 	public void create () {
@@ -46,6 +50,10 @@ public class MyGdxGame extends ApplicationAdapter {
 		congratulations = new Texture("UI/Finish.png");
 		batch = new SpriteBatch();
 
+		font = new BitmapFont(Gdx.files.internal("Fonts/BoldBasic.fnt"));
+		font.setColor(Color.WHITE);
+		font.getData().setScale(2f);
+
 
 
 
@@ -55,7 +63,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		deltaTime = Gdx.graphics.getDeltaTime();
-		currentTime += deltaTime;
+
 		if(!player.isAlive()){
 			if(sqlLock) {
 				sql.addDeath(currentStage,currentTime);
@@ -90,13 +98,27 @@ public class MyGdxGame extends ApplicationAdapter {
 			s3.setIsOver(false);
 			s3.dispose();
 			if(sqlLock) {
+				finalTime = currentTime;
 				sql.addDeath(4,currentTime);
+				lowerTimeEver = sql.getLowerTime();
+				font.getData().setScale(3f);
 				sqlLock = false;
 			}
 			batch.begin();
 			batch.draw(congratulations,0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			font.draw(batch, "Your Time: " + finalTime, 0, Gdx.graphics.getHeight() * 0.2f);
+			font.draw(batch, "World Record: " + lowerTimeEver, 0, Gdx.graphics.getHeight() * 0.3f);
+
 			batch.end();
 
+		}
+		if(!s1.isPaused() && !s2.isPaused() && !s3.isPaused() && sqlLock) {
+			currentTime += deltaTime;
+			batch.begin();
+
+			font.draw(batch, "Time: " + currentTime, 10, Gdx.graphics.getHeight() - 10);
+
+			batch.end();
 		}
 
 	}
