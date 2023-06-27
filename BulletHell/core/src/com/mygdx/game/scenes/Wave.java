@@ -10,7 +10,7 @@ public class Wave {
     private boolean isActive = false;
     protected Player player;
     protected boolean wasBeaten = false; //used only for boss and evolution logic
-    private boolean turn = false;
+    private boolean turn = false, deathLock = true;
     protected ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     private float deltaTime, currentTime = 0, waveEnd;
 
@@ -34,8 +34,14 @@ public class Wave {
                 return false;
             }
         }
-        wasBeaten = true;
-        enemies.clear();
+        if(deathLock) {
+            waveEnd = currentTime;
+            deathLock = false;
+        }
+        if(currentTime > waveEnd + 1) {
+            wasBeaten = true;
+            enemies.clear();
+        }
         return true;
     }
     public boolean isActive(){
