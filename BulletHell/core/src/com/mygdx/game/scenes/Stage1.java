@@ -54,11 +54,11 @@ public class Stage1 extends StageFundamental {
 			// rendering
 			bg.renderBackground();
 
-			player.renderPlayer();
 
 			ws1.renderWaves(player.getCenterX(),player.getCenterY());
 
 			checkBossDefeat(ws1.checkEvolution());
+			player.renderPlayer();
 			if(ws1.isOver()){
 				setIsOver(true);
 			}

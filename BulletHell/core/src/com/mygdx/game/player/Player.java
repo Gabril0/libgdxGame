@@ -28,13 +28,13 @@ public class Player implements Listener, Shootable {
     
     // Player atributes
     private float health = 640;
-    private float damage = 100;
+    private float damage = 1000000;
     private String tag = "player";
 
     // Base sprite rendering variables
     private float deltaTime;
     private SpriteBatch batch;
-    private Texture img, transformImg;
+    private Texture img, transformImg, deathScreen;
     //private ShapeRenderer collision;
     private HealthBar healthBar = new HealthBar();
 
@@ -71,6 +71,7 @@ public class Player implements Listener, Shootable {
     protected boolean explosionLock = true;
     private boolean canShoot = true;
     private boolean canSlowdown = false;
+    private boolean deathScreenLock = false;
 
 
 
@@ -97,6 +98,7 @@ public class Player implements Listener, Shootable {
 
         img = new Texture("playerAnimation/PlayerBaseSprite.png");
         transformImg = new Texture("playerAnimation/PlayerTransformation.png");
+        deathScreen = new Texture("UI/DeathScreen.png");
         //collision = new ShapeRenderer();
         healthBar.createHealthBar();
         tag = "player";
@@ -122,6 +124,14 @@ public class Player implements Listener, Shootable {
     }
 
     public void renderPlayer() { // do these actions every frame
+        if(deathScreenLock){
+            batch.begin();
+            batch.setColor(Color.WHITE);
+
+            batch.draw(deathScreen,0,0,width,height);
+
+            batch.end();
+        }
         if(!isAlive){
             batch.begin();
             batch.setColor(Color.WHITE);
@@ -132,7 +142,7 @@ public class Player implements Listener, Shootable {
 
                 if(explosion.getWasFinished()){
                     explosionLock = false;
-                    System.exit(1);
+                    deathScreenLock = true;
 
                 }
             }

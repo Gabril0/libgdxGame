@@ -1,3 +1,4 @@
+
 package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
@@ -21,7 +22,7 @@ public class Stage3 extends StageFundamental {
         this.player = player;
         ws3.createWaves(width,height,player);
 
-        bg.createBackground(width * 1.96f, height, "Backgrounds/map1Slow.png", "Backgrounds/map1Fast.png", "Backgrounds/opacityEffect.png");
+        bg.createBackground(width * 1.96f, height, "Backgrounds/map3Slow.png", "Backgrounds/map3Fast.png", "Backgrounds/opacityEffect3.png");
     }
     public void renderContinuation() {
 
@@ -34,11 +35,11 @@ public class Stage3 extends StageFundamental {
         // rendering
         bg.renderBackground();
 
-        player.renderPlayer();
 
         ws3.renderWaves(player.getCenterX(),player.getCenterY());
 
         checkBossDefeat(ws3.checkEvolution());
+        player.renderPlayer();
         if(ws3.isOver()){
             setIsOver(true);
         }

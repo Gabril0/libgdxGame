@@ -6,12 +6,13 @@ import com.mygdx.game.bullets.BulletPool;
 
 public class Sun extends BossFundamentals{
 
+
     public Sun(float positionX, float positionY, float speedX, float speedY, float health, String bulletImg, String bulletType, String sprite) {
         super(positionX, positionY, speedX, speedY, health, bulletImg, bulletType, sprite);
         positionX -= sizeX/2;
         positionY -= sizeY/2;
         bulletPool.setCoolDown(0.7f);
-        bulletPool = new BulletPool(50);
+
 
         sizeX *= 2.5f;
         sizeY *= 3.4f;

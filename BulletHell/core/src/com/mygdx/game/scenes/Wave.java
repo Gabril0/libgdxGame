@@ -34,14 +34,14 @@ public class Wave {
                 return false;
             }
         }
-        if(deathLock) {
-            waveEnd = currentTime;
-            deathLock = false;
-        }
-        if(currentTime > waveEnd + 1) {
+//        if(deathLock) {
+//            waveEnd = currentTime;
+//            deathLock = false;
+//        }
+        //if(currentTime > waveEnd + 1) {
             wasBeaten = true;
             enemies.clear();
-        }
+        //}
         return true;
     }
     public boolean isActive(){

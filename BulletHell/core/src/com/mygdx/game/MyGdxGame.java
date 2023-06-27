@@ -39,7 +39,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		//currentStage = 1;
+		currentStage = 3;
 		if(currentStage == 1) {
 			s1.render();
 		}

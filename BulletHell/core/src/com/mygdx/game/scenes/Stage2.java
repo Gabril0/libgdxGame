@@ -37,9 +37,9 @@ public class Stage2 extends StageFundamental {
         ws2.renderWaves(player.getCenterX(),player.getCenterY());
 
 
-        player.renderPlayer();
 
         checkBossDefeat(ws2.checkEvolution());
+        player.renderPlayer();
         if(ws2.isOver()){
             setIsOver(true);
         }
