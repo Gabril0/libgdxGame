@@ -2,7 +2,10 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.backgroundAndCursor.CustomCursor;
+import com.mygdx.game.constants.SpriteConstants;
 import com.mygdx.game.player.Player;
 import com.mygdx.game.scenes.Stage1;
 import com.mygdx.game.scenes.Stage2;
@@ -15,6 +18,9 @@ public class MyGdxGame extends ApplicationAdapter {
 	Stage2 s2;
 	Stage3 s3;
 	Player player;
+
+	Texture congratulations;
+	SpriteBatch batch;
 	
 	@Override
 	public void create () {
@@ -31,6 +37,9 @@ public class MyGdxGame extends ApplicationAdapter {
 		s3 = new Stage3(Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
 		s3.create(player);
 
+		congratulations = new Texture("UI/Finish.png");
+		batch = new SpriteBatch();
+
 
 
 
@@ -39,7 +48,7 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		currentStage = 3;
+		//currentStage = 3;
 		if(currentStage == 1) {
 			s1.render();
 		}
@@ -62,11 +71,15 @@ public class MyGdxGame extends ApplicationAdapter {
 		if(currentStage == 3){
 			s3.render();
 		}
-//		if(s3.isOver()) {
-//			currentStage = 4;
-//			s3.setIsOver(false);
-//			s3.dispose();
-//		}
+		if(s3.isOver()) {
+
+			s3.setIsOver(false);
+			s3.dispose();
+			batch.begin();
+			batch.draw(congratulations,0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			batch.end();
+
+		}
 
 	}
 	
