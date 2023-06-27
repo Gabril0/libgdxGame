@@ -184,6 +184,9 @@ public class WavesStage3 extends WaveManager{
                 if(elapsedTime > finishTime + waveCooldown) {
                     wave[waveNumber + 1].setTurn(true);
                     wave[waveNumber].setTurn(false);
+                    if(waveNumber<totalWaves) {
+                        wave[waveNumber].dispose();
+                    }
                     timeLock = true;
                 }
             }
@@ -199,9 +202,9 @@ public class WavesStage3 extends WaveManager{
     }
 
     public void dispose(){
-        for(int i = 0; i <= 8 ; i++){
-            wave[i].dispose();
-        }
+//        for(int i = 0; i <= 16 ; i++){
+//            wave[i].dispose();
+//        }
         for(int i = 0; i <= 8 ; i++){
             enemiesToAdd[i].clear();
         }

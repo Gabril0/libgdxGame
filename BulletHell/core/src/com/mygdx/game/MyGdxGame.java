@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.backgroundAndCursor.CustomCursor;
+import com.mygdx.game.connection.SQLconnection;
 import com.mygdx.game.constants.SpriteConstants;
 import com.mygdx.game.player.Player;
 import com.mygdx.game.scenes.Stage1;
@@ -21,6 +22,11 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	Texture congratulations;
 	SpriteBatch batch;
+
+	SQLconnection sql = new SQLconnection();
+	boolean sqlLock = true;
+
+	float deltaTime, currentTime = 0;
 	
 	@Override
 	public void create () {
@@ -48,6 +54,14 @@ public class MyGdxGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		deltaTime = Gdx.graphics.getDeltaTime();
+		currentTime += deltaTime;
+		if(!player.isAlive()){
+			if(sqlLock) {
+				sql.addDeath(currentStage,currentTime);
+				sqlLock = false;
+			}
+		}
 		//currentStage = 3;
 		if(currentStage == 1) {
 			s1.render();
@@ -75,6 +89,10 @@ public class MyGdxGame extends ApplicationAdapter {
 
 			s3.setIsOver(false);
 			s3.dispose();
+			if(sqlLock) {
+				sql.addDeath(4,currentTime);
+				sqlLock = false;
+			}
 			batch.begin();
 			batch.draw(congratulations,0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			batch.end();

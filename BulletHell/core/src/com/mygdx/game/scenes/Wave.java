@@ -40,7 +40,6 @@ public class Wave {
 //        }
         //if(currentTime > waveEnd + 1) {
             wasBeaten = true;
-            enemies.clear();
         //}
         return true;
     }
