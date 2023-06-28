@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -75,6 +76,7 @@ public class MyGdxGame extends ApplicationAdapter {
 				endingSong.play();
 				endingSong.setLooping(true);
 			}
+			restart();
 		}
 		if(currentStage == 1) {
 			s1.render();
@@ -106,18 +108,17 @@ public class MyGdxGame extends ApplicationAdapter {
 			s3.setIsOver(false);
 			s3.dispose();
 
-			stageObject.stopSong();
-
-			endingSong = Gdx.audio.newMusic(Gdx.files.internal("Sounds/Final-Starman.mp3"));
-			endingSong.play();
-			endingSong.setLooping(true);
-
 			if(sqlLock) {
 				finalTime = currentTime;
 				sql.addDeath(4,currentTime);
 				lowerTimeEver = sql.getLowerTime();
 				font.getData().setScale(3f);
 				sqlLock = false;
+
+				stageObject.stopSong();
+				endingSong = Gdx.audio.newMusic(Gdx.files.internal("Sounds/Final-Starman.mp3"));
+				endingSong.play();
+				endingSong.setLooping(true);
 			}
 			batch.begin();
 			batch.draw(congratulations,0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -125,6 +126,8 @@ public class MyGdxGame extends ApplicationAdapter {
 			font.draw(batch, "World Record: " + lowerTimeEver, 0, Gdx.graphics.getHeight() * 0.3f);
 
 			batch.end();
+
+			restart();
 
 		}
 		if(!s1.isPaused() && !s2.isPaused() && !s3.isPaused() && sqlLock) {
@@ -145,5 +148,20 @@ public class MyGdxGame extends ApplicationAdapter {
 		s1.dispose();
 		s2.dispose();
 		s3.dispose();
+	}
+
+	public void restart(){
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+				try {
+					dispose();
+				} catch (Exception e) {
+					
+				}
+				endingSong.stop();
+				sqlLock = true;
+				currentStage = 1;
+				currentTime = 0;
+				create();
+			}
 	}
 }

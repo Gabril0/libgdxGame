@@ -2,7 +2,7 @@ apply plugin: "java-library"
 
 dependencies {
     implementation project(":core")
-    implementation files('../postgresql-42.2.27.jre7.jar')
+    implementation files(project.rootDir.absolutePath + '/postgresql-42.2.27.jre7.jar')
     api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     api "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
