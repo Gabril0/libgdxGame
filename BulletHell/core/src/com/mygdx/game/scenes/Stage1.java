@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.backgroundAndCursor.Background;
@@ -41,6 +42,9 @@ public class Stage1 extends StageFundamental {
 		this.player = player;
 
 		bg.createBackground(width * 1.96f, height, "Backgrounds/map1Slow.png", "Backgrounds/map1Fast.png", "Backgrounds/opacityEffect.png");
+		theme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/Tema Fase 1.mp3"));
+		theme.play();
+		theme.setLooping(true);
 	}
 
 	public void renderContinuation() {
@@ -70,10 +74,9 @@ public class Stage1 extends StageFundamental {
 	public void dispose() {
 		bg.disposeBackground();
 		ws1.dispose();
-
+		theme.stop();
+		theme.dispose();
 	}
-
-
 
 
 }

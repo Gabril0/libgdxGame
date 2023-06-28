@@ -1,6 +1,7 @@
 package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.backgroundAndCursor.Background;
 import com.mygdx.game.player.Player;
@@ -22,6 +23,9 @@ public class Stage2 extends StageFundamental {
         ws2.createWaves(width,height,player);
 
         bg.createBackground(width * 1.96f, height, "Backgrounds/map2Slow.png", "Backgrounds/map2Fast.png", "Backgrounds/opacityEffect2.png");
+        theme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/Tema Fase 2.mp3"));
+		theme.play();
+		theme.setLooping(true);
     }
     public void renderContinuation() {
 
@@ -51,7 +55,8 @@ public class Stage2 extends StageFundamental {
     public void dispose() {
         bg.disposeBackground();
         ws2.dispose();
-
+        theme.stop();
+        theme.dispose();
     }
 }
 

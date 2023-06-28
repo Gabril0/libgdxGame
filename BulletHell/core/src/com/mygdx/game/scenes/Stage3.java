@@ -23,6 +23,9 @@ public class Stage3 extends StageFundamental {
         ws3.createWaves(width,height,player);
 
         bg.createBackground(width * 1.96f, height, "Backgrounds/map3Slow.png", "Backgrounds/map3Fast.png", "Backgrounds/opacityEffect3.png");
+        theme = Gdx.audio.newMusic(Gdx.files.internal("Sounds/Fase-3.mp3"));
+		theme.play();
+		theme.setLooping(true);
     }
     public void renderContinuation() {
 
@@ -51,7 +54,8 @@ public class Stage3 extends StageFundamental {
     public void dispose() {
         bg.disposeBackground();
         ws3.dispose();
-
+        theme.stop();
+        theme.dispose();
     }
 }
 

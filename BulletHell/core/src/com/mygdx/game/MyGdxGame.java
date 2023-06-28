@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,6 +14,7 @@ import com.mygdx.game.player.Player;
 import com.mygdx.game.scenes.Stage1;
 import com.mygdx.game.scenes.Stage2;
 import com.mygdx.game.scenes.Stage3;
+import com.mygdx.game.scenes.StageFundamental;
 
 public class MyGdxGame extends ApplicationAdapter {
 	int currentStage = 1;
@@ -31,6 +33,9 @@ public class MyGdxGame extends ApplicationAdapter {
 	float deltaTime, currentTime = 0, finalTime, lowerTimeEver;
 
 	BitmapFont font;
+
+	private Music endingSong;
+	private StageFundamental stageObject;
 	
 	@Override
 	public void create () {
@@ -42,10 +47,8 @@ public class MyGdxGame extends ApplicationAdapter {
 		s1.create(player);
 
 		s2 = new Stage2(Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
-		s2.create(player);
 
 		s3 = new Stage3(Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
-		s3.create(player);
 
 		congratulations = new Texture("UI/Finish.png");
 		batch = new SpriteBatch();
@@ -54,8 +57,7 @@ public class MyGdxGame extends ApplicationAdapter {
 		font.setColor(Color.WHITE);
 		font.getData().setScale(2f);
 
-
-
+		stageObject = s1;
 
 
 	}
@@ -68,9 +70,12 @@ public class MyGdxGame extends ApplicationAdapter {
 			if(sqlLock) {
 				sql.addDeath(currentStage,currentTime);
 				sqlLock = false;
+				stageObject.stopSong();
+				endingSong = Gdx.audio.newMusic(Gdx.files.internal("Sounds/Major Tom.mp3"));
+				endingSong.play();
+				endingSong.setLooping(true);
 			}
 		}
-		//currentStage = 3;
 		if(currentStage == 1) {
 			s1.render();
 		}
@@ -78,8 +83,9 @@ public class MyGdxGame extends ApplicationAdapter {
 			currentStage = 2;
 			s1.setIsOver(false);
 			s1.dispose();
+			s2.create(player);
 			s2.create();
-
+			stageObject = s2;
 		}
 		if(currentStage == 2){
 			s2.render();
@@ -88,7 +94,9 @@ public class MyGdxGame extends ApplicationAdapter {
 			currentStage = 3;
 			s2.setIsOver(false);
 			s2.dispose();
+			s3.create(player);
 			s3.create();
+			stageObject = s3;
 		}
 		if(currentStage == 3){
 			s3.render();
@@ -97,6 +105,13 @@ public class MyGdxGame extends ApplicationAdapter {
 
 			s3.setIsOver(false);
 			s3.dispose();
+
+			stageObject.stopSong();
+
+			endingSong = Gdx.audio.newMusic(Gdx.files.internal("Sounds/Final-Starman.mp3"));
+			endingSong.play();
+			endingSong.setLooping(true);
+
 			if(sqlLock) {
 				finalTime = currentTime;
 				sql.addDeath(4,currentTime);

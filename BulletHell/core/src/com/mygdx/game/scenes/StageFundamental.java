@@ -3,6 +3,7 @@ package com.mygdx.game.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,6 +35,8 @@ public class StageFundamental implements Stage {
 	private int eNumber[] = new int[4];
 	protected boolean upgradeLock = false;
 	protected boolean isOver = false;
+
+	protected Music theme;
 
 	StageFundamental(float width, float height) {
 		this.width = width;
@@ -192,5 +195,8 @@ public class StageFundamental implements Stage {
 	}
 	public boolean isPaused(){
 		return isPaused;
+	}
+	public void stopSong(){
+		theme.stop();
 	}
 }
